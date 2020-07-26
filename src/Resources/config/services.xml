@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService" />
+
+        <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationApiController">
+            <tag name="controller.service_arguments"/>
+            <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
+        </service>
+
+        <service id="RuneLaenen\TwoFactorAuth\Subscriber\ApiOauthTokenSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="user.repository"/>
+            <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
+        </service>
+    </services>
+</container>

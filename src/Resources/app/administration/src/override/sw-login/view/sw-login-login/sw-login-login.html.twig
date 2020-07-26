@@ -1,0 +1,26 @@
+{% block sw_login_login %}
+
+    <div v-if="!showOtpForm">
+        {% parent %}
+    </div>
+    <div v-else>
+        <form class="sw-login-login sw-login-login-otp" @submit.prevent="loginUserWithPasswordAndOtp">
+            <h2 class="sw-login__content-headline">{{ $tc('sw-login.index.headlineForm') }}</h2>
+
+            <sw-text-field
+                v-autofocus
+                v-model="otp"
+                :label="$tc('rl-2fa.sw-login.index.labelOtp')"
+                required>
+            </sw-text-field>
+
+            <div class="sw-login__submit">
+                <sw-button :disabled="otp.length != 6 || password.length <= 0 || username.length <= 0"
+                           class="sw-login__login-action"
+                           variant="primary">
+                    {{ $tc('sw-login.index.buttonLogin') }}
+                </sw-button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

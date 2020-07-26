@@ -1,0 +1,52 @@
+
+{% block sw_setting_user_detail_card_integrations %}
+    <sw-card :title="$tc('rl-2fa.settings.user-detail.title')"
+             :is-loading="isLoading || isLoading2Fa">
+        <div v-if="user && user.customFields && user.customFields.rl_2fa_secret">
+            Two factor authentication is enabled!
+        </div>
+        <div v-else-if="!generatedSecretUrl">
+            <sw-alert variant="warning"
+                      title="Two factor authentication is not enabled"
+                      style="margin-bottom: 0;"
+                      :showIcon="true"
+                      :closable="false">
+                Two factor authentication is not enabled for your account. Click the button below to set it up.
+
+                <template v-slot:actions>
+                    <sw-button @click="generateSecret">Click me to get started</sw-button>
+                </template>
+            </sw-alert>
+        </div>
+        <div v-else-if="generatedSecretUrl">
+            <sw-container columns="1fr 1fr">
+                <div>
+                    <img :src="'https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=' + generatedSecretUrl" />
+                </div>
+                <div>
+                    <b>Scan the code on the left with your 2FA app.</b><br />
+                    <br />
+                    Fill in your One Time Password and click 'Validate & enable' to check the code and enable 2FA for
+                    your admin account.<br />
+                    <br />
+                    <sw-alert variant="error"
+                              title="Something went wrong"
+                              :showIcon="true"
+                              v-if="oneTimePasswordError.length > 0">
+                        {{ oneTimePasswordError }}
+                    </sw-alert>
+
+                    <sw-text-field label="One-time Password"
+                                   :isInvalid="oneTimePasswordError.length > 0"
+                                   v-model="oneTimePassword"></sw-text-field>
+
+                    <sw-button @click="validateAndSaveOneTimePassword">
+                        Validate & Save
+                    </sw-button>
+                </div>
+            </sw-container>
+        </div>
+    </sw-card>
+
+    {% parent %}
+{% endblock %}

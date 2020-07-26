@@ -1,0 +1,14 @@
+{
+    "rl-2fa": {
+        "sw-login": {
+            "index": {
+                "labelOtp": "2FA Token"
+            }
+        },
+        "settings": {
+            "user-detail": {
+                "title": "Two factor authentication"
+            }
+        }
+    }
+}
