@@ -50,7 +50,7 @@
 
         return this.initializeLoginInitializer()
             .then(() => this.injectPlugin({
-                js: "/static/js/rune-laenen-two-factor-auth.js"
+                js: "/bundles/runelaenentwofactorauth/administration/js/rune-laenen-two-factor-auth.js"
             }))
             .then(() => this.view.initDependencies())
             .then(() => this.createApplicationRoot())
