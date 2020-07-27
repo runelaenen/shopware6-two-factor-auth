@@ -1,5 +1,12 @@
 {
     "rl-2fa": {
+        "login": {
+            "title": "Two Factor Authentication",
+            "description": "Please verify your identity using your 2FA app.",
+            "code-placeholder": "Code",
+            "proceed": "Log in",
+            "cancel": "Cancel"
+        },
         "account": {
             "title": "Two Factor Authentication",
             "active": "Good! Your account is currently protected with Two Factor Authentication!",

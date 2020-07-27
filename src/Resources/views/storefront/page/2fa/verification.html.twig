@@ -1,0 +1,56 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_header %}{% endblock %}
+{% block base_flashbags %}{% endblock %}
+{% block base_navigation %}{% endblock %}
+{% block base_offcanvas_navigation %}{% endblock %}
+{% block base_footer %}{% endblock %}
+{% block base_scroll_up %}{% endblock %}
+
+{% block base_content %}
+    <div class="row justify-content-center">
+        <div class="col col-md-4 col-lg-3">
+            <div class="mb-3">
+                {% sw_include '@Storefront/storefront/layout/header/logo.html.twig' %}
+            </div>
+
+            <div class="card card-verifiy">
+                <div class="card-header">
+                    {{ "rl-2fa.login.title"|trans|sw_sanitize }}
+                </div>
+                <div class="card-body p-3">
+                    <p>
+                        {{ "rl-2fa.login.description"|trans|sw_sanitize }}
+                    </p>
+
+                    <div class="flashbags container p-0">
+                        {% for type, messages in app.flashes %}
+                            {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with { type: type, list: messages } %}
+                        {% endfor %}
+                    </div>
+
+                    <form method="POST" action="{{ url('frontend.rl2fa.verification') }}">
+                        {{ sw_csrf('frontend.rl2fa.verification') }}
+
+                        <input type="text"
+                               class="form-control mb-1"
+                               autocomplete="off"
+                               id="otpCode"
+                               placeholder="{{ "rl-2fa.login.code-placeholder"|trans|striptags }}"
+                               name="otpCode"
+                               required="required">
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            {{ "rl-2fa.login.proceed"|trans|sw_sanitize }}
+                        </button>
+
+                        <a href="{{ url('frontend.rl2fa.verification.cancel') }}"
+                           class="btn btn-light btn-block">
+                            {{ "rl-2fa.login.cancel"|trans|sw_sanitize }}
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

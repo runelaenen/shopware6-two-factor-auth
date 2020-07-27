@@ -5,7 +5,7 @@ Add extra security to your Shopware 6 shop by enabling Two Factor Authentication
 Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 
 ## To do
- - [ ] Storefront customer 2FA
+ - [x] Storefront customer 2FA
  - [x] Admin user 2FA
  - [x] Local QR code generation
  - [ ] Multiple providers

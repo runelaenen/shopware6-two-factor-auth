@@ -8,6 +8,13 @@
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
         </service>
 
+        <service id="RuneLaenen\TwoFactorAuth\Controller\StorefrontTwoFactorAuthController">
+            <tag name="controller.service_arguments"/>
+            <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
+        </service>
+
         <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationController">
             <tag name="controller.service_arguments"/>
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService"/>
@@ -28,6 +35,12 @@
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="user.repository"/>
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
+        </service>
+
+        <service id="RuneLaenen\TwoFactorAuth\Subscriber\CustomerLoginSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="session"/>
+            <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
         </service>
     </services>
 </container>
