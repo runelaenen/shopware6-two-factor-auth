@@ -1,7 +1,5 @@
 # Two Factor Authentication for Shopware 6
 
-__This plugin is not ready for production use!__
-
 (!) This plugin does not work correctly when using the administration watcher.
 
 ## To do

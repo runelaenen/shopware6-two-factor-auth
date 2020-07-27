@@ -1,0 +1,34 @@
+{
+    "rl-2fa": {
+        "account": {
+            "title": "Two Factor Authentication",
+            "active": "Good! Your account is currently protected with Two Factor Authentication!",
+            "not-active": "Your account is currently <strong>not</strong> protected with Two Factor Authentication!",
+            "description": "Make sure your webshop account is protected securily by adding Two Factor Authentication (2FA). With 2FA, your account is secured in multiple layers: your username, your password, and a new 'one time password' layer. This second step is added to reconfirm your identity, and links your account to your mobile phone. Click the button below to get started on setting up 2FA for your account. It's easy and free!",
+            "start-setup": "Set up 2FA for my account",
+            "disable-2fa": "Disable Two Factor Authentication",
+            "disabled-2fa": "Two Factor Authentication was successfully disabled.",
+            "setup": {
+                "title": "Two Factor Authentication Setup",
+                "description": "Scan the QR code below with your Google Authenticator app. Enter the generated code in the field below to verify whether your 2FA code was correctly set up.",
+                "step-1": "Step 1. Scan code",
+                "step-2": "Step 2. Verify token",
+                "verification-placeholder": "One Time Password Token",
+                "verify": "Verify & activate 2FA"
+            },
+            "disable": {
+                "title": "Disable Two Factor Authentication",
+                "description": "Please verify that it is you by confirming your password.",
+                "password": "Password",
+                "submit": "Confirm password & disable Two Factor Authentication"
+            },
+            "error": {
+                "not-enabled": "2FA is not enabled for this Sales Channel.",
+                "no-customer": "Customer not found in session.",
+                "incorrect-password": "The provided password was wrong. Two Factor Authentication is not disabled.",
+                "empty-input": "Secret or code was empty.",
+                "incorrect-code": "The provided code was not correct."
+            }
+        }
+    }
+}

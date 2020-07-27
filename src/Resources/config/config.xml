@@ -15,5 +15,18 @@
 
     <card>
         <title>Storefront 2FA</title>
+
+        <input-field type="bool">
+            <name>storefrontEnabled</name>
+            <label>Enable 2FA for Storefront</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field>
+            <name>storefrontCompany</name>
+            <label>Company name</label>
+            <helpText>Company name for QR code in 2FA app</helpText>
+            <defaultValue>Webshop</defaultValue>
+        </input-field>
     </card>
 </config>

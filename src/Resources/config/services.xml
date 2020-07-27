@@ -8,6 +8,15 @@
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
         </service>
 
+        <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationController">
+            <tag name="controller.service_arguments"/>
+            <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService"/>
+            <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
+            <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
+            <argument type="service" id="customer.repository"/>
+            <argument type="service" id="Shopware\Core\Checkout\Customer\Password\LegacyPasswordVerifier"/>
+        </service>
+
         <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationApiController">
             <tag name="controller.service_arguments"/>
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>

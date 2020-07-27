@@ -29,6 +29,18 @@ class ConfigurationService
 
     public function getAdministrationCompany(?string $salesChannelId = null): string
     {
-        return $this->get('administrationCompany', $salesChannelId);
+        return (string) $this->get('administrationCompany', $salesChannelId);
     }
+
+    public function isStorefrontEnabled(?string $salesChannelId = null): bool
+    {
+        return (bool) $this->get('storefrontEnabled', $salesChannelId);
+    }
+
+    public function getStorefrontCompany(?string $salesChannelId = null): string
+    {
+        return (string) $this->get('storefrontCompany', $salesChannelId);
+    }
+
+
 }

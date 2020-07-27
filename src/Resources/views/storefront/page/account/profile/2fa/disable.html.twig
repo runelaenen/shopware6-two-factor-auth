@@ -1,0 +1,24 @@
+
+<h3>{{ "rl-2fa.account.disable.title"|trans|sw_sanitize }}</h3>
+
+<p>
+    {{ "rl-2fa.account.disable.description"|trans|sw_sanitize }}
+</p>
+
+<form method="POST"
+      action="{{ url('rl-2fa.profile.disable.post') }}">
+    <p>
+        <input type="password"
+               class="form-control"
+               id="otpPassword"
+               placeholder="{{ "rl-2fa.account.disable.password"|trans|striptags }}"
+               name="otpPassword"
+               required="required">
+    </p>
+
+    {{ sw_csrf('rl-2fa.profile.disable.post') }}
+
+    <button type="submit" class="account-profile-2fa-setup-verify btn btn-primary btn-block">
+        {{ "rl-2fa.account.disable.submit"|trans|sw_sanitize }}
+    </button>
+</form>

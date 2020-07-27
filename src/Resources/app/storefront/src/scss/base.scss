@@ -1,0 +1,36 @@
+.account-profile-2fa {
+    margin-bottom: 3rem;
+}
+
+.rl-2fa-setup-step {
+    border: 1px solid #008490;
+    margin-bottom: $spacer;
+
+    &--title {
+        display: block;
+        background: #008490;
+        color: #fff;
+        padding: 5px;
+    }
+
+    &--content {
+        padding: $spacer;
+    }
+
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+
+.rl-2fa-qr-code {
+    text-align: center;
+
+    img {
+        max-width: 80%;
+    }
+
+    &--secret {
+        color: gray;
+        display: block;
+    }
+}
