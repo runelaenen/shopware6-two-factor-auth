@@ -4,10 +4,15 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService" />
+        <service id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService" >
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+        </service>
 
         <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationApiController">
             <tag name="controller.service_arguments"/>
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
+            <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
+            <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService"/>
         </service>
 
         <service id="RuneLaenen\TwoFactorAuth\Subscriber\ApiOauthTokenSubscriber">

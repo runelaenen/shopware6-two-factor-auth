@@ -2,9 +2,11 @@
 
 __This plugin is not ready for production use!__
 
-## To do
+(!) This plugin does not work correctly when using the administration watcher.
 
-[ ] Better login screen override possible?
-[ ] Local QR code generation
-[ ] Clean up code
-[ ] Unit tests
+## To do
+ - [ ] Storefront customer 2FA
+ - [x] Admin user 2FA
+ - [x] Local QR code generation
+ - [ ] Clean up code
+ - [ ] Unit tests

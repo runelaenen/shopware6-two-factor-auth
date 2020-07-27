@@ -2,13 +2,18 @@
 
 namespace RuneLaenen\TwoFactorAuth\Controller;
 
+use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
+use Shopware\Core\PlatformRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @RouteScope(scopes={"api"})
@@ -19,11 +24,23 @@ class TwoFactorAuthenticationApiController extends AbstractController
      * @var TimebasedOneTimePasswordServiceInterface
      */
     private $totpService;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+    /**
+     * @var ConfigurationService
+     */
+    private $configurationService;
 
     public function __construct(
-        TimebasedOneTimePasswordServiceInterface $totpService
+        TimebasedOneTimePasswordServiceInterface $totpService,
+        RouterInterface $router,
+        ConfigurationService $configurationService
     ) {
         $this->totpService = $totpService;
+        $this->router = $router;
+        $this->configurationService = $configurationService;
     }
 
     /**
@@ -31,13 +48,23 @@ class TwoFactorAuthenticationApiController extends AbstractController
      */
     public function generateSecret(Request $request, Context $context): JsonResponse
     {
+        $company = $this->configurationService->getAdministrationCompany(
+            $request->attributes->get(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_ID)
+        );
+
         $secret = $this->totpService->createSecret();
+        $qrUrl = $this->totpService->getQrCodeUrl(
+            $company,
+            $request->get('holder', ''),
+            $secret
+        );
+
         return new JsonResponse([
             'secret' => $secret,
-            'qrUrl' => $this->totpService->getQrCodeUrl(
-                'Test',
-                'Rune',
-                $secret
+            'qrUrl' => $this->router->generate(
+                'rl-2fa.qr-code.secret',
+                ['qrUrl' => $qrUrl],
+                UrlGeneratorInterface::ABSOLUTE_URL
             )
         ]);
     }
@@ -55,8 +82,8 @@ class TwoFactorAuthenticationApiController extends AbstractController
         }
 
         $verified = $this->totpService->verifyCode(
-            (string) $request->get('secret'),
-            (string) $request->get('code')
+            (string)$request->get('secret'),
+            (string)$request->get('code')
         );
 
         if ($verified) {

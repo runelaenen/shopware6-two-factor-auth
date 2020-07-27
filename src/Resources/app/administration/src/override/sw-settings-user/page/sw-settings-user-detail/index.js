@@ -24,7 +24,11 @@ Component.override('sw-settings-user-detail', {
     methods: {
         generateSecret() {
             this.isLoading2Fa = true;
-            this.httpClient.get('rl-2fa/generate-secret')
+            this.httpClient.get('rl-2fa/generate-secret', {
+                params: {
+                    holder: this.user.username
+                }
+            })
                 .then((response) => {
                     this.isLoading2Fa = false;
                     this.generatedSecret = response.data.secret;
@@ -39,7 +43,7 @@ Component.override('sw-settings-user-detail', {
                 code: this.oneTimePassword
             }).then((response) => {
                 this.isLoading2Fa = false;
-                if (response.data.status == 'OK') {
+                if (response.data.status === 'OK') {
                     this.saveOneTimePassword();
                     return;
                 }
@@ -54,6 +58,15 @@ Component.override('sw-settings-user-detail', {
             }
 
             this.user.customFields.rl_2fa_secret = this.generatedSecret;
+            this.onSave();
+        },
+
+        disable2FA() {
+            if (!this.user.customFields) {
+                this.$set(this.user, 'customFields', {});
+            }
+
+            this.user.customFields.rl_2fa_secret = '';
             this.onSave();
         }
     }

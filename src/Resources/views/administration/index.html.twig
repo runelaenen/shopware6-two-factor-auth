@@ -35,6 +35,7 @@
 <script nonce="{{ cspNonce }}" src="{{ baseUrl }}{{ asset('static/js/app.js', '@Administration') }}"></script>
 
 <script nonce="{{ cspNonce }}">
+    // Rewrite bootLogin function to load our custom code allowing the 2 factor authentication
     Shopware.Application.bootLogin = function () {
         // set force reload after successful login
         sessionStorage.setItem('sw-login-should-reload', 'true');
@@ -48,8 +49,9 @@
          */
 
         return this.initializeLoginInitializer()
-            .then(() => this.loadPlugins())
-            .then(() => Promise.all(Shopware.Plugin.getBootPromises()))
+            .then(() => this.injectPlugin({
+                js: "/static/js/rune-laenen-two-factor-auth.js"
+            }))
             .then(() => this.view.initDependencies())
             .then(() => this.createApplicationRoot())
             .catch((error) => this.createApplicationRootError(error));
