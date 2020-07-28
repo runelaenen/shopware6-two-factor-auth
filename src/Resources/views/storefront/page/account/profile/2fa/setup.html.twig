@@ -1,47 +1,63 @@
+{% block page_account_profile_2fa_setup %}
+    {% block page_account_profile_2fa_setup_title %}
+        <h3>{{ "rl-2fa.account.setup.title"|trans|sw_sanitize }}</h3>
+    {% endblock %}
 
-<h3>{{ "rl-2fa.account.setup.title"|trans|sw_sanitize }}</h3>
-
-<p>
-    {{ "rl-2fa.account.setup.description"|trans|sw_sanitize }}
-</p>
-
-<div class="rl-2fa-setup-step">
-    <strong class="rl-2fa-setup-step--title">{{ "rl-2fa.account.setup.step-1"|trans|sw_sanitize }}</strong>
-    <div class="rl-2fa-setup-step--content">
-        <div class="rl-2fa-qr-code">
-            <img alt="2FA secret: {{ secret }}" class="rl-2fa-qr-code--image" src="{{ qrUrl }}" />
-            <span class="rl-2fa-qr-code--secret">{{ secret }}</span>
-        </div>
-    </div>
-</div>
-
-<div class="rl-2fa-setup-step" data-rl2fa-verification-plugin="true" data-rl2fa-verification-plugin-options='{"verificationUrl": "{{ url('rl-2fa.profile.validate') }}"}'>
-    <strong class="rl-2fa-setup-step--title">{{ "rl-2fa.account.setup.step-2"|trans|sw_sanitize }}</strong>
-    <div class="rl-2fa-setup-step--content">
-
-        <div class="rl2fa-setup-verification-message d-none">
-            {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
-                type: "warning",
-                content: ""
-            } %}
-        </div>
-
+    {% block page_account_profile_2fa_setup_description %}
         <p>
-            <input type="text"
-                   class="form-control"
-                   autocomplete="off"
-                   id="otpVerification"
-                   placeholder="{{ "rl-2fa.account.setup.verification-placeholder"|trans|striptags }}"
-                   name="otpVerification"
-                   required="required">
+            {{ "rl-2fa.account.setup.description"|trans|sw_sanitize }}
         </p>
+    {% endblock %}
 
-        <input type="hidden" name="otpSecret" value="{{ secret }}">
+    {% block page_account_profile_2fa_setup_step1 %}
+        <div class="rl-2fa-setup-step">
+            <strong class="rl-2fa-setup-step--title">{{ "rl-2fa.account.setup.step-1"|trans|sw_sanitize }}</strong>
+            <div class="rl-2fa-setup-step--content">
+                <div class="rl-2fa-qr-code">
+                    <img alt="2FA secret: {{ secret }}" class="rl-2fa-qr-code--image" src="{{ qrUrl }}" />
+                    <span class="rl-2fa-qr-code--secret">{{ secret }}</span>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 
-        {{ sw_csrf('rl-2fa.profile.validate') }}
+    {% block page_account_profile_2fa_setup_step2 %}
+        <div class="rl-2fa-setup-step" data-rl2fa-verification-plugin="true" data-rl2fa-verification-plugin-options='{"verificationUrl": "{{ url('rl-2fa.profile.validate') }}"}'>
+            {% block page_account_profile_2fa_setup_step2_title %}
+                <strong class="rl-2fa-setup-step--title">{{ "rl-2fa.account.setup.step-2"|trans|sw_sanitize }}</strong>
+            {% endblock %}
 
-        <button class="account-profile-2fa-setup-verify btn btn-primary btn-block">
-            {{ "rl-2fa.account.setup.verify"|trans|sw_sanitize }}
-        </button>
-    </div>
-</div>
+            <div class="rl-2fa-setup-step--content">
+
+                <div class="rl2fa-setup-verification-message d-none">
+                    {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+                        type: "warning",
+                        content: ""
+                    } %}
+                </div>
+
+                <p>
+                    {% block page_account_profile_2fa_setup_step2_input %}
+                    <input type="text"
+                           class="form-control"
+                           autocomplete="off"
+                           id="otpVerification"
+                           placeholder="{{ "rl-2fa.account.setup.verification-placeholder"|trans|striptags }}"
+                           name="otpVerification"
+                           required="required">
+                    {% endblock %}
+                </p>
+
+                <input type="hidden" name="otpSecret" value="{{ secret }}">
+
+                {{ sw_csrf('rl-2fa.profile.validate') }}
+
+                {% block page_account_profile_2fa_setup_step2_button %}
+                    <button class="account-profile-2fa-setup-verify btn btn-primary btn-block">
+                        {{ "rl-2fa.account.setup.verify"|trans|sw_sanitize }}
+                    </button>
+                {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

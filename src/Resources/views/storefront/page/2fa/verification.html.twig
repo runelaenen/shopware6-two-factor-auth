@@ -8,49 +8,69 @@
 {% block base_scroll_up %}{% endblock %}
 
 {% block base_content %}
-    <div class="row justify-content-center">
-        <div class="col col-md-4 col-lg-3">
-            <div class="mb-3">
-                {% sw_include '@Storefront/storefront/layout/header/logo.html.twig' %}
-            </div>
-
-            <div class="card card-verifiy">
-                <div class="card-header">
-                    {{ "rl-2fa.login.title"|trans|sw_sanitize }}
-                </div>
-                <div class="card-body p-3">
-                    <p>
-                        {{ "rl-2fa.login.description"|trans|sw_sanitize }}
-                    </p>
-
-                    <div class="flashbags container p-0">
-                        {% for type, messages in app.flashes %}
-                            {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with { type: type, list: messages } %}
-                        {% endfor %}
+    {% block page_2fa_verification %}
+        <div class="row justify-content-center">
+            <div class="col col-md-4 col-lg-3">
+                {% block page_2fa_verification_header %}
+                    <div class="mb-3">
+                        {% sw_include '@Storefront/storefront/layout/header/logo.html.twig' %}
                     </div>
+                {% endblock %}
 
-                    <form method="POST" action="{{ url('frontend.rl2fa.verification') }}">
-                        {{ sw_csrf('frontend.rl2fa.verification') }}
+                <div class="card card-verifiy">
+                    {% block page_2fa_verification_card_header %}
+                        <div class="card-header">
+                            {{ "rl-2fa.login.title"|trans|sw_sanitize }}
+                        </div>
+                    {% endblock %}
+                    {% block page_2fa_verification_card_body %}
+                        <div class="card-body p-3">
+                            {% block page_2fa_verification_card_body_description %}
+                                <p>
+                                    {{ "rl-2fa.login.description"|trans|sw_sanitize }}
+                                </p>
+                            {% endblock %}
 
-                        <input type="text"
-                               class="form-control mb-1"
-                               autocomplete="off"
-                               id="otpCode"
-                               placeholder="{{ "rl-2fa.login.code-placeholder"|trans|striptags }}"
-                               name="otpCode"
-                               required="required">
+                            {% block page_2fa_verification_card_body_flashbag %}
+                                <div class="flashbags container p-0">
+                                    {% for type, messages in app.flashes %}
+                                        {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with { type: type, list: messages } %}
+                                    {% endfor %}
+                                </div>
+                            {% endblock %}
 
-                        <button type="submit" class="btn btn-primary btn-block">
-                            {{ "rl-2fa.login.proceed"|trans|sw_sanitize }}
-                        </button>
+                            {% block page_2fa_verification_card_body_form %}
+                                <form method="POST" action="{{ url('frontend.rl2fa.verification') }}">
+                                    {{ sw_csrf('frontend.rl2fa.verification') }}
 
-                        <a href="{{ url('frontend.rl2fa.verification.cancel') }}"
-                           class="btn btn-light btn-block">
-                            {{ "rl-2fa.login.cancel"|trans|sw_sanitize }}
-                        </a>
-                    </form>
+                                    {% block page_2fa_verification_card_body_form_input %}
+                                        <input type="text"
+                                               class="form-control mb-1"
+                                               autocomplete="off"
+                                               id="otpCode"
+                                               placeholder="{{ "rl-2fa.login.code-placeholder"|trans|striptags }}"
+                                               name="otpCode"
+                                               required="required">
+                                    {% endblock %}
+
+                                    {% block page_2fa_verification_card_body_form_button %}
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {{ "rl-2fa.login.proceed"|trans|sw_sanitize }}
+                                        </button>
+                                    {% endblock %}
+
+                                    {% block page_2fa_verification_card_body_form_cancel %}
+                                        <a href="{{ url('frontend.rl2fa.verification.cancel') }}"
+                                           class="btn btn-light btn-block">
+                                            {{ "rl-2fa.login.cancel"|trans|sw_sanitize }}
+                                        </a>
+                                    {% endblock %}
+                                </form>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
                 </div>
             </div>
         </div>
-    </div>
+    {% endblock %}
 {% endblock %}

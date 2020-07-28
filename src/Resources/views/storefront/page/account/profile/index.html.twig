@@ -1,43 +1,55 @@
 {% sw_extends '@Storefront/storefront/page/account/profile/index.html.twig' %}
 
 {% block page_account_profile_credentials %}
-    {% if shopware.config.RuneLaenenTwoFactorAuth.config.storefrontEnabled %}
-        <div class="card account-profile-2fa">
-            <div class="card-body">
-                <div class="card-title">
-                    {{ "rl-2fa.account.title"|trans|sw_sanitize }}
+    {% block page_account_profile_2fa %}
+        {% if shopware.config.RuneLaenenTwoFactorAuth.config.storefrontEnabled %}
+            {% block page_account_profile_2fa_card %}
+                <div class="card account-profile-2fa">
+                    <div class="card-body">
+                        {% block page_account_profile_2fa_card_title %}
+                            <div class="card-title">
+                                {{ "rl-2fa.account.title"|trans|sw_sanitize }}
+                            </div>
+                        {% endblock %}
+
+                        {% block page_account_profile_2fa_card_body %}
+                            {% if not context.customer.customFields.rl_2fa_secret or context.customer.customFields.rl_2fa_secret is empty %}
+                                {% block page_account_profile_2fa_card_not_active %}
+                                    {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+                                        type: "warning",
+                                        content: "rl-2fa.account.not-active"|trans|sw_sanitize
+                                    } %}
+                                    <p>{{ "rl-2fa.account.description"|trans|sw_sanitize }}</p>
+                                    <button type="submit"
+                                            class="account-profile-2fa-start-setup btn btn-primary"
+                                            data-toggle="modal"
+                                            data-url="{{ path('rl-2fa.profile.setup') }}"
+                                            title="{{ "rl-2fa.account.start-setup"|trans|striptags }}">
+                                        {{ "rl-2fa.account.start-setup"|trans|sw_sanitize }}
+                                    </button>
+                                {% endblock %}
+                            {% else %}
+                                {% block page_account_profile_2fa_card_active %}
+                                    {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+                                        type: "success",
+                                        content: "rl-2fa.account.active"|trans|sw_sanitize
+                                    } %}
+
+                                    <button type="submit"
+                                            class="account-profile-2fa-start-setup btn btn-primary"
+                                            data-toggle="modal"
+                                            data-url="{{ path('rl-2fa.profile.disable') }}"
+                                            title="{{ "rl-2fa.account.disable-2fa"|trans|striptags }}">
+                                        {{ "rl-2fa.account.disable-2fa"|trans|striptags }}
+                                    </button>
+                                {% endblock %}
+                            {% endif %}
+                        {% endblock %}
+                    </div>
                 </div>
-
-                {% if not context.customer.customFields.rl_2fa_secret or context.customer.customFields.rl_2fa_secret is empty %}
-                    {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
-                        type: "warning",
-                        content: "rl-2fa.account.not-active"|trans|sw_sanitize
-                    } %}
-                    <p>{{ "rl-2fa.account.description"|trans|sw_sanitize }}</p>
-                    <button type="submit"
-                            class="account-profile-2fa-start-setup btn btn-primary"
-                            data-toggle="modal"
-                            data-url="{{ path('rl-2fa.profile.setup') }}"
-                            title="{{ "rl-2fa.account.start-setup"|trans|striptags }}">
-                        {{ "rl-2fa.account.start-setup"|trans|sw_sanitize }}
-                    </button>
-                {% else %}
-                    {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
-                        type: "success",
-                        content: "rl-2fa.account.active"|trans|sw_sanitize
-                    } %}
-
-                    <button type="submit"
-                            class="account-profile-2fa-start-setup btn btn-primary"
-                            data-toggle="modal"
-                            data-url="{{ path('rl-2fa.profile.disable') }}"
-                            title="{{ "rl-2fa.account.disable-2fa"|trans|striptags }}">
-                        {{ "rl-2fa.account.disable-2fa"|trans|striptags }}
-                    </button>
-                {% endif %}
-            </div>
-        </div>
-    {% endif %}
+            {% endblock %}
+        {% endif %}
+    {% endblock %}
 
     {{ parent() }}
 {% endblock %}
