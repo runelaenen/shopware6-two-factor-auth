@@ -5,28 +5,27 @@
         <div v-if="user && user.customFields && user.customFields.rl_2fa_secret">
 
             <sw-alert variant="success"
-                      title="Two factor authentication is enabled"
+                      :title="$tc('rl-2fa.settings.user-detail.enabled.title')"
                       style="margin-bottom: 0;"
                       :showIcon="true"
                       :closable="false">
-                Congrats! You're secure!<br />
-                To disable 2FA for your account, click the button below.
+                {{ $tc('rl-2fa.settings.user-detail.enabled.description') }}
 
                 <template v-slot:actions>
-                    <sw-button @click="disable2FA">Disable 2FA</sw-button>
+                    <sw-button @click="disable2FA">{{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}</sw-button>
                 </template>
             </sw-alert>
         </div>
         <div v-else-if="!generatedSecretUrl">
             <sw-alert variant="warning"
-                      title="Two factor authentication is not enabled"
+                      :title="$tc('rl-2fa.settings.user-detail.not-enabled.title')"
                       style="margin-bottom: 0;"
                       :showIcon="true"
                       :closable="false">
-                Two factor authentication is not enabled for your account. Click the button below to set it up.
+                {{ $tc('rl-2fa.settings.user-detail.not-enabled.description') }}
 
                 <template v-slot:actions>
-                    <sw-button @click="generateSecret">Click me to get started</sw-button>
+                    <sw-button @click="generateSecret">{{ $tc('rl-2fa.settings.user-detail.not-enabled.get-started') }}</sw-button>
                 </template>
             </sw-alert>
         </div>
@@ -36,13 +35,12 @@
                     <img :src="generatedSecretUrl" />
                 </div>
                 <div>
-                    <b>Scan the code on the left with your 2FA app.</b><br />
+                    <b>{{ $tc('rl-2fa.settings.user-detail.generating.scan-code') }}</b><br />
                     <br />
-                    Fill in your One Time Password and click 'Validate & enable' to check the code and enable 2FA for
-                    your admin account.<br />
+                    {{ $tc('rl-2fa.settings.user-detail.generating.description') }}<br />
                     <br />
                     <sw-alert variant="error"
-                              title="Something went wrong"
+                              :title="$tc('rl-2fa.settings.user-detail.generating.error-title')"
                               :showIcon="true"
                               v-if="oneTimePasswordError.length > 0">
                         {{ oneTimePasswordError }}
@@ -53,7 +51,7 @@
                                    v-model="oneTimePassword"></sw-text-field>
 
                     <sw-button @click="validateAndSaveOneTimePassword">
-                        Validate & Save
+                        {{ $tc('rl-2fa.settings.user-detail.generating.validate-save') }}
                     </sw-button>
                 </div>
             </sw-container>

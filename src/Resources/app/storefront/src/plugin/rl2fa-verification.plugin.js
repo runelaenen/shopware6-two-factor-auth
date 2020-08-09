@@ -61,7 +61,7 @@ export default class Rl2faVerificationPlugin extends Plugin {
             secret: this._secretInput.value,
             _csrf_token: this._csrfInput.value
         }), (response) => {
-            let data = JSON.parse(response);
+            const data = JSON.parse(response);
 
             if (data.status === 'OK') {
                 location.reload();

@@ -1,0 +1,41 @@
+{
+    "rl-2fa": {
+        "login": {
+            "title": "Twee-factorenauthenticatie",
+            "description": "Verifieer uw identiteit met behulp van uw 2FA-app.",
+            "code-placeholder": "Code",
+            "proceed": "Inloggen",
+            "cancel": "Annuleren"
+        },
+        "account": {
+            "title": "Twee-factorenauthenticatie",
+            "active": "Goed! Je account is momenteel beschermd met twee-factorenauthenticatie!",
+            "not-active": "Je account is momenteel <strong>niet</strong> beschermd met twee-factorenauthenticatie!",
+            "description": "Zorg ervoor dat uw webwinkelaccount beveiligd is door het toevoegen van Two Factor Authentication (2FA). Met 2FA is je account in meerdere lagen beveiligd: je gebruikersnaam, je wachtwoord en een nieuwe 'one time password' laag. Deze tweede stap wordt toegevoegd om je identiteit opnieuw te bevestigen en koppelt je account aan je mobiele telefoon. Klik op de knop hieronder om te beginnen met het instellen van 2FA voor uw account. Het is eenvoudig en gratis!",
+            "start-setup": "Stel 2FA in voor mijn account",
+            "disable-2fa": "Schakel twee-factorenauthenticatie uit",
+            "disabled-2fa": "Twee-factorenauthenticatie was succesvol uitgeschakeld.",
+            "setup": {
+                "title": "Twee-factorenauthenticatie opzetten",
+                "description": "Scan de onderstaande QR-code met uw Google Authenticator-app. Voer de gegenereerde code in het onderstaande veld in om te controleren of uw 2FA correct is ingesteld.",
+                "step-1": "Stap 1. Scan code",
+                "step-2": "Stap 2. Verifieer token",
+                "verification-placeholder": "One Time Password Token",
+                "verify": "Verifieer & activeer 2FA"
+            },
+            "disable": {
+                "title": "Twee-factorenauthenticatie uitschakelen",
+                "description": "Controleer of u het bent door uw wachtwoord te bevestigen.",
+                "password": "Watchtwoord",
+                "submit": "Bevestig wachtwoord en schakel twee-factorenauthenticatie uit"
+            },
+            "error": {
+                "not-enabled": "2FA is niet ingeschakeld voor dit verkoopkanaal.",
+                "no-customer": "Klant niet gevonden in sessie.",
+                "incorrect-password": "Het verstrekte wachtwoord was verkeerd. Twee-factorenauthenticatie is niet uitgeschakeld.",
+                "empty-input": "Geheim of code was leeg.",
+                "incorrect-code": "De verstrekte code was niet correct."
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "rl-2fa": {
+        "sw-login": {
+            "index": {
+                "labelOtp": "2FA Token"
+            }
+        },
+        "settings": {
+            "user-detail": {
+                "title": "Twee-factorauthenticatie",
+                "enabled": {
+                    "title": "Twee-factorauthenticatie is ingeschakeld",
+                    "description": "Proficiat! Je account is veilig!<br />Klik op onderstaande knop om 2FA uit te zetten.",
+                    "disable": "Zet 2FA uit"
+                },
+                "not-enabled": {
+                    "title": "Twee-factorauthenticatie is uitgeschakeld",
+                    "description": "Twee-factorauthenticatie is niet actief voor jouw account. Klik op onderstaande knop om 2FA aan te zetten.",
+                    "get-started": "2FA instellen"
+                },
+                "generating": {
+                    "scan-code": "Scan de code links met jouw 2FA app.",
+                    "description": "Vul je One Time Password token in, en klik op 'Valideer & sla op' om de token na te kijken. Als de code correct is wordt 2FA aangezet voor jouw account.",
+                    "error-title": "Er ging iets mis.",
+                    "validate-save": "Valideer & sla op"
+                }
+            }
+        }
+    }
+}

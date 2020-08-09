@@ -1,16 +1,23 @@
 # Two Factor Authentication for Shopware 6
+[![Latest Stable Version](https://poser.pugx.org/runelaenen/shopware6-two-factor-auth/v)](//packagist.org/packages/runelaenen/shopware6-two-factor-auth)
+[![Total Downloads](https://poser.pugx.org/runelaenen/shopware6-two-factor-auth/downloads)](//packagist.org/packages/runelaenen/shopware6-two-factor-auth)
+[![License](https://poser.pugx.org/runelaenen/shopware6-two-factor-auth/license)](//packagist.org/packages/runelaenen/shopware6-two-factor-auth)
 
 Add extra security to your Shopware 6 shop by enabling Two Factor Authentication.
 
 Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 
-## To do
+## Features
+ - [x] 'Google Authenticator' provider
  - [x] Storefront customer 2FA
  - [x] Admin user 2FA
  - [x] Local QR code generation
- - [ ] Multiple providers
- - [ ] Clean up code
+ - [x] Locales: English, Dutch
+
+## To do
+ - [ ] Multiple providers (sms, ...)
  - [ ] Unit tests
+ - [ ] Extra locales
 
 ## Providers
 At the moment only Google Authenticator (compatible) apps are supported. 

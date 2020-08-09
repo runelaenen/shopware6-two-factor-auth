@@ -1,0 +1,30 @@
+{
+    "rl-2fa": {
+        "sw-login": {
+            "index": {
+                "labelOtp": "2FA Token"
+            }
+        },
+        "settings": {
+            "user-detail": {
+                "title": "Two factor authentication",
+                "enabled": {
+                    "title": "Two factor authentication is enabled",
+                    "description": "Congrats! You're secure!<br />To disable 2FA for your account, click the button below.",
+                    "disable": "Disable 2FA"
+                },
+                "not-enabled": {
+                    "title": "Two factor authentication is not enabled",
+                    "description": "Two factor authentication is not enabled for your account. Click the button below to set it up.",
+                    "get-started": "Click me to get started"
+                },
+                "generating": {
+                    "scan-code": "Scan the code on the left with your 2FA app.",
+                    "description": "Fill in your One Time Password and click 'Validate & enable' to check the code and enable 2FA for your admin account.",
+                    "error-title": "Something went wrong",
+                    "validate-save": "Validate & save"
+                }
+            }
+        }
+    }
+}

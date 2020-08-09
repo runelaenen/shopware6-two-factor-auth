@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([["rune-laenen-two-factor-auth"],{W4DN:function(n,o){console.log("Rune")}},[["W4DN","runtime"]]]);
