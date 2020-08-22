@@ -66,7 +66,10 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
 
     public function onCustomerLoginEvent(CustomerLoginEvent $event)
     {
-        if (!array_key_exists('rl_2fa_secret', $event->getCustomer()->getCustomFields())) {
+        if (!$event->getCustomer() || !$event->getCustomer()->getCustomFields() || !array_key_exists(
+            'rl_2fa_secret',
+                $event->getCustomer()->getCustomFields()
+            )) {
             return;
         }
 

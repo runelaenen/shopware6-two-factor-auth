@@ -1,22 +1,23 @@
 {
-  "name": "runelaenen/shopware6-two-factor-auth",
-  "description": "Two Factor Authentication plugin",
-  "type": "shopware-platform-plugin",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "RuneLaenen\\TwoFactorAuth\\": "src/"
+    "name": "runelaenen/shopware6-two-factor-auth",
+    "description": "Two Factor Authentication plugin",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "RuneLaenen\\TwoFactorAuth\\": "src/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "RuneLaenen\\TwoFactorAuth\\RuneLaenenTwoFactorAuth",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "label": {
+            "de-DE": "Two Factor Authentication plugin",
+            "en-GB": "Two Factor Authentication plugin"
+        }
+    },
+    "require": {
+        "pragmarx/google2fa": "^8.0",
+        "endroid/qr-code": "^3.9"
     }
-  },
-  "extra": {
-    "shopware-plugin-class": "RuneLaenen\\TwoFactorAuth\\RuneLaenenTwoFactorAuth",
-    "label": {
-      "de-DE": "Two Factor Authentication plugin",
-      "en-GB": "Two Factor Authentication plugin"
-    }
-  },
-  "require": {
-    "pragmarx/google2fa": "^8.0",
-    "endroid/qr-code": "^3.9"
-  }
 }
