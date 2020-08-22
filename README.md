@@ -15,6 +15,7 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
  - [x] Locales: English, Dutch
 
 ## To do
+ - [ ] Switch `endroid` package with lightweight alternative
  - [ ] Multiple providers (sms, ...)
  - [ ] Unit tests
  - [ ] Extra locales
