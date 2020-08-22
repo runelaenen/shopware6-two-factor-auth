@@ -8,17 +8,11 @@ Add extra security to your Shopware 6 shop by enabling Two Factor Authentication
 Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 
 ## Features
- - [x] 'Google Authenticator' provider
- - [x] Storefront customer 2FA
- - [x] Admin user 2FA
- - [x] Local QR code generation
- - [x] Locales: English, Dutch
-
-## To do
- - [ ] Switch `endroid` package with lightweight alternative
- - [ ] Multiple providers (sms, ...)
- - [ ] Unit tests
- - [ ] Extra locales
+ - 'Google Authenticator' provider
+ - Storefront customer 2FA
+ - Admin user 2FA
+ - Local QR code generation
+ - Locales: English, Dutch
 
 ## Providers
 At the moment only Google Authenticator (compatible) apps are supported. 
