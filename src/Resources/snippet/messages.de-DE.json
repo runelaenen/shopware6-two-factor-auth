@@ -1,38 +1,38 @@
 {
     "rl-2fa": {
         "login": {
-            "title": "Zwei-Faktor Authentifizierung",
-            "description": "Bitte bestätige deine Identität mit deiner 2FA App.",
+            "title": "Zwei-Faktor-Authentifizierung",
+            "description": "Bitte bestätigen Sie die Identität mit deiner 2FA-App.",
             "code-placeholder": "Code",
             "proceed": "Anmelden",
             "cancel": "Abbrechen"
         },
         "account": {
-            "title": "Zwei-Faktor Authentifizierung",
-            "active": "Gut, dein Account ist zur Zeit durch 2FA gesichert!",
-            "not-active": "Dein Account ist zur Zeit <strong>nicht</strong> durch 2FA gesichert!",
-            "description": "Stelle sicher dass dein Webshop Account geschützt wird indem du die Zwei-Faktor Authentifizierung (2FA) aktivierst. Mit 2FA wird dein Account zusätzlich zu deinem Benutzernamen und Passwort durch ein neues Einmal-Passwort geschützt. Dieser zweite Schritt dient dazu deine Identität zu bestätigen und verbindet hierfür dein Smartphone mit deinem Account. Klicke auf den nachfolgenden Button um 2FA für deinen Account zu aktivieren, es ist einfach und kostenlos!",
-            "start-setup": "2FA für deinen Account einrichten",
-            "disable-2fa": "Zwei-Faktor Authentifizierung deaktivieren",
-            "disabled-2fa": "Zwei-Faktor Authentifizierung wurde erfolgreich aktiviert.",
+            "title": "Zwei-Faktor-Authentifizierung",
+            "active": "Sehr gut! Ihr Account ist zur Zeit durch 2FA gesichert!",
+            "not-active": "Ihr Account ist zur Zeit <strong>nicht</strong> durch 2FA gesichert!",
+            "description": "Stellen Sie sicher, dass Ihr Webshop-Zugang geschützt wird, indem Sie die Zwei-Faktor-Authentifizierung (2FA) aktivieren. Mit 2FA wird Ihr Account zusätzlich zu dem Benutzernamen und Passwort durch ein neues Einmal-Passwort geschützt. Dieser zweite Schritt dient dazu, Ihre Identität zu bestätigen und verbindet hierfür Ihr Smartphone oder App mit Ihrem Account. Klicken Sie auf den nachfolgenden Button, um 2FA für Ihren Account zu aktivieren. Es ist einfach und kostenlos!",
+            "start-setup": "2FA für Ihren Account einrichten",
+            "disable-2fa": "Zwei-Faktor-Authentifizierung deaktivieren",
+            "disabled-2fa": "Zwei-Faktor-Authentifizierung wurde erfolgreich aktiviert.",
             "setup": {
-                "title": "Zwei-Faktor Authentifizierung Konfiguration",
-                "description": "Scanne den Code in deiner 2FA App. Trage den generierten Code in das Feld ein um zu Verifizieren dass 2FA korrekt konfirugiert wurde.",
+                "title": "Konfiguration Zwei-Faktor-Authentifizierung",
+                "description": "Scannen Sie den Code mit Ihrer 2FA-App. Tragen Sie den generierten Code in das Feld ein, um zu Verifizieren, dass 2FA korrekt konfiguriert wurde.",
                 "step-1": "Schritt 1. Code einscannen",
                 "step-2": "Schritt 2. Token verifizieren",
-                "verification-placeholder": "Einmal-Passwort Token",
+                "verification-placeholder": "Einmal-Passwort-Token",
                 "verify": "Verifizieren & 2FA aktivieren"
             },
             "disable": {
-                "title": "Zwei-Faktor Authentifizierung deaktivieren",
-                "description": "Bitte bestätige deine Identität durch Eingabe deines Passworts.",
+                "title": "Zwei-Faktor-Authentifizierung deaktivieren",
+                "description": "Bitte bestätigen Sie Ihre Identität durch Eingabe Ihres Passworts.",
                 "password": "Passwort",
                 "submit": "Eingabe bestätigen & 2FA deaktivieren"
             },
             "error": {
-                "not-enabled": "2FA ist für diesen Sales Channel nicht aktiviert.",
+                "not-enabled": "2FA ist für diesen Shop nicht aktiviert.",
                 "no-customer": "Kunde wurde nicht gefunden.",
-                "incorrect-password": "Das eingegebene Passwort war nicht korrekt. Zwei-Faktor Authentifizierung wurde nicht deaktiviert.",
+                "incorrect-password": "Das eingegebene Passwort war nicht korrekt. Zwei-Faktor-Authentifizierung wurde nicht deaktiviert.",
                 "empty-input": "Eingabe war leer.",
                 "incorrect-code": "Der eingegebene Code war nicht korrekt."
             }

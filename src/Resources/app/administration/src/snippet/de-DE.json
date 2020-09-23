@@ -2,24 +2,24 @@
     "rl-2fa": {
         "sw-login": {
             "index": {
-                "labelOtp": "2FA Token"
+                "labelOtp": "2FA-Token"
             }
         },
         "settings": {
             "user-detail": {
-                "title": "Zwei-Faktor Authentifizierung",
+                "title": "Zwei-Faktor-Authentifizierung",
                 "enabled": {
-                    "title": "Zwei-Faktor Authentifizierung ist aktiv",
+                    "title": "Zwei-Faktor-Authentifizierung ist aktiv",
                     "description": "Glückwunsch, dein Account ist sicher!<br/>Um 2FA zu deaktivieren klicke auf den nachstehenden Button.",
                     "disable": "2FA deaktivieren"
                 },
                 "not-enabled": {
-                    "title": "Zwei-Faktor Authentifizierung ist inaktiv",
-                    "description": "Zwei-Faktor Authentifizierung ist inaktiv!<br/>Zum Aktivieren klicke auf den nachstehenden Button.",
+                    "title": "Zwei-Faktor-Authentifizierung ist inaktiv",
+                    "description": "Zwei-Faktor-Authentifizierung ist inaktiv!<br/>Zum Aktivieren klicke auf den nachstehenden Button.",
                     "get-started": "2FA aktivieren"
                 },
                 "generating": {
-                    "scan-code": "Scanne den Code in deiner 2FA App.",
+                    "scan-code": "Scanne den Code in deiner 2FA-App.",
                     "description": "Trage dein Einmal-Passwort ein und klicke auf Validieren & Speichern um 2FA für deinen Account zu aktivieren.",
                     "error-title": "Es ist ein Fehler aufgetreten",
                     "validate-save": "Validieren & Speichern"
