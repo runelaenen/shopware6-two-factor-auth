@@ -31,8 +31,9 @@
         </div>
         <div v-else-if="generatedSecretUrl">
             <sw-container columns="1fr 1fr">
-                <div>
+                <div class="rl-2fa-qr-code">
                     <img :src="generatedSecretUrl" />
+                    <span class="rl-2fa-qr-code--secret">{{ generatedSecret }}</span>
                 </div>
                 <div>
                     <b>{{ $tc('rl-2fa.settings.user-detail.generating.scan-code') }}</b><br />
