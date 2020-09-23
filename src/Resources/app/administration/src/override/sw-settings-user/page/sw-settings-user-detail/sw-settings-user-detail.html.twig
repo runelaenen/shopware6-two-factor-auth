@@ -48,7 +48,8 @@
 
                     <sw-text-field label="One-time Password"
                                    :isInvalid="oneTimePasswordError.length > 0"
-                                   v-model="oneTimePassword"></sw-text-field>
+                                   v-model="oneTimePassword"
+                                   autocomplete="one-time-code"></sw-text-field>
 
                     <sw-button @click="validateAndSaveOneTimePassword">
                         {{ $tc('rl-2fa.settings.user-detail.generating.validate-save') }}

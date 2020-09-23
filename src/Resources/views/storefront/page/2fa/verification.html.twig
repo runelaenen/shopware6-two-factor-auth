@@ -41,12 +41,12 @@
 
                             {% block page_2fa_verification_card_body_form %}
                                 <form method="POST" action="{{ url('frontend.rl2fa.verification') }}">
-                                    {{ sw_csrf('frontend.rl2fa.verification') }}
+                                    <label for="otpCode">{{ sw_csrf('frontend.rl2fa.verification') }}</label>
 
                                     {% block page_2fa_verification_card_body_form_input %}
                                         <input type="text"
                                                class="form-control mb-1"
-                                               autocomplete="off"
+                                               autocomplete="one-time-code"
                                                id="otpCode"
                                                placeholder="{{ "rl-2fa.login.code-placeholder"|trans|striptags }}"
                                                name="otpCode"
