@@ -65,7 +65,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
                 return $this->redirectToRoute('frontend.home.page');
             }
 
-            $this->addFlash('danger', 'Incorrect code');
+            $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-code'));
         }
 
         return $this->render('@RuneLaenenTwoFactorAuth/storefront/page/2fa/verification.html.twig');
