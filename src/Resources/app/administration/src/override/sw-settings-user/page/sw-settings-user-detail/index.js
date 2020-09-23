@@ -1,4 +1,5 @@
 import template from './sw-settings-user-detail.html.twig';
+import './sw-settings-user-detail.scss';
 
 const {Component, ApiService} = Shopware;
 
