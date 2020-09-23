@@ -71,7 +71,8 @@ class TwoFactorAuthenticationController extends StorefrontController
             $salesChannelId
         );
 
-        $secret = '7VA4UDSBIYQYBBR6';//$this->totpService->createSecret();
+        $secret = $this->totpService->createSecret();
+
         $qrUrl = $this->totpService->getQrCodeUrl(
             $company,
             $salesChannelContext->getCustomer()->getFirstName() . ' ' . $salesChannelContext->getCustomer()->getLastName(),
