@@ -1,0 +1,30 @@
+{
+    "rl-2fa": {
+        "sw-login": {
+            "index": {
+                "labelOtp": "Jeton 2FA"
+            }
+        },
+        "settings": {
+            "user-detail": {
+                "title": "Authentification à deux facteurs (2FA)",
+                "enabled": {
+                    "title": "L'authentification à deux facteurs est activée",
+                    "description": "Félicitations! Vous êtes en sécurité!<br />Pour désactiver 2FA pour votre compte, cliquez sur le bouton ci-dessous.",
+                    "disable": "Désactiver 2FA"
+                },
+                "not-enabled": {
+                    "title": "L'authentification à deux facteurs n'est pas activée",
+                    "description": "L'authentification à deux facteurs n'est pas activée pour votre compte. Cliquez sur le bouton ci-dessous pour le configurer.",
+                    "get-started": "Cliquez sur moi pour commencer"
+                },
+                "generating": {
+                    "scan-code": "Scannez le code à gauche avec votre application 2FA.",
+                    "description": "Entrez votre mot de passe à usage unique (OTP) et cliquez sur 'Valider & activer' pour vérifier le code et activer 2FA pour votre compte administrateur.",
+                    "error-title": "Un problème est survenu",
+                    "validate-save": "Valider & sauvegarder"
+                }
+            }
+        }
+    }
+}
