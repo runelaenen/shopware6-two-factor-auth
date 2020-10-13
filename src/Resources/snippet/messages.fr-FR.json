@@ -1,0 +1,41 @@
+{
+    "rl-2fa": {
+        "login": {
+            "title": "Authentification à deux facteurs (2FA)",
+            "description": "Veuillez vérifier votre identité à l'aide de votre application 2FA.",
+            "code-placeholder": "Code",
+            "proceed": "Se connecter",
+            "cancel": "Annuler"
+        },
+        "account": {
+            "title": "Authentification à deux facteurs (2FA)",
+            "active": "Félicitations! Votre compte est actuellement protégé par l'authentification à deux facteurs!",
+            "not-active": "Votre compte n'est actuellement <strong>pas</strong> protégé par l'authentification à deux facteurs!",
+            "description": "Assurez-vous que votre compte de boutique en ligne est protégé en toute sécurité en ajoutant l'authentification à deux facteurs (2FA). Avec 2FA, votre compte est sécurisé en plusieurs couches: votre nom d'utilisateur, votre mot de passe et une nouvelle couche de «mot de passe à usage unique». Cette deuxième étape est ajoutée pour reconfirmer votre identité et associe votre compte à votre téléphone mobile. Cliquez sur le bouton ci-dessous pour commencer à configurer 2FA pour votre compte. C'est facile et gratuit!",
+            "start-setup": "Configurer 2FA pour mon compte",
+            "disable-2fa": "Désactiver l'authentification à deux facteurs",
+            "disabled-2fa": "L'authentification à deux facteurs a été désactivée avec succès.",
+            "setup": {
+                "title": "Configurer 2FA pour mon compte",
+                "description": "Scannez le code QR ci-dessous avec votre application Google Authenticator. Entrez le code généré dans le champ ci-dessous pour vérifier si votre code 2FA a été correctement configuré.",
+                "step-1": "Étape 1. Scannez le code",
+                "step-2": "Étape 2. Vérifier le jeton",
+                "verification-placeholder": "Jeton de mot de passe unique (OTP)",
+                "verify": "Vérifier & activer 2FA"
+            },
+            "disable": {
+                "title": "Désactiver l'authentification à deux facteurs",
+                "description": "Veuillez vérifier qu'il s'agit bien de vous en confirmant votre mot de passe.",
+                "password": "Mot de passe",
+                "submit": "Confirmer le mot de passe et désactiver l'authentification à deux facteurs"
+            },
+            "error": {
+                "not-enabled": "2FA n'est pas activé pour ce canal de vente.",
+                "no-customer": "Client introuvable dans la session.",
+                "incorrect-password": "Le mot de passe fourni était incorrect. L'authentification à deux facteurs n'est pas désactivée.",
+                "empty-input": "Le secret ou le code était vide.",
+                "incorrect-code": "Le code fourni n'était pas correct."
+            }
+        }
+    }
+}
