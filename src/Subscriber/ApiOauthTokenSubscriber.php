@@ -59,7 +59,7 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
 
         if (!$user ||
             !$user->getCustomFields() ||
-            !array_key_exists('rl_2fa_secret', $user->getCustomFields())
+            empty($user->getCustomFields()['rl_2fa_secret'])
         ) {
             return;
         }

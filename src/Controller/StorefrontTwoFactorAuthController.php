@@ -49,7 +49,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
      */
     public function verification(Request $request, SalesChannelContext $context)
     {
-        if (!$context->getCustomer() || !array_key_exists('rl_2fa_secret', $context->getCustomer()->getCustomFields())) {
+        if (!$context->getCustomer() || !$context->getCustomer()->getCustomFields() || empty($context->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
             return $this->redirectToRoute('frontend.home.page');
         }
 
