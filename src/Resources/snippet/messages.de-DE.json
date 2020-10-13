@@ -14,7 +14,7 @@
             "description": "Stellen Sie sicher, dass Ihr Webshop-Zugang geschützt wird, indem Sie die Zwei-Faktor-Authentifizierung (2FA) aktivieren. Mit 2FA wird Ihr Account zusätzlich zu dem Benutzernamen und Passwort durch ein neues Einmal-Passwort geschützt. Dieser zweite Schritt dient dazu, Ihre Identität zu bestätigen und verbindet hierfür Ihr Smartphone oder App mit Ihrem Account. Klicken Sie auf den nachfolgenden Button, um 2FA für Ihren Account zu aktivieren. Es ist einfach und kostenlos!",
             "start-setup": "2FA für Ihren Account einrichten",
             "disable-2fa": "Zwei-Faktor-Authentifizierung deaktivieren",
-            "disabled-2fa": "Zwei-Faktor-Authentifizierung wurde erfolgreich aktiviert.",
+            "disabled-2fa": "Zwei-Faktor-Authentifizierung wurde erfolgreich deaktiviert.",
             "setup": {
                 "title": "Konfiguration Zwei-Faktor-Authentifizierung",
                 "description": "Scannen Sie den Code mit Ihrer 2FA-App. Tragen Sie den generierten Code in das Feld ein, um zu Verifizieren, dass 2FA korrekt konfiguriert wurde.",
