@@ -10,12 +10,12 @@
                 "title": "Zwei-Faktor-Authentifizierung",
                 "enabled": {
                     "title": "Zwei-Faktor-Authentifizierung ist aktiv",
-                    "description": "Glückwunsch, dein Account ist sicher!<br/>Um 2FA zu deaktivieren klicke auf den nachstehenden Button.",
+                    "description": "Glückwunsch, dein Account ist sicher! Um 2FA zu deaktivieren klicke auf den nachstehenden Button.",
                     "disable": "2FA deaktivieren"
                 },
                 "not-enabled": {
                     "title": "Zwei-Faktor-Authentifizierung ist inaktiv",
-                    "description": "Zwei-Faktor-Authentifizierung ist inaktiv!<br/>Zum Aktivieren klicke auf den nachstehenden Button.",
+                    "description": "Zwei-Faktor-Authentifizierung ist inaktiv! Zum Aktivieren klicke auf den nachstehenden Button.",
                     "get-started": "2FA aktivieren"
                 },
                 "generating": {

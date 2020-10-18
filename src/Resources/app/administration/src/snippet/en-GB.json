@@ -10,7 +10,7 @@
                 "title": "Two factor authentication",
                 "enabled": {
                     "title": "Two factor authentication is enabled",
-                    "description": "Congrats! You're secure!<br />To disable 2FA for your account, click the button below.",
+                    "description": "Congrats! You're secure! To disable 2FA for your account, click the button below.",
                     "disable": "Disable 2FA"
                 },
                 "not-enabled": {
