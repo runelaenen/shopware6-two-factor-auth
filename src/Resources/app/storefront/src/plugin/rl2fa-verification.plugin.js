@@ -4,7 +4,6 @@ import HttpClient from 'src/service/http-client.service';
 import ElementLoadingIndicatorUtil from 'src/utility/loading-indicator/element-loading-indicator.util';
 
 export default class Rl2faVerificationPlugin extends Plugin {
-
     static options = {
         /** Selector for the submit button of the verification step */
         buttonSelector: '.account-profile-2fa-setup-verify',
@@ -31,8 +30,7 @@ export default class Rl2faVerificationPlugin extends Plugin {
         verificationUrl: ''
     };
 
-    init()
-    {
+    init() {
         this._httpClient = new HttpClient();
         this._submitButton = DomAccess.querySelector(this.el, this.options.buttonSelector);
 
@@ -46,13 +44,11 @@ export default class Rl2faVerificationPlugin extends Plugin {
         this.initListeners();
     }
 
-    initListeners()
-    {
+    initListeners() {
         this._submitButton.addEventListener('click', this.onSubmitButtonClick.bind(this));
     }
 
-    onSubmitButtonClick()
-    {
+    onSubmitButtonClick() {
         ElementLoadingIndicatorUtil.create(this.el);
         this._errorMessageWrapper.classList.add(this.options.invisibleClass);
 
@@ -64,7 +60,7 @@ export default class Rl2faVerificationPlugin extends Plugin {
             const data = JSON.parse(response);
 
             if (data.status === 'OK') {
-                location.reload();
+                window.location.reload();
                 return;
             }
 
@@ -74,8 +70,7 @@ export default class Rl2faVerificationPlugin extends Plugin {
         });
     }
 
-    showErrorMessage(message)
-    {
+    showErrorMessage(message) {
         this._errorMessageWrapper.classList.remove(this.options.invisibleClass);
         this._errorMessage.innerHTML = message;
     }

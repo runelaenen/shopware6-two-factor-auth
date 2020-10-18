@@ -6,7 +6,6 @@ use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
-use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\PlatformRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,10 +23,12 @@ class TwoFactorAuthenticationApiController extends AbstractController
      * @var TimebasedOneTimePasswordServiceInterface
      */
     private $totpService;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var ConfigurationService
      */
@@ -63,9 +64,11 @@ class TwoFactorAuthenticationApiController extends AbstractController
             'secret' => $secret,
             'qrUrl' => $this->router->generate(
                 'rl-2fa.qr-code.secret',
-                ['qrUrl' => $qrUrl],
+                [
+                    'qrUrl' => $qrUrl,
+                ],
                 UrlGeneratorInterface::ABSOLUTE_URL
-            )
+            ),
         ]);
     }
 
@@ -77,24 +80,24 @@ class TwoFactorAuthenticationApiController extends AbstractController
         if (empty($request->get('secret')) || empty($request->get('code'))) {
             return new JsonResponse([
                 'status' => 'error',
-                'error' => 'Secret or code empty'
+                'error' => 'Secret or code empty',
             ], 400);
         }
 
         $verified = $this->totpService->verifyCode(
-            (string)$request->get('secret'),
-            (string)$request->get('code')
+            (string) $request->get('secret'),
+            (string) $request->get('code')
         );
 
         if ($verified) {
             return new JsonResponse([
-                'status' => 'OK'
+                'status' => 'OK',
             ]);
         }
 
         return new JsonResponse([
             'status' => 'error',
-            'error' => 'Secret and code not correct'
+            'error' => 'Secret and code not correct',
         ], 400);
     }
 }

@@ -21,6 +21,7 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
      * @var SessionInterface
      */
     private $session;
+
     /**
      * @var RouterInterface
      */
@@ -40,11 +41,11 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
             CustomerLoginEvent::class => 'onCustomerLoginEvent',
             KernelEvents::CONTROLLER => 'onController',
             StorefrontTwoFactorAuthEvent::class => 'removeSession',
-            StorefrontTwoFactorCancelEvent::class => 'removeSession'
+            StorefrontTwoFactorCancelEvent::class => 'removeSession',
         ];
     }
 
-    public function onController(ControllerEvent $event)
+    public function onController(ControllerEvent $event): void
     {
         if (!$this->session->has(self::SESSION_NAME)) {
             return;
@@ -64,17 +65,17 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
         $response->send();
     }
 
-    public function onCustomerLoginEvent(CustomerLoginEvent $event)
+    public function onCustomerLoginEvent(CustomerLoginEvent $event): void
     {
-        if (!$event->getCustomer() || !$event->getCustomer()->getCustomFields() ||
-            empty($event->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
+        if (!$event->getCustomer() || !$event->getCustomer()->getCustomFields()
+            || empty($event->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
             return;
         }
 
         $this->session->set(self::SESSION_NAME, true);
     }
 
-    public function removeSession()
+    public function removeSession(): void
     {
         $this->session->remove(self::SESSION_NAME);
     }

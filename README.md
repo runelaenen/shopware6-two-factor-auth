@@ -22,3 +22,6 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 ## Providers
 At the moment only Google Authenticator (compatible) apps are supported. 
 For example Google Authenticator, Authy, LastPass, ...
+
+## Development
+ - Use bin/ecs-fix.sh to fix code standard issues.

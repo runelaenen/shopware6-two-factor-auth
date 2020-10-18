@@ -32,7 +32,9 @@ class QrCodeController
         return new Response(
             $qrCode,
             Response::HTTP_OK,
-            ['Content-Type' => 'image/svg+xml']
+            [
+                'Content-Type' => 'image/svg+xml',
+            ]
         );
     }
 }

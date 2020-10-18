@@ -19,6 +19,7 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
      * @var EntityRepositoryInterface
      */
     private $userRepository;
+
     /**
      * @var TimebasedOneTimePasswordServiceInterface
      */
@@ -35,18 +36,18 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::RESPONSE => 'onResponse'
+            KernelEvents::RESPONSE => 'onResponse',
         ];
     }
 
-    public function onResponse(ResponseEvent $event)
+    public function onResponse(ResponseEvent $event): void
     {
         if ($event->getRequest()->attributes->get('_route') !== 'api.oauth.token') {
             return;
         }
 
-        if ($event->getRequest()->request->get('scope') === 'user-verified' ||
-            $event->getResponse()->getStatusCode() !== 200) {
+        if ($event->getRequest()->request->get('scope') === 'user-verified'
+            || $event->getResponse()->getStatusCode() !== 200) {
             return;
         }
 
@@ -57,9 +58,9 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
             Context::createDefaultContext()
         )->first();
 
-        if (!$user ||
-            !$user->getCustomFields() ||
-            empty($user->getCustomFields()['rl_2fa_secret'])
+        if (!$user
+            || !$user->getCustomFields()
+            || empty($user->getCustomFields()['rl_2fa_secret'])
         ) {
             return;
         }
@@ -69,17 +70,12 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
             return;
         }
 
-        throw new OAuthServerException(
-            'This user needs an extra OTP',
-            1010,
-            'request-otp',
-            401,
-            'request-otp'
-        );
+        throw new OAuthServerException('This user needs an extra OTP', 1010, 'request-otp', 401, 'request-otp');
     }
 
     /**
      * @returns true if OTP is correct
+     *
      * @throws OAuthServerException when the OTP is incorrect
      */
     private function checkOtp($secret, $code): bool
@@ -89,16 +85,9 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
                 throw new \Exception();
             }
         } catch (\Exception $exception) {
-            throw new OAuthServerException(
-                'Wrong OTP',
-                1011,
-                'wrong-otp',
-                401,
-                null,
-                null,
-                $exception
-            );
+            throw new OAuthServerException('Wrong OTP', 1011, 'wrong-otp', 401, null, null, $exception);
         }
+
         return true;
     }
 }

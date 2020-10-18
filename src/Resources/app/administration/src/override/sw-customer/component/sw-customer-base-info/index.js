@@ -1,6 +1,6 @@
 import template from './sw-customer-base-info.twig';
 
-const {Component} = Shopware;
+const { Component } = Shopware;
 
 Component.override('sw-customer-base-info', {
     template,

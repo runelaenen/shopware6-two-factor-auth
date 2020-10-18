@@ -1,7 +1,7 @@
 import template from './sw-settings-user-detail.html.twig';
 import './sw-settings-user-detail.scss';
 
-const {Component, ApiService} = Shopware;
+const { Component } = Shopware;
 
 Component.override('sw-settings-user-detail', {
     template,
@@ -13,7 +13,7 @@ Component.override('sw-settings-user-detail', {
             generatedSecret: null,
             generatedSecretUrl: null,
             oneTimePassword: '',
-            oneTimePasswordError: '',
+            oneTimePasswordError: ''
         };
     },
 
@@ -34,7 +34,7 @@ Component.override('sw-settings-user-detail', {
                     this.isLoading2Fa = false;
                     this.generatedSecret = response.data.secret;
                     this.generatedSecretUrl = response.data.qrUrl;
-                })
+                });
         },
 
         validateAndSaveOneTimePassword() {
@@ -46,9 +46,9 @@ Component.override('sw-settings-user-detail', {
                 this.isLoading2Fa = false;
                 if (response.data.status === 'OK') {
                     this.saveOneTimePassword();
-                    return;
                 }
-
+            }).catch((error) => {
+                this.isLoading2Fa = false;
                 this.oneTimePasswordError = error.response.data.error;
             });
         },
