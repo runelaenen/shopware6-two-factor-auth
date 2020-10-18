@@ -1,5 +1,4 @@
-
-{% block sw_setting_user_detail_card_integrations %}
+{% block rl_user_otp_user_card %}
     <sw-card :title="$tc('rl-2fa.settings.user-detail.title')"
              :is-loading="isLoading || isLoading2Fa">
         <div v-if="user && user.customFields && user.customFields.rl_2fa_secret">
@@ -59,6 +58,4 @@
             </sw-container>
         </div>
     </sw-card>
-
-    {% parent %}
 {% endblock %}

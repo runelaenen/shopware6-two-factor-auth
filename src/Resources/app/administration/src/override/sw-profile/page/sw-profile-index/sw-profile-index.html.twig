@@ -1,0 +1,4 @@
+{% block sw_profile_index_info_card %}
+    {% parent %}
+    <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
+{% endblock %}

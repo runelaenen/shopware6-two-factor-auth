@@ -2,8 +2,10 @@
 
 namespace RuneLaenen\TwoFactorAuth\Controller;
 
-use Endroid\QrCode\QrCode;
-use Shopware\Core\Framework\Context;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +17,24 @@ class QrCodeController
      * @RouteScope(scopes={"administration"})
      * @Route("admin/rl-2fa/qr-code/secret.png", defaults={"auth_required"=false}, name="rl-2fa.qr-code.secret", methods={"GET"})
      */
-    public function qrCode(Request $request, Context $context): Response
+    public function qrCode(Request $request): Response
     {
         $qrUrl = $request->get('qrUrl', '');
-        $qrCode = new QrCode($qrUrl);
+
+        $renderer = new ImageRenderer(
+            new RendererStyle(400),
+            new SvgImageBackEnd()
+        );
+
+        $qrCode = (new Writer($renderer))
+            ->writeString($qrUrl);
 
         return new Response(
-            $qrCode->writeString(),
+            $qrCode,
             Response::HTTP_OK,
-            ['Content-Type' => $qrCode->getContentType()]
+            [
+                'Content-Type' => 'image/svg+xml',
+            ]
         );
     }
 }

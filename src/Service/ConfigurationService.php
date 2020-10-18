@@ -41,6 +41,4 @@ class ConfigurationService
     {
         return (string) $this->get('storefrontCompany', $salesChannelId);
     }
-
-
 }

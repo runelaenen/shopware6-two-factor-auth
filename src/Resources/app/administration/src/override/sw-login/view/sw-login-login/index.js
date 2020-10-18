@@ -1,6 +1,6 @@
 import template from './sw-login-login.html.twig';
 
-const {Component, Context, Application} = Shopware;
+const { Component, Context, Application } = Shopware;
 
 Component.override('sw-login-login', {
     template,
@@ -10,7 +10,7 @@ Component.override('sw-login-login', {
             rememberOtpPassword: '',
             showOtpForm: false,
             otp: ''
-        }
+        };
     },
 
     methods: {
@@ -61,7 +61,8 @@ Component.override('sw-login-login', {
 
         handleLoginError(error) {
             if (error.response.data.errors[0].detail !== 'request-otp') {
-                return this.$super('handleLoginError', error);
+                this.$super('handleLoginError', error);
+                return;
             }
 
             this.password = this.rememberOtpPassword;
