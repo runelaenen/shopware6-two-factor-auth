@@ -1,10 +1,20 @@
-import template from './sw-settings-user-detail.html.twig';
-import './sw-settings-user-detail.scss';
+import template from './rl-user-otp.html.twig';
+import './rl-user-otp.scss';
 
 const { Component } = Shopware;
 
-Component.override('sw-settings-user-detail', {
+/**
+ * @component-example
+ * <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
+ */
+Component.register('rl-user-otp', {
     template,
+
+    props: [
+        'user',
+        'isLoading',
+        'onSave'
+    ],
 
     data() {
         return {
