@@ -10,7 +10,7 @@
                 "title": "Authentification à deux facteurs (2FA)",
                 "enabled": {
                     "title": "L'authentification à deux facteurs est activée",
-                    "description": "Félicitations! Vous êtes en sécurité!<br />Pour désactiver 2FA pour votre compte, cliquez sur le bouton ci-dessous.",
+                    "description": "Félicitations! Vous êtes en sécurité! Pour désactiver 2FA pour votre compte, cliquez sur le bouton ci-dessous.",
                     "disable": "Désactiver 2FA"
                 },
                 "not-enabled": {

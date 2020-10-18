@@ -10,7 +10,7 @@
                 "title": "Twee-factorauthenticatie",
                 "enabled": {
                     "title": "Twee-factorauthenticatie is ingeschakeld",
-                    "description": "Proficiat! Je account is veilig!<br />Klik op onderstaande knop om 2FA uit te zetten.",
+                    "description": "Proficiat! Je account is veilig! Klik op onderstaande knop om 2FA uit te zetten.",
                     "disable": "Zet 2FA uit"
                 },
                 "not-enabled": {
