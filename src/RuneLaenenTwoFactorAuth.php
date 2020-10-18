@@ -14,5 +14,4 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 
 class RuneLaenenTwoFactorAuth extends Plugin
 {
-
 }

@@ -1,0 +1,18 @@
+grumphp:
+    tasks:
+        ecs:
+            config: '../../../vendor/shopware/platform/easy-coding-standard.yml'
+            clear-cache: true
+            paths:
+                - 'src'
+        eslint:
+            bin: '../../../vendor/shopware/platform/src/Administration/Resources/app/administration/node_modules/.bin/eslint'
+            config: '../../../vendor/shopware/platform/src/Administration/Resources/app/administration/.eslintrc.js'
+            whitelist_patterns:
+                - /src\/Resources\/app\/administration\/(.*)/
+            triggered_by:
+                - js
+                - vue
+    environment:
+        paths:
+            - '../../../dev-ops/analyze/vendor/bin/'

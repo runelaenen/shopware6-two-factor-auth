@@ -23,7 +23,7 @@ Component.register('rl-user-otp', {
             generatedSecret: null,
             generatedSecretUrl: null,
             oneTimePassword: '',
-            oneTimePasswordError: '',
+            oneTimePasswordError: ''
         };
     },
 
@@ -44,7 +44,7 @@ Component.register('rl-user-otp', {
                     this.isLoading2Fa = false;
                     this.generatedSecret = response.data.secret;
                     this.generatedSecretUrl = response.data.qrUrl;
-                })
+                });
         },
 
         validateAndSaveOneTimePassword() {
@@ -56,9 +56,9 @@ Component.register('rl-user-otp', {
                 this.isLoading2Fa = false;
                 if (response.data.status === 'OK') {
                     this.saveOneTimePassword();
-                    return;
                 }
-
+            }).catch((error) => {
+                this.isLoading2Fa = false;
                 this.oneTimePasswordError = error.response.data.error;
             });
         },

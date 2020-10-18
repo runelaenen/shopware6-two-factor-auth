@@ -1,14 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Controller;
-
 
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
-use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
@@ -25,10 +22,12 @@ class StorefrontTwoFactorAuthController extends StorefrontController
      * @var TimebasedOneTimePasswordServiceInterface
      */
     private $totpService;
+
     /**
      * @var EventDispatcherInterface
      */
     private $dispatcher;
+
     /**
      * @var AbstractLogoutRoute
      */
@@ -53,7 +52,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
             return $this->redirectToRoute('frontend.home.page');
         }
 
-        if ($request->getMethod() === "POST") {
+        if ($request->getMethod() === 'POST') {
             $code = $request->get('otpCode');
 
             if ($this->totpService->verifyCode(
@@ -81,6 +80,4 @@ class StorefrontTwoFactorAuthController extends StorefrontController
 
         return $this->redirectToRoute('frontend.account.login.page');
     }
-
-
 }

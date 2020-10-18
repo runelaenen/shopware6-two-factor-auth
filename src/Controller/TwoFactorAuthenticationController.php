@@ -25,18 +25,22 @@ class TwoFactorAuthenticationController extends StorefrontController
      * @var ConfigurationService
      */
     private $configurationService;
+
     /**
      * @var TimebasedOneTimePasswordServiceInterface
      */
     private $totpService;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var EntityRepositoryInterface
      */
     private $customerRepository;
+
     /**
      * @var LegacyPasswordVerifier
      */
@@ -83,9 +87,11 @@ class TwoFactorAuthenticationController extends StorefrontController
             'secret' => $secret,
             'qrUrl' => $this->router->generate(
                 'rl-2fa.qr-code.secret',
-                ['qrUrl' => $qrUrl],
+                [
+                    'qrUrl' => $qrUrl,
+                ],
                 UrlGeneratorInterface::ABSOLUTE_URL
-            )
+            ),
         ]);
     }
 
@@ -140,9 +146,9 @@ class TwoFactorAuthenticationController extends StorefrontController
             [
                 'id' => $customer->getId(),
                 'customFields' => [
-                    'rl_2fa_secret' => ''
-                ]
-            ]
+                    'rl_2fa_secret' => '',
+                ],
+            ],
         ], $salesChannelContext->getContext());
 
         $this->addFlash('info', $this->trans('rl-2fa.account.disabled-2fa'));
@@ -158,27 +164,27 @@ class TwoFactorAuthenticationController extends StorefrontController
         if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannel()->getId())) {
             return new JsonResponse([
                 'status' => 'error',
-                'error' => $this->trans('rl-2fa.account.error.not-enabled')
+                'error' => $this->trans('rl-2fa.account.error.not-enabled'),
             ], 400);
         }
 
         if (!$salesChannelContext->getCustomer()) {
             return new JsonResponse([
                 'status' => 'error',
-                'error' => $this->trans('rl-2fa.account.error.no-customer')
+                'error' => $this->trans('rl-2fa.account.error.no-customer'),
             ], 400);
         }
 
         if (empty($request->get('secret')) || empty($request->get('code'))) {
             return new JsonResponse([
                 'status' => 'error',
-                'error' => $this->trans('rl-2fa.account.error.empty-input')
+                'error' => $this->trans('rl-2fa.account.error.empty-input'),
             ], 400);
         }
 
         $verified = $this->totpService->verifyCode(
-            (string)$request->get('secret'),
-            (string)$request->get('code')
+            (string) $request->get('secret'),
+            (string) $request->get('code')
         );
 
         if ($verified) {
@@ -186,19 +192,19 @@ class TwoFactorAuthenticationController extends StorefrontController
                 [
                     'id' => $salesChannelContext->getCustomer()->getId(),
                     'customFields' => [
-                        'rl_2fa_secret' => (string)$request->get('secret')
-                    ]
-                ]
+                        'rl_2fa_secret' => (string) $request->get('secret'),
+                    ],
+                ],
             ], $salesChannelContext->getContext());
 
             return new JsonResponse([
-                'status' => 'OK'
+                'status' => 'OK',
             ]);
         }
 
         return new JsonResponse([
             'status' => 'error',
-            'error' => $this->trans('rl-2fa.account.error.incorrect-code')
+            'error' => $this->trans('rl-2fa.account.error.incorrect-code'),
         ]);
     }
 }
