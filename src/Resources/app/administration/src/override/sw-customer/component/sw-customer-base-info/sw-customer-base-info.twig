@@ -1,0 +1,20 @@
+{% block sw_customer_base_metadata_active %}
+    {% parent %}
+    <sw-description-list>
+        {% block sw_customer_base_metadata_2fa_label %}
+            <dt class="sw-customer-base-info__label">{{ $tc('rl-2fa.settings.user-detail.title') }}</dt>
+        {% endblock %}
+
+        {% block sw_customer_base_metadata_2fa_content %}
+            <dd v-if="!customerEditMode || !twoFactorAuthenticationActive" class="sw-customer-base__label-is-active">
+                {{ $tc('sw-customer.baseInfo.contentActive', twoFactorAuthenticationActive) }}
+            </dd>
+        {% endblock %}
+
+        {% block sw_customer_base_metadata_2fa_editor %}
+            <dd v-else>
+                <sw-button if="twoFactorAuthenticationActive" @click="disable2FA">{{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}</sw-button>
+            </dd>
+        {% endblock %}
+    </sw-description-list>
+{% endblock %}

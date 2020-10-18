@@ -14,8 +14,11 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
  - Storefront customer 2FA
  - Admin user 2FA
  - Local QR code generation
- - Locales: English, Dutch
-
+ - Fully localized:
+   - English
+   - German
+   - French
+   - Dutch
 ## Providers
 At the moment only Google Authenticator (compatible) apps are supported. 
 For example Google Authenticator, Authy, LastPass, ...

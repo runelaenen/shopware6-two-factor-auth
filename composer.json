@@ -18,6 +18,6 @@
     },
     "require": {
         "pragmarx/google2fa": "^8.0",
-        "endroid/qr-code": "^3.9"
+        "bacon/bacon-qr-code": "^2.0"
     }
 }
