@@ -17,6 +17,7 @@
         }
     },
     "require": {
+        "shopware/core": "^6.3",
         "pragmarx/google2fa": "^8.0",
         "bacon/bacon-qr-code": "^2.0"
     },
