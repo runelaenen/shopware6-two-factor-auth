@@ -2,6 +2,8 @@ import template from './sw-profile-index.html.twig';
 
 const { Component } = Shopware;
 
-Component.override('sw-profile-index', {
-    template,
-});
+if (Component.getComponentRegistry().has('sw-profile-index')) {
+    Component.override('sw-profile-index', {
+        template,
+    });
+}

@@ -1,9 +1,9 @@
 import template from './sw-users-permissions-user-detail.html.twig';
 
 const { Component } = Shopware;
-/**
- * Starting from 6.4 'sw-users-permissions-user-detail' is the component to override
- */
-Component.override('sw-settings-user-detail', {
-    template,
-});
+
+if (Component.getComponentRegistry().has('sw-users-permissions-user-detail')) {
+    Component.override('sw-users-permissions-user-detail', {
+        template,
+    });
+}
