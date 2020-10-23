@@ -21,11 +21,12 @@ jobs:
                 with:
                     path: ${{ env.PLUGIN_NAME }}
 
-            -   name: getPluginUploader
-                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.4/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
-
-            -   name: Build Zip
-                run: php frosh-plugin-upload.phar ext:zip ${PLUGIN_NAME}
+            -   name: Build & create zip
+                uses: ghcr.io/friendsofshopware/platform-plugin-dev:v6.3.1
+                run: |
+                    start-mysql
+                    ln -s "$(pwd)" "/plugins/${{ env.PLUGIN_NAME }}"
+                    pack-plugin "${{ env.PLUGIN_NAME }}"
 
             -   name: Create Release
                 id: create_release
