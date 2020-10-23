@@ -21,7 +21,7 @@ jobs:
             -   name: Build & create zip
                 run: |
                     cp -r "./RuneLaenenTwoFactorAuth" "/plugins/RuneLaenenTwoFactorAuth"
-                    composer install -d "/plugins/RuneLaenenTwoFactorAuth" --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader --ignore-platform-reqs
+                    COMPOSER="composer-ci.json" composer install -d "/plugins/RuneLaenenTwoFactorAuth" --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader --ignore-platform-reqs
                     start-mysql
                     pack-plugin "RuneLaenenTwoFactorAuth"
 
