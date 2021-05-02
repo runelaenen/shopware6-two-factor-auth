@@ -49,7 +49,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
     public function verification(Request $request, SalesChannelContext $context)
     {
         if (!$context->getCustomer() || !$context->getCustomer()->getCustomFields() || empty($context->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
-            return $this->redirectToRoute('frontend.home.page');
+            return $this->redirectToRoute('frontend.account.login.page');
         }
 
         if ($request->getMethod() === 'POST') {
@@ -61,7 +61,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
             )) {
                 $this->dispatcher->dispatch(new StorefrontTwoFactorAuthEvent($context));
 
-                return $this->redirectToRoute('frontend.home.page');
+                return $this->redirectToRoute('frontend.account.home.page');
             }
 
             $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-code'));
