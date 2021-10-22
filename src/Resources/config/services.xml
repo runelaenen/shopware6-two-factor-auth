@@ -4,7 +4,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService" />
-        <service id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService" >
+        <service id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService">
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
         </service>
 
@@ -13,6 +13,12 @@
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <call method="setTwig">
+                <argument type="service" id="twig"/>
+            </call>
         </service>
 
         <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationController">
@@ -22,6 +28,12 @@
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
             <argument type="service" id="customer.repository"/>
             <argument type="service" id="Shopware\Core\Checkout\Customer\Password\LegacyPasswordVerifier"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <call method="setTwig">
+                <argument type="service" id="twig"/>
+            </call>
         </service>
 
         <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationApiController">
@@ -29,6 +41,9 @@
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
             <argument type="service" id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
         </service>
 
         <service id="RuneLaenen\TwoFactorAuth\Subscriber\ApiOauthTokenSubscriber">

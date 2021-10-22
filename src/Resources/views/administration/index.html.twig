@@ -97,7 +97,8 @@
         appContext: {
             features: {{ features|json_encode|raw }},
             firstRunWizard: {{ firstRunWizard ? 'true' : 'false' }},
-            systemCurrencyId: '{{ systemCurrencyId }}'
+            systemCurrencyId: '{{ systemCurrencyId }}',
+            systemCurrencyISOCode: '{{ systemCurrencyISOCode }}'
         }
     });
 </script>
