@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Subscriber;
 
@@ -15,7 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class CustomerLoginSubscriber implements EventSubscriberInterface
 {
-    const SESSION_NAME = 'RL_2FA_NEED_VERIFICATION';
+    public const SESSION_NAME = 'RL_2FA_NEED_VERIFICATION';
 
     /**
      * @var SessionInterface
@@ -52,7 +54,7 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
         }
 
         $controller = $event->getController();
-        if (is_array($controller)) {
+        if (\is_array($controller)) {
             $controller = $controller[0];
         }
         if ($controller instanceof StorefrontTwoFactorAuthController) {
