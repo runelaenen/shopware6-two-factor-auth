@@ -10,11 +10,20 @@ const { Component } = Shopware;
 Component.register('rl-user-otp', {
     template,
 
-    props: [
-        'user',
-        'isLoading',
-        'onSave'
-    ],
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
+        isLoading: {
+            type: Boolean,
+            required: true,
+        },
+        onSave: {
+            type: Function,
+            required: true,
+        },
+    },
 
     data() {
         return {
@@ -23,7 +32,7 @@ Component.register('rl-user-otp', {
             generatedSecret: null,
             generatedSecretUrl: null,
             oneTimePassword: '',
-            oneTimePasswordError: ''
+            oneTimePasswordError: '',
         };
     },
 
@@ -37,8 +46,8 @@ Component.register('rl-user-otp', {
             this.isLoading2Fa = true;
             this.httpClient.get('rl-2fa/generate-secret', {
                 params: {
-                    holder: this.user.username
-                }
+                    holder: this.user.username,
+                },
             })
                 .then((response) => {
                     this.isLoading2Fa = false;
@@ -51,7 +60,7 @@ Component.register('rl-user-otp', {
             this.isLoading2Fa = true;
             this.httpClient.post('rl-2fa/validate-secret', {
                 secret: this.generatedSecret,
-                code: this.oneTimePassword
+                code: this.oneTimePassword,
             }).then((response) => {
                 this.isLoading2Fa = false;
                 if (response.data.status === 'OK') {
@@ -79,6 +88,6 @@ Component.register('rl-user-otp', {
 
             this.user.customFields.rl_2fa_secret = '';
             this.onSave();
-        }
-    }
+        },
+    },
 });
