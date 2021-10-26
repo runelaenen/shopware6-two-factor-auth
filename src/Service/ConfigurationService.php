@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Service;
 
@@ -6,7 +8,7 @@ use Shopware\Core\System\SystemConfig\SystemConfigService;
 
 class ConfigurationService
 {
-    const CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth';
+    public const CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth';
 
     /**
      * @var SystemConfigService

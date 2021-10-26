@@ -17,7 +17,7 @@ if (Component.getComponentRegistry().has('sw-customer-base-info')) {
                 }
 
                 return false;
-            }
+            },
         },
 
         methods: {
@@ -27,7 +27,7 @@ if (Component.getComponentRegistry().has('sw-customer-base-info')) {
                 }
 
                 this.customer.customFields.rl_2fa_secret = '';
-            }
-        }
+            },
+        },
     });
 }

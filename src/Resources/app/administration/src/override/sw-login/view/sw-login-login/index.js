@@ -9,7 +9,7 @@ Component.override('sw-login-login', {
         return {
             rememberOtpPassword: '',
             showOtpForm: false,
-            otp: ''
+            otp: '',
         };
     },
 
@@ -38,14 +38,14 @@ Component.override('sw-login-login', {
                 scopes: 'write',
                 username: user,
                 password: pass,
-                rl_2fa_otp: otp
+                rl_2fa_otp: otp,
             }, {
-                baseURL: Context.api.apiPath
+                baseURL: Context.api.apiPath,
             }).then((response) => {
                 const auth = this.loginService.setBearerAuthentication({
                     access: response.data.access_token,
                     refresh: response.data.refresh_token,
-                    expiry: response.data.expires_in
+                    expiry: response.data.expires_in,
                 });
 
                 window.localStorage.setItem('redirectFromLogin', 'true');
@@ -67,6 +67,6 @@ Component.override('sw-login-login', {
 
             this.password = this.rememberOtpPassword;
             this.showOtpForm = true;
-        }
-    }
+        },
+    },
 });
