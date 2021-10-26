@@ -2,7 +2,7 @@
 
 {% block page_account_profile_credentials %}
     {% block page_account_profile_2fa %}
-        {% if shopware.config.RuneLaenenTwoFactorAuth.config.storefrontEnabled %}
+        {% if config('RuneLaenenTwoFactorAuth.config.storefrontEnabled') %}
             {% block page_account_profile_2fa_card %}
                 <div class="card account-profile-2fa">
                     <div class="card-body">
