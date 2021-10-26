@@ -2,7 +2,7 @@
     "rl-2fa": {
         "login": {
             "title": "Zwei-Faktor-Authentifizierung",
-            "description": "Bitte bestätigen Sie die Identität mit deiner 2FA-App.",
+            "description": "Bitte bestätigen Sie die Identität mit Ihrer 2FA-App.",
             "code-placeholder": "Code",
             "proceed": "Anmelden",
             "cancel": "Abbrechen"
