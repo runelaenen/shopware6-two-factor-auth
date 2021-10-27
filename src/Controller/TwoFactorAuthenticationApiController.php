@@ -47,7 +47,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/v{version}/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
+     * @Route("/api/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
      */
     public function generateSecret(Request $request, Context $context): JsonResponse
     {
@@ -75,7 +75,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/v{version}/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
+     * @Route("/api/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
      */
     public function validateSecret(Request $request, Context $context): JsonResponse
     {
