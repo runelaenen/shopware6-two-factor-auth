@@ -63,7 +63,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/setup", name="rl-2fa.profile.setup", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/setup", name="widgets.rl-2fa.profile.setup", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
      */
     public function profileSetup(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -98,7 +98,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/disable", name="rl-2fa.profile.disable", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
      */
     public function profileDisable(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -112,7 +112,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/disable", name="rl-2fa.profile.disable.post", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable.post", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
      */
     public function profileDisablePost(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -159,7 +159,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/validate", name="rl-2fa.profile.validate", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/validate", name="widgets.rl-2fa.profile.validate", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
      */
     public function validateSecret(Request $request, SalesChannelContext $salesChannelContext): Response
     {
