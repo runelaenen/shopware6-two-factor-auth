@@ -7,7 +7,6 @@ namespace RuneLaenen\TwoFactorAuth\Controller;
 use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\PlatformRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @RouteScope(scopes={"api"})
+ * @Route(defaults={"_routeScope"={"api"}})
  */
 class TwoFactorAuthenticationApiController extends AbstractController
 {
@@ -47,7 +46,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/v{version}/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
+     * @Route("/api/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
      */
     public function generateSecret(Request $request, Context $context): JsonResponse
     {
@@ -75,7 +74,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/v{version}/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
+     * @Route("/api/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
      */
     public function validateSecret(Request $request, Context $context): JsonResponse
     {
