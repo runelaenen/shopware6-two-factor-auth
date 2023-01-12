@@ -22,7 +22,7 @@
     {% endblock %}
 
     {% block page_account_profile_2fa_setup_step2 %}
-        <div class="rl-2fa-setup-step" data-rl2fa-verification-plugin="true" data-rl2fa-verification-plugin-options='{"verificationUrl": "{{ url('rl-2fa.profile.validate') }}"}'>
+        <div class="rl-2fa-setup-step" data-rl2fa-verification-plugin="true" data-rl2fa-verification-plugin-options='{"verificationUrl": "{{ url('widgets.rl-2fa.profile.validate') }}"}'>
             {% block page_account_profile_2fa_setup_step2_title %}
                 <strong class="rl-2fa-setup-step--title">{{ "rl-2fa.account.setup.step-2"|trans|sw_sanitize }}</strong>
             {% endblock %}
@@ -50,7 +50,7 @@
 
                 <input type="hidden" name="otpSecret" value="{{ secret }}">
 
-                {{ sw_csrf('rl-2fa.profile.validate') }}
+                {{ sw_csrf('widgets.rl-2fa.profile.validate') }}
 
                 {% block page_account_profile_2fa_setup_step2_button %}
                     <button class="account-profile-2fa-setup-verify btn btn-primary btn-block">

@@ -7,6 +7,7 @@ namespace RuneLaenen\TwoFactorAuth\Subscriber;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -17,22 +18,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiOauthTokenSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var TimebasedOneTimePasswordServiceInterface
-     */
-    private $oneTimePasswordService;
-
     public function __construct(
-        EntityRepositoryInterface $userRepository,
-        TimebasedOneTimePasswordServiceInterface $oneTimePasswordService
+        private EntityRepository $userRepository,
+        private TimebasedOneTimePasswordServiceInterface $oneTimePasswordService
     ) {
-        $this->userRepository = $userRepository;
-        $this->oneTimePasswordService = $oneTimePasswordService;
     }
 
     public static function getSubscribedEvents()
@@ -54,13 +43,13 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
         }
 
         $username = $event->getRequest()->request->get('username');
-        /** @var UserEntity $user */
+
         $user = $this->userRepository->search(
             (new Criteria())->addFilter(new EqualsFilter('username', $username)),
             Context::createDefaultContext()
         )->first();
 
-        if (!$user
+        if (!$user instanceof UserEntity
             || !$user->getCustomFields()
             || empty($user->getCustomFields()['rl_2fa_secret'])
         ) {

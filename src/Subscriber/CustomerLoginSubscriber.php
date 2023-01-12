@@ -8,8 +8,10 @@ use RuneLaenen\TwoFactorAuth\Controller\StorefrontTwoFactorAuthController;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
+use Shopware\Core\SalesChannelRequest;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -19,22 +21,10 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
 {
     public const SESSION_NAME = 'RL_2FA_NEED_VERIFICATION';
 
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
     public function __construct(
-        SessionInterface $session,
-        RouterInterface $router
+        private RequestStack $requestStack,
+        private RouterInterface $router
     ) {
-        $this->session = $session;
-        $this->router = $router;
     }
 
     public static function getSubscribedEvents()
@@ -49,19 +39,38 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
 
     public function onController(ControllerEvent $event): void
     {
-        if (!$this->session->has(self::SESSION_NAME)) {
+        if (!$this->requestStack->getSession()->has(self::SESSION_NAME)) {
             return;
         }
 
-        $controller = $event->getController();
-        if (\is_array($controller)) {
-            $controller = $controller[0];
-        }
-        if ($controller instanceof StorefrontTwoFactorAuthController) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
-        $url = $this->router->generate('frontend.rl2fa.verification');
+        if ($event->getRequest()->isXmlHttpRequest()) {
+            return;
+        }
+
+        if (!$event->getRequest()->attributes->get(SalesChannelRequest::ATTRIBUTE_IS_SALES_CHANNEL_REQUEST)) {
+            return;
+        }
+
+        if (\in_array($event->getRequest()->get('_route'), [
+            'frontend.rl2fa.verification',
+            'frontend.rl2fa.verification.cancel',
+        ], true)) {
+            return;
+        }
+
+        $queries = $event->getRequest()->query;
+        $parameters = [];
+
+        if ($queries->has('redirectTo')) {
+            $parameters['redirect'] = $queries->all();
+        }
+
+        $url = $this->router->generate('frontend.rl2fa.verification', $parameters);
+
         $response = new RedirectResponse($url);
 
         $response->send();
@@ -69,16 +78,18 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
 
     public function onCustomerLoginEvent(CustomerLoginEvent $event): void
     {
-        if (!$event->getCustomer() || !$event->getCustomer()->getCustomFields()
-            || empty($event->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
+        if (!$event->getCustomer()
+            || !$event->getCustomer()->getCustomFields()
+            || empty($event->getCustomer()->getCustomFields()['rl_2fa_secret'])
+        ) {
             return;
         }
 
-        $this->session->set(self::SESSION_NAME, true);
+        $this->requestStack->getSession()->set(self::SESSION_NAME, true);
     }
 
     public function removeSession(): void
     {
-        $this->session->remove(self::SESSION_NAME);
+        $this->requestStack->getSession()->remove(self::SESSION_NAME);
     }
 }

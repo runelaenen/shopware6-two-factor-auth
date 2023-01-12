@@ -6,7 +6,6 @@
     <title>
         Shopware Administration (c) shopware AG
     </title>
-    {% set baseUrl = app.request.baseUrl %}
 
     {% block administration_favicons %}
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('static/img/favicon/apple-touch-icon.png', '@Administration') }}">
@@ -17,7 +16,12 @@
         <meta name="msapplication-TileImage" content="{{ asset('static/img/favicon/mstile-150x150.png', '@Administration') }}">
         <meta name="msapplication-TileColor" content="#189eff">
         <meta name="theme-color" content="#189eff">
+        <meta name="referrer" content="always">
     {% endblock %}
+
+    <script nonce="{{ cspNonce }}" type="text/javascript">
+        window._features_ = {{ features|json_encode|raw }};
+    </script>
 
     <link rel="stylesheet" href="{{ asset('static/css/vendors-node.css', '@Administration') }}">
     <link rel="stylesheet" href="{{ asset('static/css/app.css', '@Administration') }}">
@@ -57,29 +61,29 @@
             .catch((error) => this.createApplicationRootError(error));
     }
 
-    /*
-        root-level domain configuration
+    {#
+    root-level domain configuration
 
-        host:               shopware.next
-        port:               80
-        scheme:             http
-        schemeAndHttpHost:  http://shopware.next
-        uri:                http://shopware.next/admin
-        basePath:
-        pathInfo:           /admin
+    host:               shopware.next
+    port:               80
+    scheme:             http
+    schemeAndHttpHost:  http://shopware.next
+    uri:                http://shopware.next/admin
+    basePath:
+    pathInfo:           /admin
 
-        -----------------------------------------------
+    -----------------------------------------------
 
-        sub-folder domain configuration
+    sub-folder domain configuration
 
-        host:               localhost
-        port:               80
-        scheme:             http
-        schemeAndHttpHost:  http://localhost
-        uri:                http://localhost/next/web/admin
-        basePath:           /next/web
-        pathInfo:           /admin
-    */
+    host:               localhost
+    port:               80
+    scheme:             http
+    schemeAndHttpHost:  http://localhost
+    uri:                http://localhost/next/web/admin
+    basePath:           /next/web
+    pathInfo:           /admin
+    #}
     Shopware.Application.start({
         apiContext: {
             host: '{{ app.request.host }}',
@@ -95,13 +99,15 @@
             assetPath: '{{ asset('', 'asset') }}'
         },
         appContext: {
-            features: {{ features|json_encode|raw }},
+            features: window._features_,
             firstRunWizard: {{ firstRunWizard ? 'true' : 'false' }},
             systemCurrencyId: '{{ systemCurrencyId }}',
-            systemCurrencyISOCode: '{{ systemCurrencyISOCode }}'
+            systemCurrencyISOCode: '{{ systemCurrencyISOCode }}',
+            disableExtensions: {{ disableExtensions ? 'true' : 'false' }}
         }
     });
 </script>
 
 </body>
 </html>
+

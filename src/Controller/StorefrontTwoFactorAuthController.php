@@ -9,6 +9,7 @@ use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -16,33 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @Route(defaults={"_routeScope"={"storefront"}})
  */
 class StorefrontTwoFactorAuthController extends StorefrontController
 {
-    /**
-     * @var TimebasedOneTimePasswordServiceInterface
-     */
-    private $totpService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var AbstractLogoutRoute
-     */
-    private $logoutRoute;
-
     public function __construct(
-        TimebasedOneTimePasswordServiceInterface $totpService,
-        EventDispatcherInterface $dispatcher,
-        AbstractLogoutRoute $logoutRoute
+        private TimebasedOneTimePasswordServiceInterface $totpService,
+        private EventDispatcherInterface $dispatcher,
+        private AbstractLogoutRoute $logoutRoute
     ) {
-        $this->totpService = $totpService;
-        $this->dispatcher = $dispatcher;
-        $this->logoutRoute = $logoutRoute;
     }
 
     /**
@@ -51,7 +34,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
     public function verification(Request $request, SalesChannelContext $context)
     {
         if (!$context->getCustomer() || !$context->getCustomer()->getCustomFields() || empty($context->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
-            return $this->redirectToRoute('frontend.account.login.page');
+            return $this->redirectToRoute('frontend.account.login.page', $request->query->all());
         }
 
         if ($request->getMethod() === 'POST') {
@@ -63,7 +46,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
             )) {
                 $this->dispatcher->dispatch(new StorefrontTwoFactorAuthEvent($context));
 
-                return $this->redirectToRoute('frontend.account.home.page');
+                return $this->redirectToRoute('frontend.account.home.page', $request->query->all());
             }
 
             $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-code'));
@@ -75,9 +58,11 @@ class StorefrontTwoFactorAuthController extends StorefrontController
     /**
      * @Route("/rl-2fa/verification/cancel", name="frontend.rl2fa.verification.cancel", methods={"GET"})
      */
-    public function cancelVerification(Request $request, SalesChannelContext $context)
+    public function cancelVerification(SalesChannelContext $context, RequestDataBag $dataBag)
     {
-        $this->logoutRoute->logout($context);
+        if ($context->getCustomer() !== null) {
+            $this->logoutRoute->logout($context, $dataBag);
+        }
         $this->dispatcher->dispatch(new StorefrontTwoFactorCancelEvent($context));
 
         return $this->redirectToRoute('frontend.account.login.page');

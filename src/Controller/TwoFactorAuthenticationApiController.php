@@ -17,37 +17,19 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @RouteScope(scopes={"api"})
+ * @Route(defaults={"_routeScope"={"api"}})
  */
 class TwoFactorAuthenticationApiController extends AbstractController
 {
-    /**
-     * @var TimebasedOneTimePasswordServiceInterface
-     */
-    private $totpService;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var ConfigurationService
-     */
-    private $configurationService;
-
     public function __construct(
-        TimebasedOneTimePasswordServiceInterface $totpService,
-        RouterInterface $router,
-        ConfigurationService $configurationService
+        private TimebasedOneTimePasswordServiceInterface $totpService,
+        private RouterInterface $router,
+        private ConfigurationService $configurationService
     ) {
-        $this->totpService = $totpService;
-        $this->router = $router;
-        $this->configurationService = $configurationService;
     }
 
     /**
-     * @Route("/api/v{version}/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
+     * @Route("/api/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
      */
     public function generateSecret(Request $request, Context $context): JsonResponse
     {
@@ -75,7 +57,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/v{version}/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
+     * @Route("/api/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
      */
     public function validateSecret(Request $request, Context $context): JsonResponse
     {

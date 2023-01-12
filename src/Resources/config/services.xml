@@ -54,7 +54,7 @@
 
         <service id="RuneLaenen\TwoFactorAuth\Subscriber\CustomerLoginSubscriber">
             <tag name="kernel.event_subscriber" />
-            <argument type="service" id="session"/>
+            <argument type="service" id="request_stack"/>
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
         </service>
     </services>

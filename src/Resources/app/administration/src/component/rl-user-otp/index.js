@@ -1,7 +1,7 @@
 import template from './rl-user-otp.html.twig';
 import './rl-user-otp.scss';
 
-const { Component } = Shopware;
+const {Component} = Shopware;
 
 /**
  * @component-example
@@ -48,12 +48,11 @@ Component.register('rl-user-otp', {
                 params: {
                     holder: this.user.username,
                 },
-            })
-                .then((response) => {
-                    this.isLoading2Fa = false;
-                    this.generatedSecret = response.data.secret;
-                    this.generatedSecretUrl = response.data.qrUrl;
-                });
+            }).then((response) => {
+                this.isLoading2Fa = false;
+                this.generatedSecret = response.data.secret;
+                this.generatedSecretUrl = response.data.qrUrl;
+            });
         },
 
         validateAndSaveOneTimePassword() {

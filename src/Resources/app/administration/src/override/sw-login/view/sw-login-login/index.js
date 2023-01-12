@@ -1,6 +1,6 @@
 import template from './sw-login-login.html.twig';
 
-const { Component, Context, Application } = Shopware;
+const {Component, Context, Application} = Shopware;
 
 Component.override('sw-login-login', {
     template,
@@ -24,6 +24,7 @@ Component.override('sw-login-login', {
                 })
                 .catch((response) => {
                     this.password = '';
+                    this.otp = '';
                     this.showOtpForm = false;
 
                     this.handleLoginError(response);

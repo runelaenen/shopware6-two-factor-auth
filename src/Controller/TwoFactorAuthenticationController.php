@@ -1,14 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Controller;
 
 use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\Password\LegacyPasswordVerifier;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
-use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,51 +16,21 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @Route(defaults={"_routeScope"={"storefront"}})
  */
 class TwoFactorAuthenticationController extends StorefrontController
 {
-    /**
-     * @var ConfigurationService
-     */
-    private $configurationService;
-
-    /**
-     * @var TimebasedOneTimePasswordServiceInterface
-     */
-    private $totpService;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var LegacyPasswordVerifier
-     */
-    private $legacyPasswordVerifier;
-
     public function __construct(
-        ConfigurationService $configurationService,
-        TimebasedOneTimePasswordServiceInterface $totpService,
-        RouterInterface $router,
-        EntityRepositoryInterface $customerRepository,
-        LegacyPasswordVerifier $legacyPasswordVerifier
+        private ConfigurationService $configurationService,
+        private TimebasedOneTimePasswordServiceInterface $totpService,
+        private RouterInterface $router,
+        private EntityRepository $customerRepository,
+        private LegacyPasswordVerifier $legacyPasswordVerifier
     ) {
-        $this->configurationService = $configurationService;
-        $this->totpService = $totpService;
-        $this->router = $router;
-        $this->customerRepository = $customerRepository;
-        $this->legacyPasswordVerifier = $legacyPasswordVerifier;
     }
 
     /**
-     * @Route("/rl-2fa/profile/setup", name="rl-2fa.profile.setup", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/setup", name="widgets.rl-2fa.profile.setup", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
      */
     public function profileSetup(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -98,7 +65,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/disable", name="rl-2fa.profile.disable", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
      */
     public function profileDisable(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -112,7 +79,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/disable", name="rl-2fa.profile.disable.post", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable.post", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
      */
     public function profileDisablePost(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -159,7 +126,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     /**
-     * @Route("/rl-2fa/profile/validate", name="rl-2fa.profile.validate", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
+     * @Route("/rl-2fa/profile/validate", name="widgets.rl-2fa.profile.validate", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
      */
     public function validateSecret(Request $request, SalesChannelContext $salesChannelContext): Response
     {
@@ -185,8 +152,8 @@ class TwoFactorAuthenticationController extends StorefrontController
         }
 
         $verified = $this->totpService->verifyCode(
-            (string) $request->get('secret'),
-            (string) $request->get('code')
+            (string)$request->get('secret'),
+            (string)$request->get('code')
         );
 
         if ($verified) {
@@ -194,7 +161,7 @@ class TwoFactorAuthenticationController extends StorefrontController
                 [
                     'id' => $salesChannelContext->getCustomer()->getId(),
                     'customFields' => [
-                        'rl_2fa_secret' => (string) $request->get('secret'),
+                        'rl_2fa_secret' => (string)$request->get('secret'),
                     ],
                 ],
             ], $salesChannelContext->getContext());

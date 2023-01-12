@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Service;
 
@@ -10,15 +8,9 @@ class ConfigurationService
 {
     public const CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth';
 
-    /**
-     * @var SystemConfigService
-     */
-    private $systemConfig;
-
     public function __construct(
-        SystemConfigService $systemConfig
+        private SystemConfigService $systemConfig
     ) {
-        $this->systemConfig = $systemConfig;
     }
 
     public function get(string $key, ?string $salesChannelId = null)
