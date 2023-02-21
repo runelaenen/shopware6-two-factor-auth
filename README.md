@@ -23,5 +23,21 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 At the moment only Google Authenticator (compatible) apps are supported. 
 For example Google Authenticator, Authy, LastPass, ...
 
+## Installation guide
+
+This plugin can only be installed using Composer.
+
+```
+# Install plugin using composer
+composer require runelaenen/shopware6-two-factor-auth
+
+# Refresh plugins & install & activate plugin
+bin/console plugin:refresh
+bin/console plugin:install --activate RuneLaenenTwoFactorAuth
+
+# Build javascript files
+bin/build-js.sh
+```
+
 ## Development
  - Use bin/ecs-fix.sh to fix code standard issues.
