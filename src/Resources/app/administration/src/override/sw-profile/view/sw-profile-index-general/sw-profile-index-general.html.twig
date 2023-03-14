@@ -1,4 +1,5 @@
-{% block sw_profile_index_info_card %}
-    {% parent %}
+{% block sw_profile_index_general_password %}
     <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
+
+    {% parent %}
 {% endblock %}
