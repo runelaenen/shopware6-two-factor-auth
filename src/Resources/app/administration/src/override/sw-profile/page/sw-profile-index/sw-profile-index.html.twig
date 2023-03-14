@@ -1,0 +1,28 @@
+{% block sw_profile_index_router_view %}
+    <template v-if="isUserLoading">
+        <sw-skeleton />
+        <sw-skeleton />
+    </template>
+
+    <router-view
+            v-else
+            v-bind="{
+                    user,
+                    timezoneOptions,
+                    languages,
+                    newPassword,
+                    newPasswordConfirm,
+                    avatarMediaItem,
+                    isUserLoading,
+                    languageId,
+                    isDisabled,
+                    userRepository,
+                }"
+            @new-password-change="onChangeNewPassword"
+            @new-password-confirm-change="onChangeNewPasswordConfirm"
+            @media-upload="setMediaItem"
+            @media-remove="onUnlinkAvatar"
+            @media-open="openMediaModal"
+            @rl-2fa-save="onSave"
+    />
+{% endblock %}

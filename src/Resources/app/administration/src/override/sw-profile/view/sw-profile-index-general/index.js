@@ -5,5 +5,11 @@ const { Component } = Shopware;
 if (Component.getComponentRegistry().has('sw-profile-index-general')) {
     Component.override('sw-profile-index-general', {
         template,
+
+        methods: {
+            onSave() {
+                this.$emit('rl-2fa-save');
+            }
+        }
     });
 }
