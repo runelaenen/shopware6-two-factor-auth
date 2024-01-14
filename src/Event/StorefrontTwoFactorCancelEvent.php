@@ -8,14 +8,8 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 
 class StorefrontTwoFactorCancelEvent
 {
-    /**
-     * @var SalesChannelContext
-     */
-    private $salesChannelContext;
-
-    public function __construct(SalesChannelContext $salesChannelContext)
+    public function __construct(private readonly SalesChannelContext $salesChannelContext)
     {
-        $this->salesChannelContext = $salesChannelContext;
     }
 
     public function getSalesChannelContext(): SalesChannelContext

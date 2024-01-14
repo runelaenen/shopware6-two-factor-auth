@@ -8,7 +8,6 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\User\UserEntity;
@@ -19,12 +18,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ApiOauthTokenSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private EntityRepository $userRepository,
-        private TimebasedOneTimePasswordServiceInterface $oneTimePasswordService
+        private readonly EntityRepository $userRepository,
+        private readonly TimebasedOneTimePasswordServiceInterface $oneTimePasswordService
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => 'onResponse',
@@ -56,7 +55,7 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $otp = $event->getRequest()->request->get('rl_2fa_otp', null);
+        $otp = $event->getRequest()->request->get('rl_2fa_otp');
         if ($otp && $this->checkOtp($user->getCustomFields()['rl_2fa_secret'], $otp)) {
             return;
         }

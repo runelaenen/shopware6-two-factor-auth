@@ -9,7 +9,7 @@ class ConfigurationService
     public const CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth';
 
     public function __construct(
-        private SystemConfigService $systemConfig
+        private readonly SystemConfigService $systemConfig
     ) {
     }
 

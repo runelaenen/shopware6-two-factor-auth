@@ -50,8 +50,6 @@
 
                 <input type="hidden" name="otpSecret" value="{{ secret }}">
 
-                {{ sw_csrf('widgets.rl-2fa.profile.validate') }}
-
                 {% block page_account_profile_2fa_setup_step2_button %}
                     <button class="account-profile-2fa-setup-verify btn btn-primary btn-block">
                         {{ "rl-2fa.account.setup.verify"|trans|sw_sanitize }}

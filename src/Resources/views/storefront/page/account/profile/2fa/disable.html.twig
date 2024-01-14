@@ -18,8 +18,6 @@
             {% endblock %}
         </p>
 
-        {{ sw_csrf('widgets.rl-2fa.profile.disable.post') }}
-
         {% block page_account_profile_2fa_disable_button %}
             <button type="submit" class="account-profile-2fa-setup-verify btn btn-primary btn-block">
                 {{ "rl-2fa.account.disable.submit"|trans|sw_sanitize }}
