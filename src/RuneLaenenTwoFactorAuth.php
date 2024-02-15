@@ -8,4 +8,8 @@ use Shopware\Core\Framework\Plugin;
 
 class RuneLaenenTwoFactorAuth extends Plugin
 {
+    public function executeComposerCommands(): bool
+    {
+        return true;
+    }
 }
