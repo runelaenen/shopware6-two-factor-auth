@@ -21,22 +21,22 @@ use Symfony\Component\Routing\RouterInterface;
 class TwoFactorAuthenticationController extends StorefrontController
 {
     public function __construct(
-        private ConfigurationService $configurationService,
-        private TimebasedOneTimePasswordServiceInterface $totpService,
-        private RouterInterface $router,
-        private EntityRepository $customerRepository,
-        private LegacyPasswordVerifier $legacyPasswordVerifier
+        private readonly ConfigurationService $configurationService,
+        private readonly TimebasedOneTimePasswordServiceInterface $totpService,
+        private readonly RouterInterface $router,
+        private readonly EntityRepository $customerRepository,
+        private readonly LegacyPasswordVerifier $legacyPasswordVerifier
     ) {
     }
 
     /**
      * @Route("/rl-2fa/profile/setup", name="widgets.rl-2fa.profile.setup", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
      */
-    public function profileSetup(Request $request, SalesChannelContext $salesChannelContext): Response
+    public function profileSetup(SalesChannelContext $salesChannelContext): Response
     {
         $salesChannelId = $salesChannelContext->getSalesChannel()->getId();
 
-        if (!$this->configurationService->isStorefrontEnabled($salesChannelId) || !$salesChannelContext->getCustomer()) {
+        if (!$salesChannelContext->getCustomer() || !$this->configurationService->isStorefrontEnabled($salesChannelId)) {
             return new Response();
         }
 
@@ -67,7 +67,7 @@ class TwoFactorAuthenticationController extends StorefrontController
     /**
      * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
      */
-    public function profileDisable(Request $request, SalesChannelContext $salesChannelContext): Response
+    public function profileDisable(SalesChannelContext $salesChannelContext): Response
     {
         $salesChannelId = $salesChannelContext->getSalesChannel()->getId();
 
@@ -152,8 +152,8 @@ class TwoFactorAuthenticationController extends StorefrontController
         }
 
         $verified = $this->totpService->verifyCode(
-            (string)$request->get('secret'),
-            (string)$request->get('code')
+            (string) $request->get('secret'),
+            (string) $request->get('code')
         );
 
         if ($verified) {
@@ -161,7 +161,7 @@ class TwoFactorAuthenticationController extends StorefrontController
                 [
                     'id' => $salesChannelContext->getCustomer()->getId(),
                     'customFields' => [
-                        'rl_2fa_secret' => (string)$request->get('secret'),
+                        'rl_2fa_secret' => (string) $request->get('secret'),
                     ],
                 ],
             ], $salesChannelContext->getContext());

@@ -8,12 +8,13 @@ use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
-use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,18 +23,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class StorefrontTwoFactorAuthController extends StorefrontController
 {
     public function __construct(
-        private TimebasedOneTimePasswordServiceInterface $totpService,
-        private EventDispatcherInterface $dispatcher,
-        private AbstractLogoutRoute $logoutRoute
+        private readonly TimebasedOneTimePasswordServiceInterface $totpService,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly AbstractLogoutRoute $logoutRoute
     ) {
     }
 
     /**
      * @Route("/rl-2fa/verification", name="frontend.rl2fa.verification", methods={"GET", "POST"})
      */
-    public function verification(Request $request, SalesChannelContext $context)
+    public function verification(Request $request, SalesChannelContext $context): Response
     {
-        if (!$context->getCustomer() || !$context->getCustomer()->getCustomFields() || empty($context->getCustomer()->getCustomFields()['rl_2fa_secret'])) {
+        $twoFactorSecret = $context->getCustomer()?->getCustomFields()['rl_2fa_secret'] ?? null;
+
+        if (empty($twoFactorSecret) || !\is_string($twoFactorSecret)) {
             return $this->redirectToRoute('frontend.account.login.page', $request->query->all());
         }
 
@@ -41,7 +44,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
             $code = $request->get('otpCode');
 
             if ($this->totpService->verifyCode(
-                $context->getCustomer()->getCustomFields()['rl_2fa_secret'],
+                $twoFactorSecret,
                 $code
             )) {
                 $this->dispatcher->dispatch(new StorefrontTwoFactorAuthEvent($context));
@@ -58,7 +61,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
     /**
      * @Route("/rl-2fa/verification/cancel", name="frontend.rl2fa.verification.cancel", methods={"GET"})
      */
-    public function cancelVerification(SalesChannelContext $context, RequestDataBag $dataBag)
+    public function cancelVerification(SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
     {
         if ($context->getCustomer() !== null) {
             $this->logoutRoute->logout($context, $dataBag);

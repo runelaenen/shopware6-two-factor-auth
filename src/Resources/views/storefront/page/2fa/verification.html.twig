@@ -40,8 +40,8 @@
                             {% endblock %}
 
                             {% block page_2fa_verification_card_body_form %}
-                                <form method="POST" action="{{ url('frontend.rl2fa.verification', redirect) }}">
-                                    <label for="otpCode">{{ sw_csrf('frontend.rl2fa.verification') }}</label>
+                                <form method="POST" action="{{ url('frontend.rl2fa.verification', redirect ?? []) }}">
+                                    <label for="otpCode">{{ "rl-2fa.login.code-placeholder"|trans }}</label>
 
                                     {% block page_2fa_verification_card_body_form_input %}
                                         <input type="text"

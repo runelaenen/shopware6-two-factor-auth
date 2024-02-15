@@ -14,9 +14,6 @@ export default class Rl2faVerificationPlugin extends Plugin {
         /** Selector for the secret input field of the verification step */
         secretInputSelector: '[name=otpSecret]',
 
-        /** Selector for the csrf token input field of the verification step */
-        csrfInputSelector: '[name=_csrf_token]',
-
         /** Selector for the error message wrapper of the verification step */
         errorMessageWrapperSelector: '.rl2fa-setup-verification-message',
 
@@ -36,7 +33,6 @@ export default class Rl2faVerificationPlugin extends Plugin {
 
         this._codeInput = DomAccess.querySelector(this.el, this.options.codeInputSelector);
         this._secretInput = DomAccess.querySelector(this.el, this.options.secretInputSelector);
-        this._csrfInput = DomAccess.querySelector(this.el, this.options.csrfInputSelector);
 
         this._errorMessageWrapper = DomAccess.querySelector(this.el, this.options.errorMessageWrapperSelector);
         this._errorMessage = DomAccess.querySelector(this.el, this.options.errorMessageSelector);
@@ -55,7 +51,6 @@ export default class Rl2faVerificationPlugin extends Plugin {
         this._httpClient.post(this.options.verificationUrl, JSON.stringify({
             code: this._codeInput.value,
             secret: this._secretInput.value,
-            _csrf_token: this._csrfInput.value
         }), (response) => {
             const data = JSON.parse(response);
 
