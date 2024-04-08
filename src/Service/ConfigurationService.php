@@ -13,26 +13,27 @@ class ConfigurationService
     ) {
     }
 
-    public function get(string $key, ?string $salesChannelId = null)
+    public function getAdministrationCompany(?string $salesChannelId = null): string
     {
-        return $this->systemConfig->get(
-            self::CONFIGURATION_KEY . '.config.' . $key,
+        return $this->systemConfig->getString(
+            self::CONFIGURATION_KEY . '.config.administrationCompany',
             $salesChannelId
         );
     }
 
-    public function getAdministrationCompany(?string $salesChannelId = null): string
-    {
-        return (string) $this->get('administrationCompany', $salesChannelId);
-    }
-
     public function isStorefrontEnabled(?string $salesChannelId = null): bool
     {
-        return (bool) $this->get('storefrontEnabled', $salesChannelId);
+        return $this->systemConfig->getBool(
+            self::CONFIGURATION_KEY . '.config.storefrontEnabled',
+            $salesChannelId
+        );
     }
 
     public function getStorefrontCompany(?string $salesChannelId = null): string
     {
-        return (string) $this->get('storefrontCompany', $salesChannelId);
+        return $this->systemConfig->getString(
+            self::CONFIGURATION_KEY . '.config.storefrontCompany',
+            $salesChannelId
+        );
     }
 }

@@ -1,10 +1,5 @@
 {
     "rl-2fa": {
-        "sw-login": {
-            "index": {
-                "labelOtp": "Jeton 2FA"
-            }
-        },
         "settings": {
             "user-detail": {
                 "title": "Authentification à deux facteurs (2FA)",

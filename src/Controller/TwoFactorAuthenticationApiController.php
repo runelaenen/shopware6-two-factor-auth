@@ -11,13 +11,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @Route(defaults={"_routeScope"={"api"}})
- */
+#[Route(path: '/api/_action/rl-2fa', defaults: ['_routeScope' => ['api']])]
 class TwoFactorAuthenticationApiController extends AbstractController
 {
     public function __construct(
@@ -27,9 +25,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/api/rl-2fa/generate-secret", name="api.action.rl-2fa.generate-secret", methods={"GET"})
-     */
+    #[Route(path: '/generate-secret', name: 'api.action.rl-2fa.generate-secret', methods: ['GET'])]
     public function generateSecret(Request $request): JsonResponse
     {
         $company = $this->configurationService->getAdministrationCompany(
@@ -55,9 +51,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/api/rl-2fa/validate-secret", name="api.action.rl-2fa.validate-secret", methods={"POST"})
-     */
+    #[Route(path: '/validate-secret', name: 'api.action.rl-2fa.validate-secret', methods: ['POST'])]
     public function validateSecret(Request $request): JsonResponse
     {
         if (empty($request->get('secret')) || empty($request->get('code'))) {

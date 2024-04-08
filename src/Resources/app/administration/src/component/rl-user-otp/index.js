@@ -1,5 +1,6 @@
 import template from './rl-user-otp.html.twig';
 import './rl-user-otp.scss';
+import Rl2faService from "../../api/rl-2fa";
 
 const {Component} = Shopware;
 
@@ -9,6 +10,8 @@ const {Component} = Shopware;
  */
 Component.register('rl-user-otp', {
     template,
+
+    inject: ['rl2faService'],
 
     props: {
         user: {
@@ -44,25 +47,20 @@ Component.register('rl-user-otp', {
     methods: {
         generateSecret() {
             this.isLoading2Fa = true;
-            this.httpClient.get('rl-2fa/generate-secret', {
-                params: {
-                    holder: this.user.username,
-                },
-            }).then((response) => {
+
+            this.rl2faService.getSecret(this.user.username).then((response) => {
                 this.isLoading2Fa = false;
-                this.generatedSecret = response.data.secret;
-                this.generatedSecretUrl = response.data.qrUrl;
+                this.generatedSecret = response.secret;
+                this.generatedSecretUrl = response.qrUrl;
             });
         },
 
         validateAndSaveOneTimePassword() {
             this.isLoading2Fa = true;
-            this.httpClient.post('rl-2fa/validate-secret', {
-                secret: this.generatedSecret,
-                code: this.oneTimePassword,
-            }).then((response) => {
+
+            this.rl2faService.validateSecret(this.generatedSecret, this.oneTimePassword).then((response) => {
                 this.isLoading2Fa = false;
-                if (response.data.status === 'OK') {
+                if (response.status === 'OK') {
                     this.saveOneTimePassword();
                 }
             }).catch((error) => {

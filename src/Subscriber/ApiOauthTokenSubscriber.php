@@ -32,16 +32,18 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
 
     public function onResponse(ResponseEvent $event): void
     {
-        if ($event->getRequest()->attributes->get('_route') !== 'api.oauth.token') {
+        $request = $event->getRequest();
+
+        if ($request->attributes->get('_route') !== 'api.oauth.token') {
             return;
         }
 
-        if ($event->getRequest()->request->get('scope') === 'user-verified'
+        if ($request->request->get('scope') === 'user-verified'
             || $event->getResponse()->getStatusCode() !== 200) {
             return;
         }
 
-        $username = $event->getRequest()->request->get('username');
+        $username = $request->request->get('username');
 
         $user = $this->userRepository->search(
             (new Criteria())->addFilter(new EqualsFilter('username', $username)),
@@ -49,13 +51,12 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
         )->first();
 
         if (!$user instanceof UserEntity
-            || !$user->getCustomFields()
             || empty($user->getCustomFields()['rl_2fa_secret'])
         ) {
             return;
         }
 
-        $otp = $event->getRequest()->request->get('rl_2fa_otp');
+        $otp = $request->request->get('rl_2fa_otp');
         if ($otp && $this->checkOtp($user->getCustomFields()['rl_2fa_secret'], $otp)) {
             return;
         }

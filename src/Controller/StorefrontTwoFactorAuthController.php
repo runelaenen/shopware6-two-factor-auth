@@ -15,11 +15,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route(defaults={"_routeScope"={"storefront"}})
- */
+#[Route(defaults: ['_routeScope' => ['storefront']])]
 class StorefrontTwoFactorAuthController extends StorefrontController
 {
     public function __construct(
@@ -29,9 +27,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
     ) {
     }
 
-    /**
-     * @Route("/rl-2fa/verification", name="frontend.rl2fa.verification", methods={"GET", "POST"})
-     */
+    #[Route(path: '/rl-2fa/verification', name: 'frontend.rl2fa.verification', methods: ['GET', 'POST'])]
     public function verification(Request $request, SalesChannelContext $context): Response
     {
         $twoFactorSecret = $context->getCustomer()?->getCustomFields()['rl_2fa_secret'] ?? null;
@@ -58,9 +54,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
         return $this->render('@RuneLaenenTwoFactorAuth/storefront/page/2fa/verification.html.twig');
     }
 
-    /**
-     * @Route("/rl-2fa/verification/cancel", name="frontend.rl2fa.verification.cancel", methods={"GET"})
-     */
+    #[Route(path: '/rl-2fa/verification/cancel', name: 'frontend.rl2fa.verification.cancel', methods: ['GET'])]
     public function cancelVerification(SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
     {
         if ($context->getCustomer() !== null) {

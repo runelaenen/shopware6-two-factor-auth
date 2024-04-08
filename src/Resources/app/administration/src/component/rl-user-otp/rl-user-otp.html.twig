@@ -48,7 +48,7 @@
 
                     <sw-text-field label="One-time Password"
                                    :isInvalid="oneTimePasswordError.length > 0"
-                                   v-model="oneTimePassword"
+                                   v-model:value="oneTimePassword"
                                    autocomplete="one-time-code"></sw-text-field>
 
                     <sw-button @click="validateAndSaveOneTimePassword">

@@ -11,13 +11,11 @@ use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @Route(defaults={"_routeScope"={"storefront"}})
- */
+#[Route(defaults: ['_routeScope' => ['storefront']])]
 class TwoFactorAuthenticationController extends StorefrontController
 {
     public function __construct(
@@ -29,14 +27,13 @@ class TwoFactorAuthenticationController extends StorefrontController
     ) {
     }
 
-    /**
-     * @Route("/rl-2fa/profile/setup", name="widgets.rl-2fa.profile.setup", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
-     */
+    #[Route(path: '/rl-2fa/profile/setup', name: 'widgets.rl-2fa.profile.setup', defaults: ['XmlHttpRequest' => true], methods: ['GET'])]
     public function profileSetup(SalesChannelContext $salesChannelContext): Response
     {
-        $salesChannelId = $salesChannelContext->getSalesChannel()->getId();
+        $customer = $salesChannelContext->getCustomer();
+        $salesChannelId = $salesChannelContext->getSalesChannelId();
 
-        if (!$salesChannelContext->getCustomer() || !$this->configurationService->isStorefrontEnabled($salesChannelId)) {
+        if ($customer === null || !$this->configurationService->isStorefrontEnabled($salesChannelId)) {
             return new Response();
         }
 
@@ -48,7 +45,7 @@ class TwoFactorAuthenticationController extends StorefrontController
 
         $qrUrl = $this->totpService->getQrCodeUrl(
             $company,
-            $salesChannelContext->getCustomer()->getFirstName() . ' ' . $salesChannelContext->getCustomer()->getLastName(),
+            $customer->getFirstName() . ' ' . $customer->getLastName(),
             $secret
         );
 
@@ -64,12 +61,10 @@ class TwoFactorAuthenticationController extends StorefrontController
         ]);
     }
 
-    /**
-     * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable", methods={"GET"}, defaults={"XmlHttpRequest"=true}))
-     */
+    #[Route(path: '/rl-2fa/profile/disable', name: 'widgets.rl-2fa.profile.disable', defaults: ['XmlHttpRequest' => true], methods: ['GET'])]
     public function profileDisable(SalesChannelContext $salesChannelContext): Response
     {
-        $salesChannelId = $salesChannelContext->getSalesChannel()->getId();
+        $salesChannelId = $salesChannelContext->getSalesChannelId();
 
         if (!$this->configurationService->isStorefrontEnabled($salesChannelId)) {
             return new Response();
@@ -78,12 +73,10 @@ class TwoFactorAuthenticationController extends StorefrontController
         return $this->renderStorefront('@Storefront/storefront/page/account/profile/2fa/disable.html.twig');
     }
 
-    /**
-     * @Route("/rl-2fa/profile/disable", name="widgets.rl-2fa.profile.disable.post", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
-     */
+    #[Route(path: '/rl-2fa/profile/disable', name: 'widgets.rl-2fa.profile.disable.post', defaults: ['XmlHttpRequest' => true], methods: ['POST'])]
     public function profileDisablePost(Request $request, SalesChannelContext $salesChannelContext): Response
     {
-        if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannel()->getId())) {
+        if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannelId())) {
             $this->addFlash('danger', $this->trans('rl-2fa.account.error.not-enabled'));
 
             return $this->redirectToRoute('frontend.account.profile.page');
@@ -125,9 +118,7 @@ class TwoFactorAuthenticationController extends StorefrontController
         return $this->redirectToRoute('frontend.account.profile.page');
     }
 
-    /**
-     * @Route("/rl-2fa/profile/validate", name="widgets.rl-2fa.profile.validate", methods={"POST"}, defaults={"XmlHttpRequest"=true}))
-     */
+    #[Route(path: '/rl-2fa/profile/validate', name: 'widgets.rl-2fa.profile.validate', methods: ['POST'], defaults: ['XmlHttpRequest' => true])]
     public function validateSecret(Request $request, SalesChannelContext $salesChannelContext): Response
     {
         if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannel()->getId())) {

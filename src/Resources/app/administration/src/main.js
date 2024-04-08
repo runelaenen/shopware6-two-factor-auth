@@ -1,6 +1,7 @@
 import enGB from './snippet/en-GB.json';
 import nlNL from './snippet/nl-NL.json';
 
+import './api/index';
 import './component/rl-user-otp';
 import './override/sw-login/view/sw-login-login';
 import './override/sw-profile/page/sw-profile-index';

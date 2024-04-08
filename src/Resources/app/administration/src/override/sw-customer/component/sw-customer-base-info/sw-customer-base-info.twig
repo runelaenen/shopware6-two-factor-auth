@@ -8,7 +8,7 @@
 
         {% block sw_customer_base_metadata_2fa_content %}
             <dd v-if="!customerEditMode || !twoFactorAuthenticationActive" class="sw-customer-base__label-is-active">
-                {{ $tc('sw-customer.baseInfo.contentActive', twoFactorAuthenticationActive) }}
+                {{ $tc('sw-customer.baseInfo.contentActive', twoFactorAuthenticationActive ? 1 : 2) }}
             </dd>
         {% endblock %}
 

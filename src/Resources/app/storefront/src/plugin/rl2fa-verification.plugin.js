@@ -1,9 +1,8 @@
-import Plugin from 'src/plugin-system/plugin.class';
 import DomAccess from 'src/helper/dom-access.helper';
 import HttpClient from 'src/service/http-client.service';
 import ElementLoadingIndicatorUtil from 'src/utility/loading-indicator/element-loading-indicator.util';
 
-export default class Rl2faVerificationPlugin extends Plugin {
+export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
     static options = {
         /** Selector for the submit button of the verification step */
         buttonSelector: '.account-profile-2fa-setup-verify',
