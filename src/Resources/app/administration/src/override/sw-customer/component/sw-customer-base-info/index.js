@@ -8,11 +8,7 @@ if (Component.getComponentRegistry().has('sw-customer-base-info')) {
 
         computed: {
             twoFactorAuthenticationActive() {
-                if (this.customer.customFields?.rl_2fa_secret) {
-                    return true;
-                }
-
-                return false;
+                return !!this.customer.customFields?.rl_2fa_secret;
             },
         },
 
