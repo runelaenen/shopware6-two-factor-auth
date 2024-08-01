@@ -26,55 +26,43 @@ class TwoFactorAuthenticationApiController extends AbstractController
     }
 
     #[Route(path: '/generate-secret', name: 'api.action.rl-2fa.generate-secret', methods: ['GET'])]
-    public function generateSecret(Request $request): JsonResponse
-    {
-        $company = $this->configurationService->getAdministrationCompany(
-            $request->attributes->get(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_ID)
-        );
+public function generateSecret(Request $request): JsonResponse
+{
+    $company = $this->configurationService->getAdministrationCompany(
+        $request->attributes->get(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_ID)
+    );
 
-        $secret = $this->totpService->createSecret();
-        $qrUrl = $this->totpService->getQrCodeUrl(
-            $company,
-            $request->get('holder', ''),
-            $secret
-        );
+    $secret = $this->totpService->createSecret();
+    $qrUrl = $this->totpService->getQrCodeUrl(
+        $company,
+        $request->get('holder', ''),
+        $secret
+    );
 
-        return new JsonResponse([
-            'secret' => $secret,
-            'qrUrl' => $this->router->generate(
-                'rl-2fa.qr-code.secret',
-                [
-                    'qrUrl' => $qrUrl,
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-        ]);
-    }
+    // Get client's IP address
+    $ipAddress = $request->getClientIp();
 
-    #[Route(path: '/validate-secret', name: 'api.action.rl-2fa.validate-secret', methods: ['POST'])]
-    public function validateSecret(Request $request): JsonResponse
-    {
-        if (empty($request->get('secret')) || empty($request->get('code'))) {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => 'Secret or code empty',
-            ], 400);
-        }
+    // Store secret and IP address in the customer's custom fields
+    $customerId = $request->get('customerId');
+    $this->customerRepository->update([
+        [
+            'id' => $customerId,
+            'customFields' => [
+                'rl_2fa_secret' => $secret,
+                'rl_2fa_ip' => $ipAddress,
+            ],
+        ],
+    ], $request->attributes->get(PlatformRequest::ATTRIBUTE_CONTEXT_OBJECT));
 
-        $verified = $this->totpService->verifyCode(
-            (string) $request->get('secret'),
-            (string) $request->get('code')
-        );
-
-        if ($verified) {
-            return new JsonResponse([
-                'status' => 'OK',
-            ]);
-        }
-
-        return new JsonResponse([
-            'status' => 'error',
-            'error' => 'Secret and code not correct',
-        ], Response::HTTP_BAD_REQUEST);
-    }
+    return new JsonResponse([
+        'secret' => $secret,
+        'qrUrl' => $this->router->generate(
+            'rl-2fa.qr-code.secret',
+            [
+                'qrUrl' => $qrUrl,
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        ),
+    ]);
+}
 }

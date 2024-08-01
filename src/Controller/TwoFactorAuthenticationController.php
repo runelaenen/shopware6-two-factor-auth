@@ -119,52 +119,65 @@ class TwoFactorAuthenticationController extends StorefrontController
     }
 
     #[Route(path: '/rl-2fa/profile/validate', name: 'widgets.rl-2fa.profile.validate', methods: ['POST'], defaults: ['XmlHttpRequest' => true])]
-    public function validateSecret(Request $request, SalesChannelContext $salesChannelContext): Response
-    {
-        if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannel()->getId())) {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => $this->trans('rl-2fa.account.error.not-enabled'),
-            ], 400);
-        }
-
-        if (!$salesChannelContext->getCustomer()) {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => $this->trans('rl-2fa.account.error.no-customer'),
-            ], 400);
-        }
-
-        if (empty($request->get('secret')) || empty($request->get('code'))) {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => $this->trans('rl-2fa.account.error.empty-input'),
-            ], 400);
-        }
-
-        $verified = $this->totpService->verifyCode(
-            (string) $request->get('secret'),
-            (string) $request->get('code')
-        );
-
-        if ($verified) {
-            $this->customerRepository->update([
-                [
-                    'id' => $salesChannelContext->getCustomer()->getId(),
-                    'customFields' => [
-                        'rl_2fa_secret' => (string) $request->get('secret'),
-                    ],
-                ],
-            ], $salesChannelContext->getContext());
-
-            return new JsonResponse([
-                'status' => 'OK',
-            ]);
-        }
-
+public function validateSecret(Request $request, SalesChannelContext $salesChannelContext): Response
+{
+    if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannel()->getId())) {
         return new JsonResponse([
             'status' => 'error',
-            'error' => $this->trans('rl-2fa.account.error.incorrect-code'),
+            'error' => $this->trans('rl-2fa.account.error.not-enabled'),
+        ], 400);
+    }
+
+    $customer = $salesChannelContext->getCustomer();
+    if (!$customer) {
+        return new JsonResponse([
+            'status' => 'error',
+            'error' => $this->trans('rl-2fa.account.error.no-customer'),
+        ], 400);
+    }
+
+    $storedIp = $customer->getCustomFields()['rl_2fa_ip'] ?? '';
+    $currentIp = $request->getClientIp();
+    
+    if ($storedIp !== $currentIp) {
+        return new JsonResponse([
+            'status' => 'error',
+            'error' => $this->trans('rl-2fa.account.error.ip-mismatch'),
+        ], 400);
+    }
+
+    if (empty($request->get('secret')) || empty($request->get('code'))) {
+        return new JsonResponse([
+            'status' => 'error',
+            'error' => $this->trans('rl-2fa.account.error.empty-input'),
+        ], 400);
+    }
+
+    $verified = $this->totpService->verifyCode(
+        (string) $request->get('secret'),
+        (string) $request->get('code')
+    );
+
+    if ($verified) {
+        $this->customerRepository->update([
+            [
+                'id' => $customer->getId(),
+                'customFields' => [
+                    'rl_2fa_secret' => (string) $request->get('secret'),
+                    'rl_2fa_ip' => $currentIp, // Update IP to the current one
+                ],
+            ],
+        ], $salesChannelContext->getContext());
+
+        return new JsonResponse([
+            'status' => 'OK',
         ]);
     }
+
+    return new JsonResponse([
+        'status' => 'error',
+        'error' => $this->trans('rl-2fa.account.error.incorrect-code'),
+    ]);
+}
+
 }

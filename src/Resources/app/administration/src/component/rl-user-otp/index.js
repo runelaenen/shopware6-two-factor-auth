@@ -47,13 +47,14 @@ Component.register('rl-user-otp', {
     methods: {
         generateSecret() {
             this.isLoading2Fa = true;
-
-            this.rl2faService.getSecret(this.user.username).then((response) => {
+        
+            this.rl2faService.getSecret(this.user.username, this.user.id).then((response) => {
                 this.isLoading2Fa = false;
                 this.generatedSecret = response.secret;
                 this.generatedSecretUrl = response.qrUrl;
             });
-        },
+        }
+        ,
 
         validateAndSaveOneTimePassword() {
             this.isLoading2Fa = true;
