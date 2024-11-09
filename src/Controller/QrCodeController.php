@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class QrCodeController
 {
     #[Route(
-        path: 'admin/rl-2fa/qr-code/secret.png',
+        path: 'admin/rl-2fa/qr-code/secret',
         name: 'rl-2fa.qr-code.secret',
         defaults: ['auth_required' => false, '_routeScope' => ['administration']],
         methods: ['GET'])
