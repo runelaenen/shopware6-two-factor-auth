@@ -3,7 +3,7 @@
     "description": "Two Factor Authentication plugin",
     "type": "shopware-platform-plugin",
     "license": "MIT",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "autoload": {
         "psr-4": {
             "RuneLaenen\\TwoFactorAuth\\": "src/"
