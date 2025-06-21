@@ -7,20 +7,21 @@
         <form class="sw-login-login sw-login-login-otp" @submit.prevent="loginUserWithPasswordAndOtp">
             <h2 class="sw-login__content-headline">{{ $tc('sw-login.index.headlineForm') }}</h2>
 
-            <sw-text-field
+            <mt-text-field
                 v-autofocus
                 v-model:value="otp"
                 label="One-time password"
                 required
                 autocomplete="one-time-code">
-            </sw-text-field>
+            </mt-text-field>
 
             <div class="sw-login__submit">
-                <sw-button :disabled="otp.length != 6 || password.length <= 0 || username.length <= 0"
-                           class="sw-login__login-action"
-                           variant="primary">
+                <mt-button
+                    :disabled="otp.length != 6 || password.length <= 0 || username.length <= 0"
+                    class="sw-login__login-action"
+                    variant="primary">
                     {{ $tc('sw-login.index.buttonLogin') }}
-                </sw-button>
+                </mt-button>
             </div>
         </form>
     </div>

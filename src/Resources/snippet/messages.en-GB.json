@@ -1,40 +1,40 @@
 {
     "rl-2fa": {
         "login": {
-            "title": "Two Factor Authentication",
-            "description": "Please verify your identity using your 2FA app.",
-            "code-placeholder": "Code",
-            "proceed": "Log in",
-            "cancel": "Cancel"
+            "title": "Uwierzytelnianie dwuskładnikowe",
+            "description": "Zweryfikuj swoją tożsamość za pomocą aplikacji 2FA.",
+            "code-placeholder": "Kod",
+            "proceed": "Zaloguj się",
+            "cancel": "Anuluj"
         },
         "account": {
-            "title": "Two Factor Authentication",
-            "active": "Good! Your account is currently protected with Two Factor Authentication!",
-            "not-active": "Your account is currently <strong>not</strong> protected with Two Factor Authentication!",
-            "description": "Make sure your webshop account is protected securily by adding Two Factor Authentication (2FA). With 2FA, your account is secured in multiple layers: your username, your password, and a new 'one time password' layer. This second step is added to reconfirm your identity, and links your account to your mobile phone. Click the button below to get started on setting up 2FA for your account. It's easy and free!",
-            "start-setup": "Set up 2FA for my account",
-            "disable-2fa": "Disable Two Factor Authentication",
-            "disabled-2fa": "Two Factor Authentication was successfully disabled.",
+            "title": "Uwierzytelnianie dwuskładnikowe",
+            "active": "Świetnie! Twoje konto jest obecnie chronione uwierzytelnianiem dwuskładnikowym!",
+            "not-active": "Twoje konto <strong>nie</strong> jest obecnie chronione uwierzytelnianiem dwuskładnikowym!",
+            "description": "Upewnij się, że Twoje konto w sklepie internetowym jest bezpiecznie chronione, dodając uwierzytelnianie dwuskładnikowe (2FA). Dzięki 2FA Twoje konto jest zabezpieczone na wielu poziomach: nazwa użytkownika, hasło i nowa warstwa „jednorazowego hasła”. Ten drugi krok jest dodawany w celu ponownego potwierdzenia Twojej tożsamości i łączy Twoje konto z telefonem komórkowym. Kliknij przycisk poniżej, aby rozpocząć konfigurację 2FA dla swojego konta. To łatwe i bezpłatne!",
+            "start-setup": "Skonfiguruj 2FA dla mojego konta",
+            "disable-2fa": "Wyłącz uwierzytelnianie dwuskładnikowe",
+            "disabled-2fa": "Uwierzytelnianie dwuskładnikowe zostało pomyślnie wyłączone.",
             "setup": {
-                "title": "Two Factor Authentication Setup",
-                "description": "Scan the QR code below with your Google Authenticator app. Enter the generated code in the field below to verify whether your 2FA code was correctly set up.",
-                "step-1": "Step 1. Scan code",
-                "step-2": "Step 2. Verify token",
-                "verification-placeholder": "One Time Password Token",
-                "verify": "Verify & activate 2FA"
+                "title": "Konfiguracja uwierzytelniania dwuskładnikowego",
+                "description": "Zeskanuj poniższy kod QR za pomocą aplikacji Google Authenticator. Wprowadź wygenerowany kod w polu poniżej, aby sprawdzić, czy kod 2FA został poprawnie skonfigurowany.",
+                "step-1": "Krok 1. Zeskanuj kod",
+                "step-2": "Krok 2. Zweryfikuj token",
+                "verification-placeholder": "Token jednorazowego hasła",
+                "verify": "Zweryfikuj i aktywuj 2FA"
             },
             "disable": {
-                "title": "Disable Two Factor Authentication",
-                "description": "Please verify that it is you by confirming your password.",
-                "password": "Password",
-                "submit": "Confirm password & disable Two Factor Authentication"
+                "title": "Wyłącz uwierzytelnianie dwuskładnikowe",
+                "description": "Potwierdź swoją tożsamość, wprowadzając hasło.",
+                "password": "Hasło",
+                "submit": "Potwierdź hasło i wyłącz uwierzytelnianie dwuskładnikowe"
             },
             "error": {
-                "not-enabled": "2FA is not enabled for this Sales Channel.",
-                "no-customer": "Customer not found in session.",
-                "incorrect-password": "The provided password was wrong. Two Factor Authentication is not disabled.",
-                "empty-input": "Secret or code was empty.",
-                "incorrect-code": "The provided code was not correct."
+                "not-enabled": "2FA nie jest włączone dla tego kanału sprzedaży.",
+                "no-customer": "Klient nie znaleziony w sesji.",
+                "incorrect-password": "Podane hasło było nieprawidłowe. Uwierzytelnianie dwuskładnikowe nie zostało wyłączone.",
+                "empty-input": "Brak danych (Secret lub Code).",
+                "incorrect-code": "Podany kod był nieprawidłowy."
             }
         }
     }

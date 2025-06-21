@@ -1,30 +1,29 @@
 {% block rl_user_otp_user_card %}
-    <sw-card :title="$tc('rl-2fa.settings.user-detail.title')"
+    <mt-card :title="$tc('rl-2fa.settings.user-detail.title')"
              :is-loading="isLoading || isLoading2Fa">
         <div v-if="user && user.customFields && user.customFields.rl_2fa_secret">
 
-            <sw-alert variant="success"
-                      :title="$tc('rl-2fa.settings.user-detail.enabled.title')"
-                      style="margin-bottom: 0;"
-                      :showIcon="true"
-                      :closable="false">
+            <sw-alert
+                variant="success"
+                :title="$tc('rl-2fa.settings.user-detail.enabled.title')"
+                style="margin-bottom: 0;"
+                :showIcon="true"
+                :closable="false">
                 {{ $tc('rl-2fa.settings.user-detail.enabled.description') }}
 
-                <template v-slot:actions>
-                    <sw-button @click="disable2FA">{{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}</sw-button>
-                </template>
+                <mt-button @click="disable2FA">{{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}</mt-button>
             </sw-alert>
         </div>
         <div v-else-if="!generatedSecretUrl">
-            <sw-alert variant="warning"
-                      :title="$tc('rl-2fa.settings.user-detail.not-enabled.title')"
-                      style="margin-bottom: 0;"
-                      :showIcon="true"
-                      :closable="false">
+            <sw-alert
+                variant="warning"
+                :title="$tc('rl-2fa.settings.user-detail.not-enabled.title')"
+                style="margin-bottom: 0;"
+                :showIcon="true"
+                :closable="false">
                 {{ $tc('rl-2fa.settings.user-detail.not-enabled.description') }}
 
-                <template v-slot:actions>
-                    <sw-button @click="generateSecret">{{ $tc('rl-2fa.settings.user-detail.not-enabled.get-started') }}</sw-button>
+                <sw-button @click="generateSecret">{{ $tc('rl-2fa.settings.user-detail.not-enabled.get-started') }}</sw-button>
                 </template>
             </sw-alert>
         </div>
@@ -39,23 +38,25 @@
                     <br />
                     {{ $tc('rl-2fa.settings.user-detail.generating.description') }}<br />
                     <br />
-                    <sw-alert variant="error"
-                              :title="$tc('rl-2fa.settings.user-detail.generating.error-title')"
-                              :showIcon="true"
-                              v-if="oneTimePasswordError.length > 0">
+                    <sw-alert
+                        variant="error"
+                        :title="$tc('rl-2fa.settings.user-detail.generating.error-title')"
+                        :showIcon="true"
+                        v-if="oneTimePasswordError.length > 0">
                         {{ oneTimePasswordError }}
                     </sw-alert>
 
-                    <sw-text-field label="One-time Password"
-                                   :isInvalid="oneTimePasswordError.length > 0"
-                                   v-model:value="oneTimePassword"
-                                   autocomplete="one-time-code"></sw-text-field>
+                    <mt-text-field
+                        label="One-time Password"
+                        :isInvalid="oneTimePasswordError.length > 0"
+                        v-model:value="oneTimePassword"
+                        autocomplete="one-time-code"/>
 
-                    <sw-button @click="validateAndSaveOneTimePassword">
+                    <mt-button @click="validateAndSaveOneTimePassword">
                         {{ $tc('rl-2fa.settings.user-detail.generating.validate-save') }}
-                    </sw-button>
+                    </mt-button>
                 </div>
             </sw-container>
         </div>
-    </sw-card>
+    </mt-card>
 {% endblock %}

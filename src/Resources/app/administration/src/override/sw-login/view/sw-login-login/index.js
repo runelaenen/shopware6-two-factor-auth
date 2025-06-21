@@ -1,8 +1,8 @@
 import template from './sw-login-login.html.twig';
 
-const {Component, Context, Application} = Shopware;
+const {Context, Application} = Shopware;
 
-Component.override('sw-login-login', {
+export default {
     template,
 
     data() {
@@ -70,4 +70,4 @@ Component.override('sw-login-login', {
             this.showOtpForm = true;
         },
     },
-});
+};

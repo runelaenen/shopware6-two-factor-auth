@@ -1,4 +1,5 @@
 import Rl2faService from "./rl-2fa";
+
 const { Application } = Shopware;
 
 Application.addServiceProvider('rl2faService', (container) => {

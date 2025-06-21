@@ -5,9 +5,7 @@
     </template>
 
     <template v-else>
-        <router-view
-            v-slot="{ Component }"
-        >
+        <router-view v-slot="{ Component }">
             <component
                 :is="Component"
                 v-bind="{

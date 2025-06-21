@@ -1,14 +1,11 @@
 import template from './rl-user-otp.html.twig';
 import './rl-user-otp.scss';
-import Rl2faService from "../../api/rl-2fa";
-
-const {Component} = Shopware;
 
 /**
  * @component-example
  * <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
  */
-Component.register('rl-user-otp', {
+export default {
     template,
 
     inject: ['rl2faService'],
@@ -87,4 +84,4 @@ Component.register('rl-user-otp', {
             this.onSave();
         },
     },
-});
+};

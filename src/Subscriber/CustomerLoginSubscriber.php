@@ -8,6 +8,8 @@ use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\SalesChannelRequest;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,15 +17,16 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 
-class CustomerLoginSubscriber implements EventSubscriberInterface
+#[AutoconfigureTag(name: 'kernel.event_subscriber')]
+readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 {
     public const SESSION_NAME = 'RL_2FA_NEED_VERIFICATION';
 
     public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly RouterInterface $router
-    ) {
-    }
+        private RequestStack $requestStack,
+        #[Autowire(service: 'Shopware\Storefront\Framework\Routing\Router')]
+        private RouterInterface $router,
+    ) {}
 
     public static function getSubscribedEvents(): array
     {
@@ -53,10 +56,7 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (\in_array($event->getRequest()->get('_route'), [
-            'frontend.rl2fa.verification',
-            'frontend.rl2fa.verification.cancel',
-        ], true)) {
+        if ($this->isVerificationRoute($event)) {
             return;
         }
 
@@ -86,5 +86,12 @@ class CustomerLoginSubscriber implements EventSubscriberInterface
     public function removeSession(): void
     {
         $this->requestStack->getSession()->remove(self::SESSION_NAME);
+    }
+
+    private function isVerificationRoute(ControllerEvent $event): bool
+    {
+        $route = $event->getRequest()->get('_route');
+
+        return in_array($route, ['frontend.rl2fa.verification', 'frontend.rl2fa.verification.cancel',], true);
     }
 }
