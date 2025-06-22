@@ -17,7 +17,7 @@ export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
         errorMessageWrapperSelector: '.rl2fa-setup-verification-message',
 
         /** Selector for the error message content of the verification step */
-        errorMessageSelector: '.rl2fa-setup-verification-message .alert-content',
+        errorMessageSelector: '.rl2fa-setup-verification-message .alert-content-container',
 
         /** Class to toggle visibility (display: none) */
         invisibleClass: 'd-none',
