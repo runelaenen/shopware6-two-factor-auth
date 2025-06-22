@@ -4,15 +4,15 @@
     "rune-laenen-two-factor-auth": {
       "css": [],
       "dynamic": [
-        "/bundles/runelaenentwofactorauth/administration/assets/index-iHvrXf4n.js",
-        "/bundles/runelaenentwofactorauth/administration/assets/index-7yPLkseo.js",
-        "/bundles/runelaenentwofactorauth/administration/assets/index-BgtARSAE.js",
+        "/bundles/runelaenentwofactorauth/administration/assets/index-BliRKAf-.js",
+        "/bundles/runelaenentwofactorauth/administration/assets/index-BV3ew9Eo.js",
+        "/bundles/runelaenentwofactorauth/administration/assets/index-2BJ5m2ao.js",
         "/bundles/runelaenentwofactorauth/administration/assets/index-LLQ73JUu.js",
         "/bundles/runelaenentwofactorauth/administration/assets/index-CLkYHP60.js",
         "/bundles/runelaenentwofactorauth/administration/assets/index-BAGF3_iY.js"
       ],
       "js": [
-        "/bundles/runelaenentwofactorauth/administration/assets/rune-laenen-two-factor-auth-DaQDMNLW.js"
+        "/bundles/runelaenentwofactorauth/administration/assets/rune-laenen-two-factor-auth-BWtuMecm.js"
       ],
       "legacy": false,
       "preload": []

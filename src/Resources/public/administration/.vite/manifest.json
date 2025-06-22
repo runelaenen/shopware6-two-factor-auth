@@ -1,15 +1,15 @@
 {
   "component/rl-user-otp/index.js": {
-    "file": "assets/index-iHvrXf4n.js",
+    "file": "assets/index-BliRKAf-.js",
     "name": "index",
     "src": "component/rl-user-otp/index.js",
     "isDynamicEntry": true,
     "css": [
-      "assets/index-CkTpJREm.css"
+      "assets/index-CdXQ4IWp.css"
     ]
   },
   "main.js": {
-    "file": "assets/rune-laenen-two-factor-auth-DaQDMNLW.js",
+    "file": "assets/rune-laenen-two-factor-auth-BWtuMecm.js",
     "name": "rune-laenen-two-factor-auth",
     "src": "main.js",
     "isEntry": true,
@@ -29,13 +29,13 @@
     "isDynamicEntry": true
   },
   "override/sw-login/view/sw-login-login/index.js": {
-    "file": "assets/index-7yPLkseo.js",
+    "file": "assets/index-BV3ew9Eo.js",
     "name": "index",
     "src": "override/sw-login/view/sw-login-login/index.js",
     "isDynamicEntry": true
   },
   "override/sw-profile/page/sw-profile-index/index.js": {
-    "file": "assets/index-BgtARSAE.js",
+    "file": "assets/index-2BJ5m2ao.js",
     "name": "index",
     "src": "override/sw-profile/page/sw-profile-index/index.js",
     "isDynamicEntry": true
