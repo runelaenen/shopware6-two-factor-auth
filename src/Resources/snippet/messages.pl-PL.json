@@ -1,40 +1,40 @@
 {
     "rl-2fa": {
         "login": {
-            "title": "Zwei-Faktor-Authentifizierung",
-            "description": "Bitte bestätigen Sie die Identität mit Ihrer 2FA-App.",
-            "code-placeholder": "Code",
-            "proceed": "Anmelden",
-            "cancel": "Abbrechen"
+            "title": "Uwierzytelnianie dwuskładnikowe",
+            "description": "Zweryfikuj swoją tożsamość za pomocą aplikacji 2FA.",
+            "code-placeholder": "Kod",
+            "proceed": "Zaloguj się",
+            "cancel": "Anuluj"
         },
         "account": {
-            "title": "Zwei-Faktor-Authentifizierung",
-            "active": "Sehr gut! Ihr Account ist zur Zeit durch 2FA gesichert!",
-            "not-active": "Ihr Account ist zur Zeit <strong>nicht</strong> durch 2FA gesichert!",
-            "description": "Stellen Sie sicher, dass Ihr Webshop-Zugang geschützt wird, indem Sie die Zwei-Faktor-Authentifizierung (2FA) aktivieren. Mit 2FA wird Ihr Account zusätzlich zu dem Benutzernamen und Passwort durch ein neues Einmal-Passwort geschützt. Dieser zweite Schritt dient dazu, Ihre Identität zu bestätigen und verbindet hierfür Ihr Smartphone oder App mit Ihrem Account. Klicken Sie auf den nachfolgenden Button, um 2FA für Ihren Account zu aktivieren. Es ist einfach und kostenlos!",
-            "start-setup": "2FA für Ihren Account einrichten",
-            "disable-2fa": "Zwei-Faktor-Authentifizierung deaktivieren",
-            "disabled-2fa": "Zwei-Faktor-Authentifizierung wurde erfolgreich deaktiviert.",
+            "title": "Uwierzytelnianie dwuskładnikowe",
+            "active": "Świetnie! Twoje konto jest obecnie chronione uwierzytelnianiem dwuskładnikowym!",
+            "not-active": "Twoje konto <strong>nie</strong> jest obecnie chronione uwierzytelnianiem dwuskładnikowym!",
+            "description": "Upewnij się, że Twoje konto w sklepie internetowym jest bezpiecznie chronione, dodając uwierzytelnianie dwuskładnikowe (2FA). Dzięki 2FA Twoje konto jest zabezpieczone na wielu poziomach: nazwa użytkownika, hasło i nowa warstwa „jednorazowego hasła”. Ten drugi krok jest dodawany w celu ponownego potwierdzenia Twojej tożsamości i łączy Twoje konto z telefonem komórkowym. Kliknij przycisk poniżej, aby rozpocząć konfigurację 2FA dla swojego konta. To łatwe i bezpłatne!",
+            "start-setup": "Skonfiguruj 2FA dla mojego konta",
+            "disable-2fa": "Wyłącz uwierzytelnianie dwuskładnikowe",
+            "disabled-2fa": "Uwierzytelnianie dwuskładnikowe zostało pomyślnie wyłączone.",
             "setup": {
-                "title": "Konfiguration Zwei-Faktor-Authentifizierung",
-                "description": "Scannen Sie den Code mit Ihrer 2FA-App. Tragen Sie den generierten Code in das Feld ein, um zu Verifizieren, dass 2FA korrekt konfiguriert wurde.",
-                "step-1": "Schritt 1. Code einscannen",
-                "step-2": "Schritt 2. Token verifizieren",
-                "verification-placeholder": "Einmal-Passwort-Token",
-                "verify": "Verifizieren & 2FA aktivieren"
+                "title": "Konfiguracja uwierzytelniania dwuskładnikowego",
+                "description": "Zeskanuj poniższy kod QR za pomocą aplikacji Google Authenticator. Wprowadź wygenerowany kod w polu poniżej, aby sprawdzić, czy kod 2FA został poprawnie skonfigurowany.",
+                "step-1": "Krok 1. Zeskanuj kod",
+                "step-2": "Krok 2. Zweryfikuj token",
+                "verification-placeholder": "Token jednorazowego hasła",
+                "verify": "Zweryfikuj i aktywuj 2FA"
             },
             "disable": {
-                "title": "Zwei-Faktor-Authentifizierung deaktivieren",
-                "description": "Bitte bestätigen Sie Ihre Identität durch Eingabe Ihres Passworts.",
-                "password": "Passwort",
-                "submit": "Eingabe bestätigen & 2FA deaktivieren"
+                "title": "Wyłącz uwierzytelnianie dwuskładnikowe",
+                "description": "Potwierdź swoją tożsamość, wprowadzając hasło.",
+                "password": "Hasło",
+                "submit": "Potwierdź hasło i wyłącz uwierzytelnianie dwuskładnikowe"
             },
             "error": {
-                "not-enabled": "2FA ist für diesen Shop nicht aktiviert.",
-                "no-customer": "Kunde wurde nicht gefunden.",
-                "incorrect-password": "Das eingegebene Passwort war nicht korrekt. Zwei-Faktor-Authentifizierung wurde nicht deaktiviert.",
-                "empty-input": "Eingabe war leer.",
-                "incorrect-code": "Der eingegebene Code war nicht korrekt."
+                "not-enabled": "2FA nie jest włączone dla tego kanału sprzedaży.",
+                "no-customer": "Klient nie znaleziony w sesji.",
+                "incorrect-password": "Podane hasło było nieprawidłowe. Uwierzytelnianie dwuskładnikowe nie zostało wyłączone.",
+                "empty-input": "Brak danych (Secret lub Code).",
+                "incorrect-code": "Podany kod był nieprawidłowy."
             }
         }
     }
