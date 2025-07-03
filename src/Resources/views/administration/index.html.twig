@@ -12,8 +12,7 @@
             Shopware.Application.bootLogin = function () {
                 return this.initializeLoginInitializer()
                     .then(() => this.injectPlugin({
-                        //TODO fix hardcoded path to rune-laenen-two-factor-auth-BWtuMecm.js
-                        js: "{{ asset('administration/assets/rune-laenen-two-factor-auth-BWtuMecm.js', '@RuneLaenenTwoFactorAuth') }}"
+                        js: "{{ asset('RuneLaenenTwoFactorAuth'|main_js, '@RuneLaenenTwoFactorAuth') }}"
                     }))
                     .then(() => {
                         if (!this.view) {

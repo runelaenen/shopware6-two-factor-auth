@@ -29,5 +29,8 @@
         <!-- Subscriber -->
         <service id="RuneLaenen\TwoFactorAuth\Subscriber\ApiOauthTokenSubscriber"/>
         <service id="RuneLaenen\TwoFactorAuth\Subscriber\CustomerLoginSubscriber"/>
+
+        <!-- Twig Extension -->
+        <service id="RuneLaenen\TwoFactorAuth\Extension\FileExtension"/>
     </services>
 </container>
