@@ -32,7 +32,7 @@
     "require": {
         "shopware/core": "~6.7",
         "pragmarx/google2fa": "^8.0",
-        "bacon/bacon-qr-code": "^2.0"
+        "bacon/bacon-qr-code": "^3.0"
     },
     "require-dev": {
         "phpro/grumphp-shim": "^1.3",
