@@ -15,7 +15,7 @@ use Twig\TwigFilter;
 class FileExtension extends AbstractExtension
 {
     public function __construct(
-        #[Autowire(service: 'shopware.filesystem.public')]
+        #[Autowire(service: 'shopware.filesystem.asset')]
         private readonly FilesystemOperator $operator,
     ) {}
 
