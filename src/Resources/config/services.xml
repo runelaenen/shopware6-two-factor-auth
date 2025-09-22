@@ -4,33 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <defaults autoconfigure="true" autowire="true"/>
-
-        <!-- Service -->
-        <service id="RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService"/>
-        <service id="RuneLaenen\TwoFactorAuth\Service\ConfigurationService"/>
-
-        <!-- Controller -->
-        <service id="RuneLaenen\TwoFactorAuth\Controller\StorefrontTwoFactorAuthController">
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
-        </service>
-        <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationController">
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
-        </service>
-        <service id="RuneLaenen\TwoFactorAuth\Controller\TwoFactorAuthenticationApiController">
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
-        </service>
-
-        <!-- Subscriber -->
-        <service id="RuneLaenen\TwoFactorAuth\Subscriber\ApiOauthTokenSubscriber"/>
-        <service id="RuneLaenen\TwoFactorAuth\Subscriber\CustomerLoginSubscriber"/>
-
-        <!-- Twig Extension -->
-        <service id="RuneLaenen\TwoFactorAuth\Extension\FileExtension"/>
+        <prototype namespace="RuneLaenen\TwoFactorAuth\" resource="../../"/>
     </services>
 </container>
