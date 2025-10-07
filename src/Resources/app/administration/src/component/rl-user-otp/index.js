@@ -55,20 +55,23 @@ export default {
         validateAndSaveOneTimePassword() {
             this.isLoading2Fa = true;
 
-            this.rl2faService.validateSecret(this.generatedSecret, this.oneTimePassword).then((response) => {
-                this.isLoading2Fa = false;
-                if (response.status === 'OK') {
-                    this.saveOneTimePassword();
-                }
-            }).catch((error) => {
-                this.isLoading2Fa = false;
-                this.oneTimePasswordError = error.response.data.error;
-            });
+            this.rl2faService
+                .validateSecret(this.generatedSecret, this.oneTimePassword)
+                .then((response) => {
+                    this.isLoading2Fa = false;
+                    if (response.status === 'OK') {
+                        this.saveOneTimePassword();
+                    }
+                })
+                .catch((error) => {
+                    this.isLoading2Fa = false;
+                    this.oneTimePasswordError = error.response.data.error;
+                });
         },
 
         saveOneTimePassword() {
             if (!this.user.customFields) {
-                this.$set(this.user, 'customFields', {});
+                this.user.customFields = {};
             }
 
             this.user.customFields.rl_2fa_secret = this.generatedSecret;
@@ -77,7 +80,7 @@ export default {
 
         disable2FA() {
             if (!this.user.customFields) {
-                this.$set(this.user, 'customFields', {});
+                this.user.customFields = {};
             }
 
             this.user.customFields.rl_2fa_secret = '';

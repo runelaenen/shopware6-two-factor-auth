@@ -10,7 +10,9 @@ readonly class ConfigurationService
 {
     public const CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth.config.';
 
-    public function __construct(private SystemConfigService $systemConfig) {}
+    public function __construct(private SystemConfigService $systemConfig)
+    {
+    }
 
     public function getAdministrationCompany(?string $salesChannelId = null): string
     {

@@ -6,6 +6,6 @@ export default {
     methods: {
         onSave() {
             this.$emit('rl-2fa-save');
-        }
-    }
+        },
+    },
 };

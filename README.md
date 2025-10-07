@@ -19,9 +19,11 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
    - German
    - French
    - Dutch
+   - Polish
+ 
 ## Providers
 At the moment only Google Authenticator (compatible) apps are supported. 
-For example Google Authenticator, Authy, LastPass, ...
+For example Google Authenticator, Authy, LastPass, Bitwarden, ...
 
 ## Installation guide
 
@@ -40,4 +42,4 @@ bin/build-js.sh
 ```
 
 ## Development
- - Use bin/ecs-fix.sh to fix code standard issues.
+Keep in mind that 2FA authentication will not work in the development Administration watcher mode.

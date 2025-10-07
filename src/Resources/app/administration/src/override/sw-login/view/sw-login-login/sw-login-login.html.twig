@@ -1,28 +1,33 @@
 {% block sw_login_login %}
-
     <div v-if="!showOtpForm">
         {% parent %}
     </div>
-    <div v-else>
-        <form class="sw-login-login sw-login-login-otp" @submit.prevent="loginUserWithPasswordAndOtp">
-            <h2 class="sw-login__content-headline">{{ $tc('sw-login.index.headlineForm') }}</h2>
 
+    <div v-else>
+        <div
+            class="sw-login-login sw-login-login-otp"
+        >
+            <h2 class="sw-login__content-headline">
+                {{ $tc('sw-login.index.headlineForm') }}
+            </h2>
             <mt-text-field
                 v-autofocus
                 v-model="otp"
                 label="One-time password"
                 required
-                autocomplete="one-time-code">
+                autocomplete="one-time-code"
+            >
             </mt-text-field>
-
             <div class="sw-login__submit">
                 <mt-button
                     :disabled="otp.length != 6 || password.length <= 0 || username.length <= 0"
                     class="sw-login__login-action"
-                    variant="primary">
+                    variant="primary"
+                    @click="loginUserWithPasswordAndOtp"
+                >
                     {{ $tc('sw-login.index.buttonLogin') }}
                 </mt-button>
             </div>
-        </form>
+        </div>
     </div>
 {% endblock %}

@@ -1,5 +1,9 @@
 {% block sw_setting_user_detail_card_integrations %}
-    <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
+    <rl-user-otp
+        :user="user"
+        :isLoading="isLoading"
+        :onSave="onSave"
+    ></rl-user-otp>
 
-    {% parent %}
+    {% parent() %}
 {% endblock %}

@@ -1,4 +1,4 @@
-import Rl2faService from "./rl-2fa";
+import Rl2faService from './rl-2fa';
 
 const { Application } = Shopware;
 

@@ -27,7 +27,8 @@ class TwoFactorAuthenticationApiController extends AbstractController
         #[Autowire(service: 'Shopware\Storefront\Framework\Routing\Router')]
         private readonly RouterInterface $router,
         private readonly ConfigurationService $configurationService,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/generate-secret', name: 'api.action.rl-2fa.generate-secret', methods: ['GET'])]
     public function generateSecret(Request $request): JsonResponse

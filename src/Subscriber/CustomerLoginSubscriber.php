@@ -24,15 +24,16 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private RequestStack $requestStack,
-        #[Autowire(service: 'Shopware\Storefront\Framework\Routing\Router')]
+        #[Autowire(service: 'router')]
         private RouterInterface $router,
-    ) {}
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {
         return [
             CustomerLoginEvent::class => 'onCustomerLoginEvent',
-            KernelEvents::CONTROLLER => 'onController',
+            ControllerEvent::class => 'onController',
             StorefrontTwoFactorAuthEvent::class => 'removeSession',
             StorefrontTwoFactorCancelEvent::class => 'removeSession',
         ];
@@ -56,6 +57,10 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if ($event->getRequest()->attributes->get('_esi') === true) {
+            return;
+        }
+
         if ($this->isVerificationRoute($event)) {
             return;
         }
@@ -76,7 +81,7 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 
     public function onCustomerLoginEvent(CustomerLoginEvent $event): void
     {
-        if (empty($event->getCustomer()?->getCustomFields()['rl_2fa_secret'])) {
+        if (empty($event->getCustomer()->getCustomFields()['rl_2fa_secret'] ?? null)) {
             return;
         }
 
@@ -90,8 +95,8 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 
     private function isVerificationRoute(ControllerEvent $event): bool
     {
-        $route = $event->getRequest()->get('_route');
+        $route = (string) $event->getRequest()->attributes->get('_route');
 
-        return in_array($route, ['frontend.rl2fa.verification', 'frontend.rl2fa.verification.cancel',], true);
+        return \in_array($route, ['frontend.rl2fa.verification', 'frontend.rl2fa.verification.cancel'], true);
     }
 }

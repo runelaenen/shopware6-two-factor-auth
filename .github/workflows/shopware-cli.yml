@@ -1,0 +1,27 @@
+name: shopware-cli
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Shopware CLI
+        uses: shopware/shopware-cli-action@v1
+
+      - name: Validation
+        run: shopware-cli extension validate --full --reporter github .
+
+  zip:
+    uses: shopware/github-actions/.github/workflows/build-zip.yml@main
+    with:
+      extensionName: RuneLaenenTwoFactorAuth

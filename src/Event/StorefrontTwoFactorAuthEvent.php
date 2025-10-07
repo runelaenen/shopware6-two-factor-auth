@@ -8,7 +8,9 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 
 readonly class StorefrontTwoFactorAuthEvent
 {
-    public function __construct(private SalesChannelContext $salesChannelContext) {}
+    public function __construct(private SalesChannelContext $salesChannelContext)
+    {
+    }
 
     public function getSalesChannelContext(): SalesChannelContext
     {

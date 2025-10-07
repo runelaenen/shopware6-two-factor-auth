@@ -12,7 +12,7 @@
             Shopware.Application.bootLogin = function () {
                 return this.initializeLoginInitializer()
                     .then(() => this.injectPlugin({
-                        js: "{{ asset('RuneLaenenTwoFactorAuth'|main_js, '@RuneLaenenTwoFactorAuth') }}"
+                        js: "{{ asset('RuneLaenenTwoFactorAuth'|rl2fa_main_js, '@RuneLaenenTwoFactorAuth') }}"
                     }))
                     .then(() => {
                         if (!this.view) {

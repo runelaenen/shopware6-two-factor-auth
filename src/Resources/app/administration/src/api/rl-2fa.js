@@ -8,23 +8,27 @@ export default class Rl2fa extends ApiService {
     getSecret(holder) {
         const apiRoute = `${this.getApiBasePath()}/generate-secret`;
 
-        return this.httpClient.get(
-            apiRoute,
-            {params: { holder }, headers: this.getBasicHeaders()}
-        ).then((response) => {
-            return ApiService.handleResponse(response);
-        });
+        return this.httpClient
+            .get(apiRoute, {
+                params: { holder },
+                headers: this.getBasicHeaders(),
+            })
+            .then((response) => {
+                return ApiService.handleResponse(response);
+            });
     }
 
     validateSecret(secret, code) {
         const apiRoute = `${this.getApiBasePath()}/validate-secret`;
 
-        return this.httpClient.post(
-            apiRoute,
-            {secret, code},
-            {headers: this.getBasicHeaders()}
-        ).then((response) => {
-            return ApiService.handleResponse(response);
-        });
+        return this.httpClient
+            .post(
+                apiRoute,
+                { secret, code },
+                { headers: this.getBasicHeaders() }
+            )
+            .then((response) => {
+                return ApiService.handleResponse(response);
+            });
     }
-};
+}

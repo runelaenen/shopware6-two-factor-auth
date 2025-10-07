@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace RuneLaenen\TwoFactorAuth\Controller;
 
 use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
+use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\Password\LegacyPasswordVerifier;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
+use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,14 +27,15 @@ class TwoFactorAuthenticationController extends StorefrontController
 {
     public function __construct(
         private readonly ConfigurationService $configurationService,
-        #[Autowire(service: 'RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService')]
+        #[Autowire(service: TimebasedOneTimePasswordService::class)]
         private readonly TimebasedOneTimePasswordServiceInterface $totpService,
-        #[Autowire(service: 'Shopware\Storefront\Framework\Routing\Router')]
+        #[Autowire(service: Router::class)]
         private readonly RouterInterface $router,
         #[Autowire(service: 'customer.repository')]
         private readonly EntityRepository $customerRepository,
         private readonly LegacyPasswordVerifier $legacyPasswordVerifier,
-    ) {}
+    ) {
+    }
 
     #[Route(
         path: '/rl-2fa/profile/setup',

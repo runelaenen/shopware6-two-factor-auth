@@ -30,7 +30,8 @@ class StorefrontTwoFactorAuthController extends StorefrontController
         private readonly EventDispatcherInterface $dispatcher,
         #[Autowire(service: 'Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute')]
         private readonly AbstractLogoutRoute $logoutRoute,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/rl-2fa/verification', name: 'frontend.rl2fa.verification', methods: ['GET', 'POST'])]
     public function verification(Request $request, SalesChannelContext $context): Response
