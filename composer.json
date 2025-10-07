@@ -1,43 +1,50 @@
 {
-    "name": "runelaenen/shopware6-two-factor-auth",
-    "description": "Two Factor Authentication plugin",
-    "type": "shopware-platform-plugin",
-    "license": "MIT",
-    "version": "6.0.1",
-    "autoload": {
-        "psr-4": {
-            "RuneLaenen\\TwoFactorAuth\\": "src/"
-        }
-    },
-    "extra": {
-        "shopware-plugin-class": "RuneLaenen\\TwoFactorAuth\\RuneLaenenTwoFactorAuth",
-        "plugin-icon": "src/Resources/config/plugin.png",
-        "label": {
-            "de-DE": "Two Factor Authentication plugin",
-            "en-GB": "Two Factor Authentication plugin"
-        },
-        "description": {
-            "de-DE": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.",
-            "en-GB": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website."
-        },
-        "manufacturerLink": {
-            "de-DE": "https://kraftware.be/",
-            "en-GB": "https://kraftware.be/"
-        },
-        "supportLink": {
-            "de-DE": "https://github.com/runelaenen/shopware6-two-factor-auth/issues",
-            "en-GB": "https://github.com/runelaenen/shopware6-two-factor-auth/issues"
-        }
-    },
-    "require": {
-        "shopware/core": "~6.6",
-        "pragmarx/google2fa": "^8.0",
-        "bacon/bacon-qr-code": "^2.0"
-    },
-    "require-dev": {
-        "phpro/grumphp-shim": "^1.3",
-        "shopware/platform": "*",
-        "symplify/easy-coding-standard": "^9.4",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^3.1"
+  "name": "runelaenen/shopware6-two-factor-auth",
+  "description": "Two Factor Authentication plugin",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "version": "7.0.0",
+  "autoload": {
+    "psr-4": {
+      "RuneLaenen\\TwoFactorAuth\\": "src/"
     }
+  },
+  "extra": {
+    "shopware-plugin-class": "RuneLaenen\\TwoFactorAuth\\RuneLaenenTwoFactorAuth",
+    "plugin-icon": "src/Resources/config/plugin.png",
+    "label": {
+      "de-DE": "Two Factor Authentication plugin",
+      "en-GB": "Two Factor Authentication plugin"
+    },
+    "description": {
+      "de-DE": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.",
+      "en-GB": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website."
+    },
+    "manufacturerLink": {
+      "de-DE": "https://kraftware.be/",
+      "en-GB": "https://kraftware.be/"
+    },
+    "supportLink": {
+      "de-DE": "https://github.com/runelaenen/shopware6-two-factor-auth/issues",
+      "en-GB": "https://github.com/runelaenen/shopware6-two-factor-auth/issues"
+    }
+  },
+  "require": {
+    "shopware/core": "~6.7.0",
+    "pragmarx/google2fa": "^8.0",
+    "bacon/bacon-qr-code": "^3.0"
+  },
+  "require-dev": {
+    "phpro/grumphp-shim": "^1.3",
+    "shopware/platform": "*",
+    "symplify/easy-coding-standard": "^9.4",
+    "kubawerlos/php-cs-fixer-custom-fixers": "^3.1"
+  },
+  "authors": [
+    {
+      "name": "Kraftware",
+      "email": "hello@kraftware.be",
+      "homepage": "https://www.kraftware.be"
+    }
+  ]
 }

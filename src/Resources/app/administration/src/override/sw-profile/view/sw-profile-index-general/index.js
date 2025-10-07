@@ -1,15 +1,11 @@
 import template from './sw-profile-index-general.html.twig';
 
-const { Component } = Shopware;
+export default {
+    template,
 
-if (Component.getComponentRegistry().has('sw-profile-index-general')) {
-    Component.override('sw-profile-index-general', {
-        template,
-
-        methods: {
-            onSave() {
-                this.$emit('rl-2fa-save');
-            }
-        }
-    });
-}
+    methods: {
+        onSave() {
+            this.$emit('rl-2fa-save');
+        },
+    },
+};

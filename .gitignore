@@ -1,6 +1,8 @@
 vendor
 composer.lock
 src/Resources/app/storefront/dist/storefront/js
-src/Resources/public/administration/js
-src/Resources/public/administration/css
+src/Resources/app/administration/.tmp
+src/Resources/public/administration/.vite
+src/Resources/public/administration/assets
 var/cache
+.DS_Store

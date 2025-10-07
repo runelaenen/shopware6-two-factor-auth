@@ -1,13 +1,11 @@
 {% block sw_profile_index_router_view %}
     <template v-if="isUserLoading">
-        <sw-skeleton />
-        <sw-skeleton />
+        <sw-skeleton/>
+        <sw-skeleton/>
     </template>
 
     <template v-else>
-        <router-view
-            v-slot="{ Component }"
-        >
+        <router-view v-slot="{ Component }">
             <component
                 :is="Component"
                 v-bind="{

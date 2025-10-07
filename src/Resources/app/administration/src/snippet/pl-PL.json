@@ -1,0 +1,25 @@
+{
+    "rl-2fa": {
+        "settings": {
+            "user-detail": {
+                "title": "Uwierzytelnianie dwuskładnikowe",
+                "enabled": {
+                    "title": "Uwierzytelnianie dwuskładnikowe jest włączone",
+                    "description": "Gratulacje! Jesteś bezpieczny! Aby wyłączyć 2FA dla swojego konta, kliknij przycisk poniżej.",
+                    "disable": "Wyłącz 2FA"
+                },
+                "not-enabled": {
+                    "title": "Uwierzytelnianie dwuskładnikowe nie jest włączone",
+                    "description": "Uwierzytelnianie dwuskładnikowe nie jest włączone dla Twojego konta. Kliknij przycisk poniżej, aby je skonfigurować.",
+                    "get-started": "Kliknij, aby rozpocząć"
+                },
+                "generating": {
+                    "scan-code": "Zeskanuj kod po lewej stronie za pomocą aplikacji 2FA.",
+                    "description": "Wprowadź swoje hasło jednorazowe i kliknij „Zweryfikuj i włącz”, aby sprawdzić kod i włączyć 2FA dla swojego konta administratora.",
+                    "error-title": "Coś poszło nie tak",
+                    "validate-save": "Zweryfikuj i zapisz"
+                }
+            }
+        }
+    }
+}

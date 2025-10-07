@@ -1,8 +1,8 @@
 import template from './sw-login-login.html.twig';
 
-const {Component, Context, Application} = Shopware;
+const { Context, Application } = Shopware;
 
-Component.override('sw-login-login', {
+export default {
     template,
 
     data() {
@@ -33,26 +33,32 @@ Component.override('sw-login-login', {
         },
 
         loginWithOtp(user, pass, otp) {
-            return Application.getContainer('init').httpClient.post('/oauth/token', {
-                grant_type: 'password',
-                client_id: 'administration',
-                scopes: 'write',
-                username: user,
-                password: pass,
-                rl_2fa_otp: otp,
-            }, {
-                baseURL: Context.api.apiPath,
-            }).then((response) => {
-                const auth = this.loginService.setBearerAuthentication({
-                    access: response.data.access_token,
-                    refresh: response.data.refresh_token,
-                    expiry: response.data.expires_in,
+            return Application.getContainer('init')
+                .httpClient.post(
+                    '/oauth/token',
+                    {
+                        grant_type: 'password',
+                        client_id: 'administration',
+                        scopes: 'write',
+                        username: user,
+                        password: pass,
+                        rl_2fa_otp: otp,
+                    },
+                    {
+                        baseURL: Context.api.apiPath,
+                    }
+                )
+                .then((response) => {
+                    const auth = this.loginService.setBearerAuthentication({
+                        access: response.data.access_token,
+                        refresh: response.data.refresh_token,
+                        expiry: response.data.expires_in,
+                    });
+
+                    window.localStorage.setItem('redirectFromLogin', 'true');
+
+                    return auth;
                 });
-
-                window.localStorage.setItem('redirectFromLogin', 'true');
-
-                return auth;
-            });
         },
 
         loginUserWithPassword() {
@@ -70,4 +76,4 @@ Component.override('sw-login-login', {
             this.showOtpForm = true;
         },
     },
-});
+};

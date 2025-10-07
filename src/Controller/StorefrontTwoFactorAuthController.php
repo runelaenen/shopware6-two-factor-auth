@@ -11,19 +11,25 @@ use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[AutoconfigureTag(name: 'controller.service_arguments')]
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class StorefrontTwoFactorAuthController extends StorefrontController
 {
     public function __construct(
+        #[Autowire(service: 'RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService')]
         private readonly TimebasedOneTimePasswordServiceInterface $totpService,
+        #[Autowire(service: 'event_dispatcher')]
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly AbstractLogoutRoute $logoutRoute
+        #[Autowire(service: 'Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute')]
+        private readonly AbstractLogoutRoute $logoutRoute,
     ) {
     }
 

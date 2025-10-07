@@ -11,7 +11,7 @@
                 "not-enabled": {
                     "title": "L'authentification à deux facteurs n'est pas activée",
                     "description": "L'authentification à deux facteurs n'est pas activée pour votre compte. Cliquez sur le bouton ci-dessous pour le configurer.",
-                    "get-started": "Cliquez sur moi pour commencer"
+                    "get-started": "Cliquez ici pour commencer"
                 },
                 "generating": {
                     "scan-code": "Scannez le code à gauche avec votre application 2FA.",

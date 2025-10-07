@@ -15,29 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 class QrCodeController
 {
     #[Route(
-        path: '/%shopware_administration.path_name%/rl-2fa/qr-code/secret.png',
+        path: '/%shopware_administration.path_name%/rl-2fa/qr-code/secret',
         name: 'rl-2fa.qr-code.secret',
         defaults: ['auth_required' => false, '_routeScope' => ['administration']],
-        methods: ['GET'])
-    ]
+        methods: ['GET'],
+    )]
     public function qrCode(Request $request): Response
     {
         $qrUrl = $request->query->getString('qrUrl');
+        $renderer = new ImageRenderer(new RendererStyle(400), new SvgImageBackEnd());
+        $qrCode = (new Writer($renderer))->writeString($qrUrl);
 
-        $renderer = new ImageRenderer(
-            new RendererStyle(400),
-            new SvgImageBackEnd()
-        );
-
-        $qrCode = (new Writer($renderer))
-            ->writeString($qrUrl);
-
-        return new Response(
-            $qrCode,
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'image/svg+xml',
-            ]
-        );
+        return new Response($qrCode, Response::HTTP_OK, ['Content-Type' => 'image/svg+xml']);
     }
 }
