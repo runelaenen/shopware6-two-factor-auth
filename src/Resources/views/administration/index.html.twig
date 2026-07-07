@@ -1,6 +1,7 @@
-{% extends '@Administration/administration/index.html.twig' %}
+{% sw_extends '@Administration/administration/index.html.twig' %}
 
 {% block administration_login_scripts %}
+    {{ parent() }}
     <script nonce="{{ cspNonce }}">
         if (!window._swLoginOverrides) {
             window._swLoginOverrides = [];
