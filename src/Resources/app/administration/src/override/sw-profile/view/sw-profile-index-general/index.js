@@ -3,9 +3,11 @@ import template from './sw-profile-index-general.html.twig';
 export default {
     template,
 
+    inject: ['rl2faOnSave'],
+
     methods: {
         onSave() {
-            this.$emit('rl-2fa-save');
+            this.rl2faOnSave();
         },
     },
 };
