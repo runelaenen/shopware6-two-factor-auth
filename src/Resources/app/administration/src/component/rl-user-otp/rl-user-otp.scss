@@ -1,12 +1,16 @@
 .rl-2fa-qr-code {
     text-align: center;
 
+    &--image {
+        max-width: 100%;
+    }
+
     &--secret {
         color: gray;
         display: block;
     }
 }
 
-.mt-1 {
+.rl-user-otp__action {
     margin-top: 1rem;
 }

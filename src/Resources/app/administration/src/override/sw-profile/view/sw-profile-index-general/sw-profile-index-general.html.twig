@@ -1,8 +1,8 @@
 {% block sw_profile_index_general_password %}
     <rl-user-otp
+        v-if="showPasswordChangeCard && user"
         :user="user"
         :isLoading="isUserLoading"
-        :onSave="onSave"
     ></rl-user-otp>
 
     {% parent() %}

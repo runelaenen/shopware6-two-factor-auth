@@ -20,7 +20,6 @@
         {% block sw_customer_base_metadata_2fa_editor %}
         <dd v-else>
             <mt-button
-                if="twoFactorAuthenticationActive"
                 @click="disable2FA"
             >
                 {{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}

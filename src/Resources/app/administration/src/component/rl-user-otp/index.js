@@ -3,7 +3,7 @@ import './rl-user-otp.scss';
 
 /**
  * @component-example
- * <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
+ * <rl-user-otp :user="user" :isLoading="isLoading"></rl-user-otp>
  */
 export default {
     template,
@@ -17,74 +17,111 @@ export default {
         },
         isLoading: {
             type: Boolean,
-            required: true,
-        },
-        onSave: {
-            type: Function,
-            required: true,
+            required: false,
+            default: false,
         },
     },
 
     data() {
         return {
-            httpClient: null,
             isLoading2Fa: false,
+            enabled: false,
             generatedSecret: null,
             generatedSecretUrl: null,
             oneTimePassword: '',
             oneTimePasswordError: '',
+            pendingAction: null,
         };
     },
 
-    created() {
-        this.syncService = Shopware.Service('syncService');
-        this.httpClient = this.syncService.httpClient;
+    watch: {
+        'user.id': {
+            immediate: true,
+            handler() {
+                this.loadStatus();
+            },
+        },
     },
 
     methods: {
-        generateSecret() {
-            this.isLoading2Fa = true;
+        loadStatus() {
+            this.enabled = false;
+            this.generatedSecret = null;
+            this.generatedSecretUrl = null;
 
-            this.rl2faService.getSecret(this.user.username).then((response) => {
-                this.isLoading2Fa = false;
-                this.generatedSecret = response.secret;
-                this.generatedSecretUrl = response.qrUrl;
-            });
-        },
+            if (!this.user?.id) {
+                return;
+            }
 
-        validateAndSaveOneTimePassword() {
             this.isLoading2Fa = true;
 
             this.rl2faService
-                .validateSecret(this.generatedSecret, this.oneTimePassword)
+                .getUserStatus(this.user.id)
                 .then((response) => {
-                    this.isLoading2Fa = false;
-                    if (response.status === 'OK') {
-                        this.saveOneTimePassword();
-                    }
+                    this.enabled = response.enabled === true;
                 })
-                .catch((error) => {
+                .finally(() => {
                     this.isLoading2Fa = false;
-                    this.oneTimePasswordError = error.response.data.error;
                 });
         },
 
-        saveOneTimePassword() {
-            if (!this.user.customFields) {
-                this.user.customFields = {};
-            }
+        generateSecret() {
+            this.isLoading2Fa = true;
 
-            this.user.customFields.rl_2fa_secret = this.generatedSecret;
-            this.onSave();
+            this.rl2faService
+                .getSecret(this.user.username)
+                .then((response) => {
+                    this.generatedSecret = response.secret;
+                    this.generatedSecretUrl = response.qrUrl;
+                })
+                .finally(() => {
+                    this.isLoading2Fa = false;
+                });
+        },
+
+        validateAndSaveOneTimePassword() {
+            this.oneTimePasswordError = '';
+            this.pendingAction = 'save';
         },
 
         disable2FA() {
-            if (!this.user.customFields) {
-                this.user.customFields = {};
-            }
+            this.pendingAction = 'remove';
+        },
 
-            this.user.customFields.rl_2fa_secret = '';
-            this.onSave();
+        onVerified() {
+            const action = this.pendingAction;
+            this.pendingAction = null;
+            this.isLoading2Fa = true;
+
+            const request =
+                action === 'save'
+                    ? this.rl2faService.saveUserSecret(
+                          this.user.id,
+                          this.generatedSecret,
+                          this.oneTimePassword
+                      )
+                    : this.rl2faService.removeUserSecret(this.user.id);
+
+            request
+                .then(() => {
+                    this.enabled = action === 'save';
+                    this.generatedSecret = null;
+                    this.generatedSecretUrl = null;
+                    this.oneTimePassword = '';
+                })
+                .catch((error) => {
+                    this.oneTimePasswordError =
+                        error?.response?.data?.error ??
+                        error?.response?.data?.errors?.[0]?.detail ??
+                        error.message;
+                })
+                .finally(() => {
+                    this.isLoading2Fa = false;
+                });
+        },
+
+        onCloseVerifyModal() {
+            this.pendingAction = null;
         },
     },
 };

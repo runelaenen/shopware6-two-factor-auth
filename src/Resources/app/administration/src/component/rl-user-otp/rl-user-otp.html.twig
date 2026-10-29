@@ -3,11 +3,18 @@
         :title="$tc('rl-2fa.settings.user-detail.title')"
         :is-loading="isLoading || isLoading2Fa"
     >
-        <div v-if="user && user.customFields && user.customFields.rl_2fa_secret">
+        <mt-banner
+            v-if="oneTimePasswordError.length > 0 && !generatedSecretUrl"
+            variant="critical"
+            :title="$tc('rl-2fa.settings.user-detail.generating.error-title')"
+            :showIcon="true"
+        >
+            {{ oneTimePasswordError }}
+        </mt-banner>
+        <div v-if="enabled">
             <mt-banner
                 variant="positive"
                 :title="$tc('rl-2fa.settings.user-detail.enabled.title')"
-                style="margin-bottom: 0;"
                 :showIcon="true"
                 :closable="false"
             >
@@ -15,7 +22,7 @@
             </mt-banner>
             <mt-button
                 variant="critical"
-                class="mt-1"
+                class="rl-user-otp__action"
                 @click="disable2FA"
             >
                 {{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}
@@ -25,7 +32,6 @@
             <mt-banner
                 variant="attention"
                 :title="$tc('rl-2fa.settings.user-detail.not-enabled.title')"
-                style="margin-bottom: 0;"
                 :showIcon="true"
                 :closable="false"
             >
@@ -33,7 +39,7 @@
             </mt-banner>
             <mt-button
                 variant="primary"
-                class="mt-1"
+                class="rl-user-otp__action"
                 @click="generateSecret"
             >
                 {{ $tc('rl-2fa.settings.user-detail.not-enabled.get-started') }}
@@ -42,7 +48,11 @@
         <div v-else-if="generatedSecretUrl">
             <sw-container columns="1fr 1fr">
                 <div class="rl-2fa-qr-code">
-                    <img :src="generatedSecretUrl"/>
+                    <img
+                        class="rl-2fa-qr-code--image"
+                        :src="generatedSecretUrl"
+                        :alt="generatedSecret"
+                    />
                     <span class="rl-2fa-qr-code--secret">{{ generatedSecret }}</span>
                 </div>
                 <div>
@@ -63,7 +73,7 @@
                         {{ oneTimePasswordError }}
                     </mt-banner>
                     <mt-text-field
-                        label="One-time Password"
+                        :label="$tc('rl-2fa.one-time-password')"
                         :isInvalid="oneTimePasswordError.length > 0"
                         v-model="oneTimePassword"
                         autocomplete="one-time-code"
@@ -77,5 +87,11 @@
                 </div>
             </sw-container>
         </div>
+    
+        <sw-verify-user-modal
+            v-if="pendingAction"
+            @verified="onVerified"
+            @close="onCloseVerifyModal"
+        />
     </mt-card>
 {% endblock %}

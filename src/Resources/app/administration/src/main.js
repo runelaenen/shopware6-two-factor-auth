@@ -13,12 +13,6 @@ Shopware.Component.override(
     'sw-login-login',
     () => import('./override/sw-login/view/sw-login-login')
 );
-if (Shopware.Component.getComponentRegistry().has('sw-profile-index')) {
-    Shopware.Component.override(
-        'sw-profile-index',
-        () => import('./override/sw-profile/page/sw-profile-index')
-    );
-}
 if (Shopware.Component.getComponentRegistry().has('sw-profile-index-general')) {
     Shopware.Component.override(
         'sw-profile-index-general',
