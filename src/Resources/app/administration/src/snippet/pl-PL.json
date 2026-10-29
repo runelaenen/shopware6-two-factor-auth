@@ -20,6 +20,7 @@
                     "validate-save": "Zweryfikuj i zapisz"
                 }
             }
-        }
+        },
+        "one-time-password": "Hasło jednorazowe"
     }
 }

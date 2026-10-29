@@ -3,31 +3,38 @@
         {% parent %}
     </div>
 
-    <div v-else>
-        <div
-            class="sw-login-login sw-login-login-otp"
-        >
-            <h2 class="sw-login__content-headline">
+    <form
+        v-else
+        class="sw-login-login sw-login-login-otp"
+        @submit.prevent="loginUserWithPasswordAndOtp"
+    >
+        <div class="sw-login__heading">
+            <h1 class="sw-login__content-headline">
                 {{ $tc('sw-login.index.headlineForm') }}
-            </h2>
-            <mt-text-field
-                v-autofocus
-                v-model="otp"
-                label="One-time password"
-                required
-                autocomplete="one-time-code"
-            >
-            </mt-text-field>
-            <div class="sw-login__submit">
-                <mt-button
-                    :disabled="otp.length != 6 || password.length <= 0 || username.length <= 0"
-                    class="sw-login__login-action"
-                    variant="primary"
-                    @click="loginUserWithPasswordAndOtp"
-                >
-                    {{ $tc('sw-login.index.buttonLogin') }}
-                </mt-button>
-            </div>
+            </h1>
         </div>
-    </div>
+
+        <mt-text-field
+            v-model="otp"
+            v-autofocus
+            name="rl-2fa-otp"
+            :label="$tc('rl-2fa.one-time-password')"
+            autocomplete="one-time-code"
+            inputmode="numeric"
+            required
+        />
+
+        <div class="sw-login__submit">
+            <mt-button
+                :disabled="otp.length !== 6 || password.length <= 0 || username.length <= 0"
+                class="sw-login__login-action"
+                variant="primary"
+                size="default"
+                :block="true"
+                type="submit"
+            >
+                {{ $tc('sw-login.index.buttonLogin') }}
+            </mt-button>
+        </div>
+    </form>
 {% endblock %}

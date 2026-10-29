@@ -20,6 +20,7 @@
                     "validate-save": "Valideer & sla op"
                 }
             }
-        }
+        },
+        "one-time-password": "Eenmalig wachtwoord"
     }
 }

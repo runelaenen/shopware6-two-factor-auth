@@ -20,6 +20,7 @@
                     "validate-save": "Valider & sauvegarder"
                 }
             }
-        }
+        },
+        "one-time-password": "Mot de passe à usage unique"
     }
 }
