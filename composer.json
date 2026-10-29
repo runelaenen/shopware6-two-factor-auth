@@ -3,7 +3,7 @@
   "description": "Two Factor Authentication plugin",
   "type": "shopware-platform-plugin",
   "license": "MIT",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "autoload": {
     "psr-4": {
       "RuneLaenen\\TwoFactorAuth\\": "src/"
@@ -30,7 +30,9 @@
     }
   },
   "require": {
-    "shopware/core": "~6.7.0",
+    "shopware/core": "~6.7.2",
+    "shopware/administration": "~6.7.2",
+    "shopware/storefront": "~6.7.2",
     "pragmarx/google2fa": "^8.0",
     "bacon/bacon-qr-code": "^3.0"
   },

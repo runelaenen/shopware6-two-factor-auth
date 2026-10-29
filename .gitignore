@@ -6,3 +6,5 @@ src/Resources/public/administration/.vite
 src/Resources/public/administration/assets
 var/cache
 .DS_Store
+src/Resources/public/administration/js
+src/Resources/public/administration/css

@@ -41,5 +41,23 @@ bin/console plugin:install --activate RuneLaenenTwoFactorAuth
 bin/build-js.sh
 ```
 
+## Store API
+
+Customers with 2FA enabled have to send their one-time password with the login request as `rl2faOtp`:
+
+```
+POST /store-api/account/login
+{"email": "customer@example.com", "password": "...", "rl2faOtp": "123456"}
+```
+
+Without it the request fails with a `401` and the error code `RL_2FA__OTP_REQUIRED`, so the frontend knows to ask for
+the code and send the login again. A wrong code returns `RL_2FA__OTP_INVALID`.
+
+## Updating from 7.0 or older
+
+Secrets used to be stored in the `rl_2fa_secret` custom field of customers and users, where the Store API and
+Admin API returned them. The update moves them to their own tables and removes the custom field. Enabled accounts
+keep working, but downgrading after the update turns 2FA off for those accounts.
+
 ## Development
 Keep in mind that 2FA authentication will not work in the development Administration watcher mode.
