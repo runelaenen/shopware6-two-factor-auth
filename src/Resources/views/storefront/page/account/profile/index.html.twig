@@ -13,7 +13,7 @@
                         {% endblock %}
 
                         {% block page_account_profile_2fa_card_body %}
-                            {% if not context.customer.customFields.rl_2fa_secret or context.customer.customFields.rl_2fa_secret is empty %}
+                            {% if not page.extensions.rl2fa.enabled %}
                                 {% block page_account_profile_2fa_card_not_active %}
                                     {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
                                         type: "warning",
