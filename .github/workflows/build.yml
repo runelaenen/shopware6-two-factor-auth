@@ -1,0 +1,15 @@
+name: Build
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: FriendsOfShopware/actions/.github/workflows/github.yml@main
+    with:
+      extensionName: RuneLaenenTwoFactorAuth
+      shopwareVersion: 6.7.0
+    secrets:
+      ghToken: ${{ secrets.GITHUB_TOKEN }}

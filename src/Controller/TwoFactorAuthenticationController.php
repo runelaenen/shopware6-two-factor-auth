@@ -7,7 +7,8 @@ namespace RuneLaenen\TwoFactorAuth\Controller;
 use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
-use Shopware\Core\Checkout\Customer\Password\LegacyPasswordVerifier;
+use Shopware\Core\Checkout\Customer\CustomerException;
+use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
@@ -33,7 +34,7 @@ class TwoFactorAuthenticationController extends StorefrontController
         private readonly RouterInterface $router,
         #[Autowire(service: 'customer.repository')]
         private readonly EntityRepository $customerRepository,
-        private readonly LegacyPasswordVerifier $legacyPasswordVerifier,
+        private readonly AccountService $accountService,
     ) {
     }
 
@@ -109,18 +110,12 @@ class TwoFactorAuthenticationController extends StorefrontController
             return $this->redirectToRoute('frontend.account.profile.page');
         }
 
-        if ($customer->hasLegacyPassword()) {
-            if (!$this->legacyPasswordVerifier->verify($password, $customer)) {
-                $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-password'));
+        try {
+            $this->accountService->getCustomerByLogin($customer->getEmail(), $password, $salesChannelContext);
+        } catch (CustomerException) {
+            $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-password'));
 
-                return $this->redirectToRoute('frontend.account.profile.page');
-            }
-        } else {
-            if (!password_verify($password, $customer->getPassword())) {
-                $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-password'));
-
-                return $this->redirectToRoute('frontend.account.profile.page');
-            }
+            return $this->redirectToRoute('frontend.account.profile.page');
         }
 
         $this->customerRepository->update([

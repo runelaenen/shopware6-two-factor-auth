@@ -20,8 +20,3 @@ jobs:
 
       - name: Validation
         run: shopware-cli extension validate --full --reporter github .
-
-  zip:
-    uses: shopware/github-actions/.github/workflows/build-zip.yml@main
-    with:
-      extensionName: RuneLaenenTwoFactorAuth

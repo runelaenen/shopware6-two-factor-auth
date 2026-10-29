@@ -1,5 +1,3 @@
-import ElementLoadingIndicatorUtil from 'src/utility/loading-indicator/element-loading-indicator.util';
-
 export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
     static options = {
         /** Selector for the submit button of the verification step */
@@ -51,7 +49,6 @@ export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
     }
 
     onSubmitButtonClick() {
-        ElementLoadingIndicatorUtil.create(this.el);
         this._errorMessageWrapper.classList.add(this.options.invisibleClass);
 
         fetch(this.options.verificationUrl, {
@@ -72,8 +69,6 @@ export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
                     window.location.reload();
                     return;
                 }
-
-                ElementLoadingIndicatorUtil.remove(this.el);
 
                 this.showErrorMessage(
                     data.error ? data.error : 'Something went wrong!'
