@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace RuneLaenen\TwoFactorAuth\Controller;
 
 use RuneLaenen\TwoFactorAuth\Service\ConfigurationService;
+use RuneLaenen\TwoFactorAuth\Service\QrCodeService;
+use RuneLaenen\TwoFactorAuth\Service\SecretStorage;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\CustomerException;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
-use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
 #[Route(defaults: ['_routeScope' => ['storefront']])]
@@ -30,10 +28,8 @@ class TwoFactorAuthenticationController extends StorefrontController
         private readonly ConfigurationService $configurationService,
         #[Autowire(service: TimebasedOneTimePasswordService::class)]
         private readonly TimebasedOneTimePasswordServiceInterface $totpService,
-        #[Autowire(service: Router::class)]
-        private readonly RouterInterface $router,
-        #[Autowire(service: 'customer.repository')]
-        private readonly EntityRepository $customerRepository,
+        private readonly QrCodeService $qrCodeService,
+        private readonly SecretStorage $secretStorage,
         private readonly AccountService $accountService,
     ) {
     }
@@ -63,11 +59,7 @@ class TwoFactorAuthenticationController extends StorefrontController
 
         return $this->renderStorefront('@Storefront/storefront/page/account/profile/2fa/setup.html.twig', [
             'secret' => $secret,
-            'qrUrl' => $this->router->generate(
-                'rl-2fa.qr-code.secret',
-                ['qrUrl' => $qrUrl],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
+            'qrUrl' => $this->qrCodeService->createDataUri($qrUrl),
         ]);
     }
 
@@ -103,7 +95,7 @@ class TwoFactorAuthenticationController extends StorefrontController
         }
 
         $customer = $salesChannelContext->getCustomer();
-        $password = $request->get('otpPassword');
+        $password = $request->request->getString('otpPassword');
         if (!$customer) {
             $this->addFlash('danger', $this->trans('rl-2fa.account.error.no-customer'));
 
@@ -118,14 +110,7 @@ class TwoFactorAuthenticationController extends StorefrontController
             return $this->redirectToRoute('frontend.account.profile.page');
         }
 
-        $this->customerRepository->update([
-            [
-                'id' => $customer->getId(),
-                'customFields' => [
-                    'rl_2fa_secret' => '',
-                ],
-            ],
-        ], $salesChannelContext->getContext());
+        $this->secretStorage->removeCustomerSecret($customer->getId());
 
         $this->addFlash('info', $this->trans('rl-2fa.account.disabled-2fa'));
 
@@ -154,23 +139,17 @@ class TwoFactorAuthenticationController extends StorefrontController
             ], 400);
         }
 
-        if (empty($request->get('secret')) || empty($request->get('code'))) {
+        $secret = $request->request->getString('secret');
+        $code = $request->request->getString('code');
+        if ($secret === '' || $code === '') {
             return new JsonResponse([
                 'status' => 'error',
                 'error' => $this->trans('rl-2fa.account.error.empty-input'),
             ], 400);
         }
 
-        $verified = $this->totpService->verifyCode((string) $request->get('secret'), (string) $request->get('code'));
-        if ($verified) {
-            $this->customerRepository->update([
-                [
-                    'id' => $salesChannelContext->getCustomer()->getId(),
-                    'customFields' => [
-                        'rl_2fa_secret' => (string) $request->get('secret'),
-                    ],
-                ],
-            ], $salesChannelContext->getContext());
+        if ($this->totpService->verifyCode($secret, $code)) {
+            $this->secretStorage->setCustomerSecret($salesChannelContext->getCustomer()->getId(), $secret);
 
             return new JsonResponse(['status' => 'OK']);
         }

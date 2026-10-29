@@ -6,8 +6,12 @@ namespace RuneLaenen\TwoFactorAuth\Controller;
 
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
+use RuneLaenen\TwoFactorAuth\Service\SecretStorage;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use RuneLaenen\TwoFactorAuth\Subscriber\CustomerLoginSubscriber;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
+use Shopware\Core\Framework\RateLimiter\Exception\RateLimitExceededException;
+use Shopware\Core\Framework\RateLimiter\RateLimiter;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
@@ -17,7 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
@@ -31,67 +34,66 @@ class StorefrontTwoFactorAuthController extends StorefrontController
         private readonly EventDispatcherInterface $dispatcher,
         #[Autowire(service: 'Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute')]
         private readonly AbstractLogoutRoute $logoutRoute,
+        private readonly RateLimiter $rateLimiter,
+        private readonly SecretStorage $secretStorage,
     ) {
     }
 
     #[Route(path: '/rl-2fa/verification', name: 'frontend.rl2fa.verification', methods: ['GET', 'POST'])]
     public function verification(Request $request, SalesChannelContext $context): Response
     {
-        $twoFactorSecret = $context->getCustomer()?->getCustomFields()['rl_2fa_secret'] ?? null;
+        $customer = $context->getCustomer();
+        $twoFactorSecret = $customer === null ? null : $this->secretStorage->getCustomerSecret($customer->getId());
 
-        if (empty($twoFactorSecret) || !\is_string($twoFactorSecret)) {
-            if ($request->query->has('redirectTo') === false) {
-                $request->query->set('redirectTo', 'frontend.account.login.page');
-            }
-
-            return $this->createActionResponse($request);
+        if ($customer === null || $twoFactorSecret === null) {
+            return $this->redirectTo($request, 'frontend.account.login.page');
         }
 
-        if ($request->getMethod() === 'POST') {
-            $code = $request->get('otpCode');
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $rateLimitKey = 'rl-2fa-' . $customer->getId();
 
-            if ($this->totpService->verifyCode(
-                $twoFactorSecret,
-                $code
-            )) {
-                $this->dispatcher->dispatch(new StorefrontTwoFactorAuthEvent($context));
+            try {
+                $this->rateLimiter->ensureAccepted(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
 
-                if ($request->query->has('redirectTo') === false) {
-                    $request->query->set('redirectTo', 'frontend.account.home.page');
+                if ($this->totpService->verifyCode($twoFactorSecret, $request->request->getString('otpCode'))) {
+                    $this->rateLimiter->reset(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
+
+                    $targetUrl = $request->getSession()->get(CustomerLoginSubscriber::SESSION_TARGET_URL);
+                    $this->dispatcher->dispatch(new StorefrontTwoFactorAuthEvent($context));
+
+                    if (\is_string($targetUrl) && CustomerLoginSubscriber::isLocalPath($targetUrl)) {
+                        return new RedirectResponse($targetUrl);
+                    }
+
+                    return $this->redirectTo($request, 'frontend.account.home.page');
                 }
 
-                return $this->createActionResponse($request);
+                $this->addFlash(self::DANGER, $this->trans('rl-2fa.account.error.incorrect-code'));
+            } catch (RateLimitExceededException $exception) {
+                $this->addFlash(self::DANGER, $this->trans('account.loginThrottled', ['%seconds%' => $exception->getWaitTime()]));
             }
-
-            $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-code'));
         }
 
-        $redirectQuery = $request->query->all()['redirect'] ?? [];
-        $redirectTo = $redirectQuery['redirectTo'] ?? '';
-
-        if ($redirectTo !== '') {
-            unset($redirectQuery['redirectTo']);
-            $transformedQuery['redirectParameters'] = $redirectQuery;
-
-            $transformedQuery['redirectTo'] = $redirectTo;
-            $request->query->add($transformedQuery);
-        }
-
-        return $this->render('@RuneLaenenTwoFactorAuth/storefront/page/2fa/verification.html.twig', [
+        return $this->renderStorefront('@RuneLaenenTwoFactorAuth/storefront/page/2fa/verification.html.twig', [
             'redirect' => $request->query->all(),
         ]);
     }
 
     #[Route(path: '/rl-2fa/verification/cancel', name: 'frontend.rl2fa.verification.cancel', methods: ['GET'])]
-    public function cancelVerification(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
+    public function cancelVerification(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): Response
     {
         if ($context->getCustomer() !== null) {
             $this->logoutRoute->logout($context, $dataBag);
         }
         $this->dispatcher->dispatch(new StorefrontTwoFactorCancelEvent($context));
 
+        return $this->redirectTo($request, 'frontend.account.login.page');
+    }
+
+    private function redirectTo(Request $request, string $defaultRoute): Response
+    {
         if ($request->query->getString('redirectTo') === '') {
-            $request->query->set('redirectTo', 'frontend.account.login.page');
+            return $this->redirectToRoute($defaultRoute);
         }
 
         return $this->createActionResponse($request);

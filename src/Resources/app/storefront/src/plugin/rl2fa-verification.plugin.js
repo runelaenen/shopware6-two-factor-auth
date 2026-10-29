@@ -50,21 +50,21 @@ export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
 
     onSubmitButtonClick() {
         this._errorMessageWrapper.classList.add(this.options.invisibleClass);
+        this._submitButton.disabled = true;
 
         fetch(this.options.verificationUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
             },
             body: JSON.stringify({
                 code: this._codeInput.value,
                 secret: this._secretInput.value,
             }),
         })
-            .then((response) => response.text())
-            .then((response) => {
-                const data = JSON.parse(response);
-
+            .then((response) => response.json())
+            .then((data) => {
                 if (data.status === 'OK') {
                     window.location.reload();
                     return;
@@ -73,6 +73,12 @@ export default class Rl2faVerificationPlugin extends window.PluginBaseClass {
                 this.showErrorMessage(
                     data.error ? data.error : 'Something went wrong!'
                 );
+            })
+            .catch(() => {
+                this.showErrorMessage('Something went wrong!');
+            })
+            .finally(() => {
+                this._submitButton.disabled = false;
             });
     }
 
