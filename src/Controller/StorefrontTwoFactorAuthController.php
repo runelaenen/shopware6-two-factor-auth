@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
@@ -39,7 +40,11 @@ class StorefrontTwoFactorAuthController extends StorefrontController
         $twoFactorSecret = $context->getCustomer()?->getCustomFields()['rl_2fa_secret'] ?? null;
 
         if (empty($twoFactorSecret) || !\is_string($twoFactorSecret)) {
-            return $this->redirectToRoute('frontend.account.login.page', $request->query->all());
+            if ($request->query->has('redirectTo') === false) {
+                $request->query->set('redirectTo', 'frontend.account.login.page');
+            }
+
+            return $this->createActionResponse($request);
         }
 
         if ($request->getMethod() === 'POST') {
@@ -51,23 +56,44 @@ class StorefrontTwoFactorAuthController extends StorefrontController
             )) {
                 $this->dispatcher->dispatch(new StorefrontTwoFactorAuthEvent($context));
 
-                return $this->redirectToRoute('frontend.account.home.page', $request->query->all());
+                if ($request->query->has('redirectTo') === false) {
+                    $request->query->set('redirectTo', 'frontend.account.home.page');
+                }
+
+                return $this->createActionResponse($request);
             }
 
             $this->addFlash('danger', $this->trans('rl-2fa.account.error.incorrect-code'));
         }
 
-        return $this->render('@RuneLaenenTwoFactorAuth/storefront/page/2fa/verification.html.twig');
+        $redirectQuery = $request->query->all()['redirect'] ?? [];
+        $redirectTo = $redirectQuery['redirectTo'] ?? '';
+
+        if ($redirectTo !== '') {
+            unset($redirectQuery['redirectTo']);
+            $transformedQuery['redirectParameters'] = $redirectQuery;
+
+            $transformedQuery['redirectTo'] = $redirectTo;
+            $request->query->add($transformedQuery);
+        }
+
+        return $this->render('@RuneLaenenTwoFactorAuth/storefront/page/2fa/verification.html.twig', [
+            'redirect' => $request->query->all(),
+        ]);
     }
 
     #[Route(path: '/rl-2fa/verification/cancel', name: 'frontend.rl2fa.verification.cancel', methods: ['GET'])]
-    public function cancelVerification(SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
+    public function cancelVerification(Request $request, SalesChannelContext $context, RequestDataBag $dataBag): RedirectResponse
     {
         if ($context->getCustomer() !== null) {
             $this->logoutRoute->logout($context, $dataBag);
         }
         $this->dispatcher->dispatch(new StorefrontTwoFactorCancelEvent($context));
 
-        return $this->redirectToRoute('frontend.account.login.page');
+        if ($request->query->getString('redirectTo') === '') {
+            $request->query->set('redirectTo', 'frontend.account.login.page');
+        }
+
+        return $this->createActionResponse($request);
     }
 }
