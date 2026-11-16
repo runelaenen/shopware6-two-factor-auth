@@ -67,7 +67,7 @@ export default {
         },
 
         handleLoginError(error) {
-            if (error.response.data.errors[0].detail !== 'request-otp') {
+            if (error?.response?.data?.errors?.[0]?.detail !== 'request-otp') {
                 this.$super('handleLoginError', error);
                 return;
             }

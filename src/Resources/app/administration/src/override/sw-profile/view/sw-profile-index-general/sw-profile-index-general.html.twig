@@ -1,9 +1,9 @@
 {% block sw_profile_index_general_password %}
-<tinect-user-otp
-    :user="user"
-    :isLoading="isUserLoading"
-    :onSave="onSave"
-></tinect-user-otp>
+    <tinect-user-otp
+        v-if="showPasswordChangeCard && user"
+        :user="user"
+        :isLoading="isUserLoading"
+    ></tinect-user-otp>
 
-{% parent() %}
+    {% parent() %}
 {% endblock %}

@@ -35,9 +35,9 @@
     }
   },
   "require": {
-    "shopware/core": "~6.7.0",
-    "shopware/storefront": "*",
-    "shopware/administration": "*",
+    "shopware/core": "~6.7.2",
+    "shopware/administration": "~6.7.2",
+    "shopware/storefront": "~6.7.2",
     "pragmarx/google2fa": "^9.1",
     "bacon/bacon-qr-code": "^3.1"
   },

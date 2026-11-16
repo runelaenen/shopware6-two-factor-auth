@@ -47,13 +47,32 @@ bin/console plugin:install --activate TinectTwoFactorAuth
 bin/build-js.sh
 ```
 
+## Store API
+
+Customers with 2FA enabled have to send their one-time password with the login request as `tinect2faOtp`:
+
+```
+POST /store-api/account/login
+{"email": "customer@example.com", "password": "...", "tinect2faOtp": "123456"}
+```
+
+Without it the request fails with a `401` and the error code `TINECT_2FA__OTP_REQUIRED`, so the frontend knows to ask for
+the code and send the login again. A wrong code returns `TINECT_2FA__OTP_INVALID`.
+
+## Updating from 8.0 or older
+
+Secrets used to be stored in the `rl_2fa_secret` custom field of customers and users, where the Store API and
+Admin API returned them. The update moves them to their own tables and removes the custom field. Enabled accounts
+keep working, but downgrading after the update turns 2FA off for those accounts.
+
 ## Development
 Keep in mind that 2FA authentication will not work in the development Administration watcher mode.
 
 ## Migrating from `runelaenen/shopware6-two-factor-auth`
 The plugin technical name changed from `RuneLaenenTwoFactorAuth` to `TinectTwoFactorAuth`.
-Existing 2FA secrets are stored in the `rl_2fa_secret` custom field and are kept as-is, so
-users do not have to re-register their authenticator apps. The plugin configuration
+Existing 2FA secrets (the `rl_2fa_secret` custom field, or the `rl_2fa_customer_secret` /
+`rl_2fa_user_secret` tables of newer versions) are kept as-is, so users do not have to
+re-register their authenticator apps. The plugin configuration
 (`RuneLaenenTwoFactorAuth.config.*` vs. `TinectTwoFactorAuth.config.*`) is *not* migrated
 and has to be set again after switching.
 
@@ -66,11 +85,13 @@ project if you rely on any of these:
 | routes `frontend.rl2fa.*`, `widgets.rl-2fa.*` | `frontend.tinect2fa.*`, `widgets.tinect-2fa.*` |
 | URLs `/rl-2fa/...` | `/tinect-2fa/...` |
 | admin API `_action/rl-2fa` | `_action/tinect-2fa` |
-| OAuth token parameter `rl_2fa_otp` | `tinect_2fa_otp` |
+| OAuth token parameters `rl_2fa_otp`, `rl_2fa_ticket` | `tinect_2fa_otp`, `tinect_2fa_ticket` |
+| Store API login parameter `rl2faOtp` | `tinect2faOtp` |
+| error codes / session keys `RL_2FA_*` | `TINECT_2FA_*` |
 | CSS `.rl-2fa-*`, `.rl2fa-*` | `.tinect-2fa-*`, `.tinect2fa-*` |
 | storefront plugin `Rl2faVerificationPlugin`, `data-rl2fa-verification-plugin` | `Tinect2faVerificationPlugin`, `data-tinect2fa-verification-plugin` |
 | admin component `rl-user-otp`, service `rl2faService`, Twig filter `rl2fa_main_js` | `tinect-user-otp`, `tinect2faService`, `tinect2fa_main_js` |
-| custom field `rl_2fa_secret` | **unchanged** |
+| custom field `rl_2fa_secret`, tables `rl_2fa_customer_secret`, `rl_2fa_user_secret` | **unchanged** |
 
 ```
 composer remove runelaenen/shopware6-two-factor-auth

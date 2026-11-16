@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/symfony/dependency-injection/7.4/Loader/schema/services.schema.json
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    Tinect\TwoFactorAuth\:
-        resource: ../../

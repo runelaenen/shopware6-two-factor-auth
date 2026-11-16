@@ -20,6 +20,7 @@
                     "validate-save": "Validate & save"
                 }
             }
-        }
+        },
+        "one-time-password": "One-time password"
     }
 }

@@ -1,31 +1,30 @@
 {% block sw_customer_base_metadata_active %}
-{% parent() %}
+    {% parent() %}
 
-<sw-description-list>
-    {% block sw_customer_base_metadata_2fa_label %}
-    <dt class="sw-customer-base-info__label">
-        {{ $tc('tinect-2fa.settings.user-detail.title') }}
-    </dt>
-    {% endblock %}
+    <sw-description-list>
+        {% block sw_customer_base_metadata_2fa_label %}
+        <dt class="sw-customer-base-info__label">
+            {{ $tc('tinect-2fa.settings.user-detail.title') }}
+        </dt>
+        {% endblock %}
 
-    {% block sw_customer_base_metadata_2fa_content %}
-    <dd
-        v-if="!customerEditMode || !twoFactorAuthenticationActive"
-        class="sw-customer-base__label-is-active"
-    >
-        {{ $tc('sw-customer.baseInfo.contentActive', twoFactorAuthenticationActive ? 1 : 2) }}
-    </dd>
-    {% endblock %}
-
-    {% block sw_customer_base_metadata_2fa_editor %}
-    <dd v-else>
-        <mt-button
-            if="twoFactorAuthenticationActive"
-            @click="disable2FA"
+        {% block sw_customer_base_metadata_2fa_content %}
+        <dd
+            v-if="!customerEditMode || !twoFactorAuthenticationActive"
+            class="sw-customer-base__label-is-active"
         >
-            {{ $tc('tinect-2fa.settings.user-detail.enabled.disable') }}
-        </mt-button>
-    </dd>
-    {% endblock %}
-</sw-description-list>
+            {{ $tc('sw-customer.baseInfo.contentActive', twoFactorAuthenticationActive ? 1 : 2) }}
+        </dd>
+        {% endblock %}
+
+        {% block sw_customer_base_metadata_2fa_editor %}
+        <dd v-else>
+            <mt-button
+                @click="disable2FA"
+            >
+                {{ $tc('tinect-2fa.settings.user-detail.enabled.disable') }}
+            </mt-button>
+        </dd>
+        {% endblock %}
+    </sw-description-list>
 {% endblock %}

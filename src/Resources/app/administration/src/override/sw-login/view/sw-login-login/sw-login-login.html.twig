@@ -1,31 +1,40 @@
 {% block sw_login_login %}
-<div v-if="!showOtpForm">
-    {% parent() %}
-</div>
+    <div v-if="!showOtpForm">
+        {% parent %}
+    </div>
 
-<div v-else>
-    <div class="sw-login-login sw-login-login-otp">
-        <h2 class="sw-login__content-headline">
-            {{ $tc('sw-login.index.headlineForm') }}
-        </h2>
+    <form
+        v-else
+        class="sw-login-login sw-login-login-otp"
+        @submit.prevent="loginUserWithPasswordAndOtp"
+    >
+        <div class="sw-login__heading">
+            <h1 class="sw-login__content-headline">
+                {{ $tc('sw-login.index.headlineForm') }}
+            </h1>
+        </div>
+
         <mt-text-field
-            v-autofocus
             v-model="otp"
-            label="One-time password"
-            required
+            v-autofocus
+            name="tinect-2fa-otp"
+            :label="$tc('tinect-2fa.one-time-password')"
             autocomplete="one-time-code"
-        >
-            </mt-text-field>
+            inputmode="numeric"
+            required
+        />
+
         <div class="sw-login__submit">
             <mt-button
-                :disabled="otp.length != 6 || password.length <= 0 || username.length <= 0"
+                :disabled="otp.length !== 6 || password.length <= 0 || username.length <= 0"
                 class="sw-login__login-action"
                 variant="primary"
-                @click="loginUserWithPasswordAndOtp"
+                size="default"
+                :block="true"
+                type="submit"
             >
                 {{ $tc('sw-login.index.buttonLogin') }}
             </mt-button>
         </div>
-    </div>
-</div>
+    </form>
 {% endblock %}

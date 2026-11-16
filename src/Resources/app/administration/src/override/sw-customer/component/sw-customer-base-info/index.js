@@ -3,19 +3,35 @@ import template from './sw-customer-base-info.twig';
 export default {
     template,
 
-    computed: {
-        twoFactorAuthenticationActive() {
-            return !!this.customer.customFields?.rl_2fa_secret;
-        },
+    inject: ['tinect2faService'],
+
+    data() {
+        return {
+            twoFactorAuthenticationActive: false,
+        };
     },
 
     methods: {
-        disable2FA() {
-            if (!this.customer.customFields) {
-                this.customer.customFields = {};
+        createdComponent() {
+            this.$super('createdComponent');
+
+            this.twoFactorAuthenticationActive = false;
+            if (!this.customer?.id) {
+                return;
             }
 
-            this.customer.customFields.rl_2fa_secret = '';
+            this.tinect2faService
+                .getCustomerStatus(this.customer.id)
+                .then((response) => {
+                    this.twoFactorAuthenticationActive = response.enabled === true;
+                })
+                .catch(() => {});
+        },
+
+        disable2FA() {
+            this.tinect2faService.removeCustomerSecret(this.customer.id).then(() => {
+                this.twoFactorAuthenticationActive = false;
+            });
         },
     },
 };

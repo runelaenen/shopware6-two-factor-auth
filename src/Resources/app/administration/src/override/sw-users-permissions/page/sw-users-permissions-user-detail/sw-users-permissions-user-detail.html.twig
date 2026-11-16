@@ -1,9 +1,9 @@
 {% block sw_setting_user_detail_card_integrations %}
-<tinect-user-otp
-    :user="user"
-    :isLoading="isLoading"
-    :onSave="onSave"
-></tinect-user-otp>
+    <tinect-user-otp
+        v-if="user && !user._isNew"
+        :user="user"
+        :isLoading="isLoading"
+    ></tinect-user-otp>
 
-{% parent() %}
+    {% parent() %}
 {% endblock %}
