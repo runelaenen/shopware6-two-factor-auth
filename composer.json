@@ -8,7 +8,7 @@
         "issues": "https://github.com/tinect/shopware6-two-factor-auth/issues",
         "source": "https://github.com/tinect/shopware6-two-factor-auth"
     },
-    "version": "8.0.1",
+    "version": "8.1.0",
     "autoload": {
         "psr-4": {
             "Tinect\\TwoFactorAuth\\": "src/"
