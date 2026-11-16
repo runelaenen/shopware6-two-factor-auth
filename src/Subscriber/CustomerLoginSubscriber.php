@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\Subscriber;
 
-use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
-use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\SalesChannelRequest;
 use Shopware\Storefront\Framework\Routing\RequestTransformer;
@@ -20,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
+use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
 
 #[AutoconfigureTag(name: 'kernel.event_subscriber')]
 readonly class CustomerLoginSubscriber implements EventSubscriberInterface
@@ -67,8 +67,10 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
         }
 
         // The customer is already logged in at this point, so every other route has to be blocked, AJAX ones included.
-        if ($request->isXmlHttpRequest()) {
-            $event->setController(static fn (): Response => new Response('', Response::HTTP_FORBIDDEN));
+        // Subresources served by controllers (e.g. tracking scripts loaded by the verification page) must neither be
+        // redirected nor be remembered as target URL, otherwise the customer lands on them after the verification.
+        if ($request->isXmlHttpRequest() || !self::isNavigationRequest($request)) {
+            $event->setController(static fn (): Response => new Response('forbidden', Response::HTTP_FORBIDDEN));
 
             return;
         }
@@ -115,6 +117,17 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 
         $request->getSession()->remove(self::SESSION_NAME);
         $request->getSession()->remove(self::SESSION_TARGET_URL);
+    }
+
+    private static function isNavigationRequest(Request $request): bool
+    {
+        $fetchDestination = $request->headers->get('Sec-Fetch-Dest');
+        if ($fetchDestination !== null && $fetchDestination !== '') {
+            return $fetchDestination === 'document';
+        }
+
+        // Browsers without Fetch Metadata: page navigations ask for HTML, scripts and the like don't.
+        return str_contains((string) $request->headers->get('Accept'), 'text/html');
     }
 
     public static function isLocalPath(string $url): bool
