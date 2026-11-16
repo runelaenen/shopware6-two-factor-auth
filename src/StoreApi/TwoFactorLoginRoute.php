@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\StoreApi;
 
-use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
-use Tinect\TwoFactorAuth\TwoFactorAuthException;
 use Shopware\Core\Checkout\Customer\CustomerException;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLoginRoute;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
@@ -24,6 +20,10 @@ use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\TwoFactorAuthException;
 
 /**
  * Store API clients get no storefront session to park a pending verification in, so the code has to come with

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\Subscriber;
 
-use Tinect\TwoFactorAuth\Service\SecretStorage;
 use Shopware\Storefront\Page\Account\Profile\AccountProfilePageLoadedEvent;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
 
 #[AutoconfigureTag(name: 'kernel.event_subscriber')]
 readonly class AccountProfilePageSubscriber implements EventSubscriberInterface

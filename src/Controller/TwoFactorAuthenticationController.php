@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\Controller;
 
-use Tinect\TwoFactorAuth\Service\ConfigurationService;
-use Tinect\TwoFactorAuth\Service\QrCodeService;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 use Shopware\Core\Checkout\Customer\CustomerException;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
@@ -19,6 +14,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Tinect\TwoFactorAuth\Service\ConfigurationService;
+use Tinect\TwoFactorAuth\Service\QrCodeService;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
 #[Route(defaults: ['_routeScope' => ['storefront']])]
@@ -46,7 +46,7 @@ class TwoFactorAuthenticationController extends StorefrontController
         $salesChannelId = $salesChannelContext->getSalesChannelId();
 
         if ($customer === null || !$this->configurationService->isStorefrontEnabled($salesChannelId)) {
-            return new Response();
+            return new Response(status: Response::HTTP_NO_CONTENT);
         }
 
         $company = $this->configurationService->getStorefrontCompany($salesChannelId);
@@ -74,7 +74,7 @@ class TwoFactorAuthenticationController extends StorefrontController
         $salesChannelId = $salesChannelContext->getSalesChannelId();
 
         if (!$this->configurationService->isStorefrontEnabled($salesChannelId)) {
-            return new Response();
+            return new Response(status: Response::HTTP_NO_CONTENT);
         }
 
         return $this->renderStorefront('@Storefront/storefront/page/account/profile/2fa/disable.html.twig');

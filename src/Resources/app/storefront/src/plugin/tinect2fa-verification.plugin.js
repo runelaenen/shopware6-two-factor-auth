@@ -1,4 +1,6 @@
-export default class Tinect2faVerificationPlugin extends window.PluginBaseClass {
+export default class Tinect2faVerificationPlugin
+    extends window.PluginBaseClass
+{
     static options = {
         /** Selector for the submit button of the verification step */
         buttonSelector: '.account-profile-2fa-setup-verify',

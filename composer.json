@@ -1,57 +1,64 @@
 {
-  "name": "tinect/shopware6-two-factor-auth",
-  "description": "Two Factor Authentication plugin",
-  "type": "shopware-platform-plugin",
-  "license": "MIT",
-  "homepage": "https://github.com/tinect/shopware6-two-factor-auth",
-  "support": {
-    "issues": "https://github.com/tinect/shopware6-two-factor-auth/issues",
-    "source": "https://github.com/tinect/shopware6-two-factor-auth"
-  },
-  "version": "8.0.1",
-  "autoload": {
-    "psr-4": {
-      "Tinect\\TwoFactorAuth\\": "src/"
+    "name": "tinect/shopware6-two-factor-auth",
+    "description": "Two Factor Authentication plugin",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "homepage": "https://github.com/tinect/shopware6-two-factor-auth",
+    "support": {
+        "issues": "https://github.com/tinect/shopware6-two-factor-auth/issues",
+        "source": "https://github.com/tinect/shopware6-two-factor-auth"
+    },
+    "version": "8.0.1",
+    "autoload": {
+        "psr-4": {
+            "Tinect\\TwoFactorAuth\\": "src/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "Tinect\\TwoFactorAuth\\TinectTwoFactorAuth",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "label": {
+            "de-DE": "Two Factor Authentication plugin",
+            "en-GB": "Two Factor Authentication plugin"
+        },
+        "description": {
+            "de-DE": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.",
+            "en-GB": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website."
+        },
+        "manufacturerLink": {
+            "de-DE": "https://github.com/tinect/shopware6-two-factor-auth",
+            "en-GB": "https://github.com/tinect/shopware6-two-factor-auth"
+        },
+        "supportLink": {
+            "de-DE": "https://github.com/tinect/shopware6-two-factor-auth/issues",
+            "en-GB": "https://github.com/tinect/shopware6-two-factor-auth/issues"
+        }
+    },
+    "require": {
+        "shopware/core": "~6.7.2",
+        "shopware/administration": "~6.7.2",
+        "shopware/storefront": "~6.7.2",
+        "pragmarx/google2fa": "^9.1",
+        "bacon/bacon-qr-code": "^3.1"
+    },
+    "conflict": {
+        "runelaenen/shopware6-two-factor-auth": "*"
+    },
+    "authors": [
+        {
+            "name": "tinect"
+        },
+        {
+            "name": "Kraftware",
+            "email": "hello@kraftware.be",
+            "homepage": "https://www.kraftware.be"
+        }
+    ],
+    "scripts": {
+        "check": [
+            "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension validate --check-against lowest --full /ext",
+            "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension validate --check-against highest --full /ext"
+        ],
+        "format": "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension format /ext"
     }
-  },
-  "extra": {
-    "shopware-plugin-class": "Tinect\\TwoFactorAuth\\TinectTwoFactorAuth",
-    "plugin-icon": "src/Resources/config/plugin.png",
-    "label": {
-      "de-DE": "Two Factor Authentication plugin",
-      "en-GB": "Two Factor Authentication plugin"
-    },
-    "description": {
-      "de-DE": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.",
-      "en-GB": "Add extra security to your Shopware 6 shop by enabling Two Factor Authentication. Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website."
-    },
-    "manufacturerLink": {
-      "de-DE": "https://github.com/tinect/shopware6-two-factor-auth",
-      "en-GB": "https://github.com/tinect/shopware6-two-factor-auth"
-    },
-    "supportLink": {
-      "de-DE": "https://github.com/tinect/shopware6-two-factor-auth/issues",
-      "en-GB": "https://github.com/tinect/shopware6-two-factor-auth/issues"
-    }
-  },
-  "require": {
-    "shopware/core": "~6.7.2",
-    "shopware/administration": "~6.7.2",
-    "shopware/storefront": "~6.7.2",
-    "pragmarx/google2fa": "^9.1",
-    "bacon/bacon-qr-code": "^3.1"
-  },
-  "conflict": {
-    "runelaenen/shopware6-two-factor-auth": "*"
-  },
-  "authors": [
-    {
-      "name": "tinect"
-    },
-    {
-      "name": "Kraftware",
-      "email": "hello@kraftware.be",
-      "homepage": "https://www.kraftware.be"
-    }
-  ]
 }

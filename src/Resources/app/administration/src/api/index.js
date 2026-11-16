@@ -5,7 +5,10 @@ const { Application, Context } = Shopware;
 Application.addServiceProvider('tinect2faService', (container) => {
     const initContainer = Application.getContainer('init');
 
-    return new Tinect2faService(initContainer.httpClient, container.loginService);
+    return new Tinect2faService(
+        initContainer.httpClient,
+        container.loginService
+    );
 });
 
 /**
@@ -46,11 +49,13 @@ loginService.verifyUserByUsername = (username, password) => {
 loginService.verifyUserToken = (password) => {
     const username = Shopware.Store.get('session').currentUser?.username ?? '';
 
-    return loginService.verifyUserByUsername(username, password).then(({ access }) => {
-        if (typeof access === 'string') {
-            return access;
-        }
+    return loginService
+        .verifyUserByUsername(username, password)
+        .then(({ access }) => {
+            if (typeof access === 'string') {
+                return access;
+            }
 
-        throw new Error('access Token should be of type String');
-    });
+            throw new Error('access Token should be of type String');
+        });
 };

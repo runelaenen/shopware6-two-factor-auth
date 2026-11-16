@@ -5,6 +5,8 @@ const { Context, Application } = Shopware;
 export default {
     template,
 
+    emits: ['is-loading', 'is-not-loading'],
+
     data() {
         return {
             rememberOtpPassword: '',

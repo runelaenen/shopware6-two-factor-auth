@@ -23,15 +23,18 @@ export default {
             this.tinect2faService
                 .getCustomerStatus(this.customer.id)
                 .then((response) => {
-                    this.twoFactorAuthenticationActive = response.enabled === true;
+                    this.twoFactorAuthenticationActive =
+                        response.enabled === true;
                 })
                 .catch(() => {});
         },
 
         disable2FA() {
-            this.tinect2faService.removeCustomerSecret(this.customer.id).then(() => {
-                this.twoFactorAuthenticationActive = false;
-            });
+            this.tinect2faService
+                .removeCustomerSecret(this.customer.id)
+                .then(() => {
+                    this.twoFactorAuthenticationActive = false;
+                });
         },
     },
 };

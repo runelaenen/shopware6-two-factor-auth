@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Tinect\TwoFactorAuth\Subscriber;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
-use Tinect\TwoFactorAuth\Service\UserVerificationTicketService;
 use Shopware\Core\Framework\Api\ApiException;
 use Shopware\Core\Framework\Api\OAuth\Scope\UserVerifiedScope;
 use Shopware\Core\Framework\Context;
@@ -23,6 +19,10 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\UserVerificationTicketService;
 
 #[AutoconfigureTag(name: 'kernel.event_subscriber')]
 readonly class ApiOauthTokenSubscriber implements EventSubscriberInterface
@@ -62,10 +62,11 @@ readonly class ApiOauthTokenSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // @phpstan-ignore method.deprecatedClass (EntitySearchResult only changes its class hierarchy in 6.8, getEntities() stays)
         $user = $this->userRepository->search(
             (new Criteria())->addFilter(new EqualsFilter('username', $request->request->getString('username'))),
             Context::createCLIContext()
-        )->first();
+        )->getEntities()->first();
 
         $secret = $user instanceof UserEntity ? $this->secretStorage->getUserSecret($user->getId()) : null;
         if (!$user instanceof UserEntity || $secret === null) {

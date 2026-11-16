@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\Controller;
 
-use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
-use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
-use Tinect\TwoFactorAuth\Subscriber\CustomerLoginSubscriber;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLogoutRoute;
 use Shopware\Core\Framework\RateLimiter\Exception\RateLimitExceededException;
 use Shopware\Core\Framework\RateLimiter\RateLimiter;
@@ -22,6 +17,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
+use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Subscriber\CustomerLoginSubscriber;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
 #[Route(defaults: ['_routeScope' => ['storefront']])]

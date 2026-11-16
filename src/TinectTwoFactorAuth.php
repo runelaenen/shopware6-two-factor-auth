@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tinect\TwoFactorAuth;
 
 use Doctrine\DBAL\Connection;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
 
 class TinectTwoFactorAuth extends Plugin
 {

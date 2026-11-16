@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\Controller;
 
-use Tinect\TwoFactorAuth\Service\ConfigurationService;
-use Tinect\TwoFactorAuth\Service\QrCodeService;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
-use Tinect\TwoFactorAuth\Service\UserVerificationTicketService;
 use Shopware\Core\Framework\Api\ApiException;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\OAuth\Scope\UserVerifiedScope;
@@ -22,6 +17,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Tinect\TwoFactorAuth\Service\ConfigurationService;
+use Tinect\TwoFactorAuth\Service\QrCodeService;
+use Tinect\TwoFactorAuth\Service\SecretStorage;
+use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\UserVerificationTicketService;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
 #[Route(path: '/api/_action/tinect-2fa', defaults: ['_routeScope' => ['api']])]
