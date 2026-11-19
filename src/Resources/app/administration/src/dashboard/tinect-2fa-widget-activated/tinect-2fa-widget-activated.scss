@@ -1,0 +1,33 @@
+.tinect-2fa-widget-activated {
+    &__total {
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+        font-weight: var(--font-weight-bold, 700);
+        color: var(--color-text-primary-default, #0a0c11);
+    }
+
+    &__breakdown {
+        margin-left: 8px;
+        font-size: var(--font-size-xs, 12px);
+        font-weight: var(--font-weight-regular, 400);
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+
+    // The chart card brings its own border, the widget already has one.
+    &__chart {
+        border: none;
+        box-shadow: none;
+
+        .sw-chart-card__header-right {
+            min-width: 160px;
+        }
+
+        .sw-field--select {
+            width: 100%;
+        }
+
+        .sw-field--select select {
+            padding-right: 32px;
+        }
+    }
+}

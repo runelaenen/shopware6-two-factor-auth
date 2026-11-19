@@ -1,0 +1,32 @@
+.tinect-2fa-widget-recent {
+    overflow-x: auto;
+
+    &__grid {
+        border: none;
+    }
+
+    &__customer-number {
+        font-size: var(--font-size-xs, 12px);
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+
+    &__method {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: var(--font-size-xs, 12px);
+        background: var(--color-background-tertiary-default, #eef1f5);
+        color: var(--color-text-primary-default, #0a0c11);
+
+        &--totp {
+            background: var(--color-background-positive-default, #e6f7ee);
+            color: var(--color-text-positive-default, #006e3c);
+        }
+    }
+
+    &__empty {
+        padding: 24px;
+        text-align: center;
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+}

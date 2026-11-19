@@ -29,6 +29,51 @@
                 "email-forced": "Aktiv – E-Mail (erzwungen)",
                 "none": "Inaktiv"
             }
+        },
+        "dashboard": {
+            "group": "Zwei-Faktor-Authentifizierung",
+            "salesChannel": "Verkaufskanal",
+            "salesChannelHelp": "Nur Kunden dieses Verkaufskanals berücksichtigen. Leer lassen für alle Verkaufskanäle.",
+            "loadError": "Die Daten konnten nicht geladen werden.",
+            "range": {
+                "7Days": "Letzte 7 Tage",
+                "30Days": "Letzte 30 Tage",
+                "90Days": "Letzte 90 Tage",
+                "180Days": "Letzte 180 Tage",
+                "360Days": "Letzte 360 Tage"
+            },
+            "method": {
+                "totp": "App (TOTP)",
+                "email": "E-Mail"
+            },
+            "summary": {
+                "label": "2FA-Nutzung",
+                "description": "Durch 2FA geschützte Kunden nach Methode und Admin-Benutzer mit App",
+                "protected": "Geschützte Kunden",
+                "share": "{rate} von {total} Kunden",
+                "totp": "App (TOTP)",
+                "email": "E-Mail (gewählt)",
+                "enforced": "E-Mail (erzwungen)",
+                "enforcedHint": "Ohne eigene Einrichtung",
+                "users": "Admin-Benutzer mit App",
+                "usersHint": "von {total} aktiven Benutzern"
+            },
+            "activated": {
+                "label": "2FA-Aktivierungen",
+                "description": "Eingerichtete Apps und gewählte E-Mail-Codes pro Tag",
+                "breakdown": "{totp} App · {email} E-Mail",
+                "seriesTotp": "App (TOTP)",
+                "seriesEmail": "E-Mail"
+            },
+            "recent": {
+                "label": "Zuletzt aktivierte 2FA",
+                "description": "Die Kunden, die zuletzt eine App eingerichtet oder E-Mail-Codes gewählt haben",
+                "limit": "Anzahl der Einträge",
+                "columnCustomer": "Kunde",
+                "columnMethod": "Methode",
+                "columnCreatedAt": "Aktiviert am",
+                "empty": "Es hat noch kein Kunde 2FA aktiviert."
+            }
         }
     }
 }

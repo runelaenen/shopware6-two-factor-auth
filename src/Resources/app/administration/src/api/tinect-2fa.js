@@ -41,6 +41,19 @@ export default class Tinect2fa extends ApiService {
         return this.sendRequest('delete', `customer/${customerId}/secret`);
     }
 
+    getDashboard(path, params = {}) {
+        return this.httpClient
+            .get(`${this.getApiBasePath()}/dashboard/${path}`, {
+                params: Object.fromEntries(
+                    Object.entries(params).filter(
+                        ([, value]) => value !== null && value !== undefined
+                    )
+                ),
+                headers: this.getBasicHeaders(),
+            })
+            .then((response) => ApiService.handleResponse(response));
+    }
+
     sendRequest(method, path, data = undefined) {
         return this.httpClient
             .request({

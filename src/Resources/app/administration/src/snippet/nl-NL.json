@@ -29,6 +29,51 @@
                 "email-forced": "Actief – e-mail (verplicht)",
                 "none": "Inactief"
             }
+        },
+        "dashboard": {
+            "group": "Tweestapsverificatie",
+            "salesChannel": "Verkoopkanaal",
+            "salesChannelHelp": "Alleen klanten van dit verkoopkanaal meetellen. Leeg laten voor alle verkoopkanalen.",
+            "loadError": "De gegevens konden niet worden geladen.",
+            "range": {
+                "7Days": "Laatste 7 dagen",
+                "30Days": "Laatste 30 dagen",
+                "90Days": "Laatste 90 dagen",
+                "180Days": "Laatste 180 dagen",
+                "360Days": "Laatste 360 dagen"
+            },
+            "method": {
+                "totp": "App (TOTP)",
+                "email": "E-mail"
+            },
+            "summary": {
+                "label": "2FA-gebruik",
+                "description": "Met 2FA beveiligde klanten per methode en beheerders met app",
+                "protected": "Beveiligde klanten",
+                "share": "{rate} van {total} klanten",
+                "totp": "App (TOTP)",
+                "email": "E-mail (gekozen)",
+                "enforced": "E-mail (verplicht)",
+                "enforcedHint": "Zonder eigen instelling",
+                "users": "Beheerders met app",
+                "usersHint": "van {total} actieve gebruikers"
+            },
+            "activated": {
+                "label": "2FA-activeringen",
+                "description": "Ingestelde apps en gekozen e-mailcodes per dag",
+                "breakdown": "{totp} app · {email} e-mail",
+                "seriesTotp": "App (TOTP)",
+                "seriesEmail": "E-mail"
+            },
+            "recent": {
+                "label": "Recent geactiveerde 2FA",
+                "description": "De klanten die het laatst een app hebben ingesteld of e-mailcodes hebben gekozen",
+                "limit": "Aantal items",
+                "columnCustomer": "Klant",
+                "columnMethod": "Methode",
+                "columnCreatedAt": "Geactiveerd op",
+                "empty": "Nog geen enkele klant heeft 2FA geactiveerd."
+            }
         }
     }
 }

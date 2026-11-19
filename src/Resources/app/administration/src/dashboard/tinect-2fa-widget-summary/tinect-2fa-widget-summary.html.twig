@@ -1,0 +1,35 @@
+{% block tinect_2fa_widget_summary %}
+<div class="tinect-2fa-widget-summary">
+    <sw-loader v-if="isLoading" />
+    <p
+        v-else-if="hasError"
+        class="tinect-2fa-widget-summary__empty"
+    >
+        {{ $t('tinect-2fa.dashboard.loadError') }}
+    </p>
+    <dl
+        v-else-if="summary"
+        class="tinect-2fa-widget-summary__tiles"
+    >
+        <div
+            v-for="tile in tiles"
+            :key="tile.key"
+            class="tinect-2fa-widget-summary__tile"
+            :class="`tinect-2fa-widget-summary__tile--${tile.key}`"
+        >
+            <dt class="tinect-2fa-widget-summary__label">
+                {{ tile.label }}
+            </dt>
+            <dd class="tinect-2fa-widget-summary__value">
+                {{ tile.value }}
+            </dd>
+            <dd
+                v-if="tile.hint"
+                class="tinect-2fa-widget-summary__hint"
+            >
+                {{ tile.hint }}
+            </dd>
+        </div>
+    </dl>
+</div>
+{% endblock %}
