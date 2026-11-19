@@ -25,6 +25,7 @@ readonly class DashboardStatistics
     /**
      * Customers are counted by the method that applies to their login, see CustomerMethodResolver:
      * the app wins over e-mail, chosen e-mail codes need storefront 2FA turned on, enforced ones also the enforce option.
+     * Only customers who can log in count: no guests, no inactive customers, no unconfirmed double opt-in registrations.
      *
      * @return array{customers: int, totp: int, email: int, enforced: int, users: int, usersWithTotp: int}
      */
@@ -55,7 +56,10 @@ readonly class DashboardStatistics
              FROM `customer`
              LEFT JOIN `rl_2fa_customer_secret` `secret` ON `secret`.`customer_id` = `customer`.`id`
              LEFT JOIN `rl_2fa_customer_email` `email` ON `email`.`customer_id` = `customer`.`id`
-             WHERE `customer`.`guest` = 0 AND `customer`.`sales_channel_id` IN (:salesChannelIds)',
+             WHERE `customer`.`guest` = 0
+                AND `customer`.`active` = 1
+                AND NOT (`customer`.`double_opt_in_registration` = 1 AND `customer`.`double_opt_in_confirm_date` IS NULL)
+                AND `customer`.`sales_channel_id` IN (:salesChannelIds)',
             [
                 // IN () is invalid SQL, a random id matches nothing.
                 'salesChannelIds' => array_map(Uuid::fromHexToBytes(...), $salesChannelIds) ?: [Uuid::randomBytes()],

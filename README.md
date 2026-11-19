@@ -23,8 +23,8 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
  - Storefront customer 2FA
  - Dashboard widgets for [Frosh Admin Dashboard](https://github.com/FriendsOfShopware/FroshAdminDashboard) (optional,
    group "Two-factor authentication", requires the `customer.viewer` privilege), each filterable by sales channel:
-   - 2FA usage: protected customers and their share of all registered customers, split into app, chosen and enforced
-     e-mail codes, plus administration users with an app
+   - 2FA usage: protected customers and their share of all customers who can log in (active, no guests, double opt-in
+     confirmed), split into app, chosen and enforced e-mail codes, plus administration users with an app
    - 2FA activations: chart of apps set up and e-mail codes chosen per day for the last 7 to 360 days
    - Recently activated 2FA: the latest activations with their customers and method
  - Admin user 2FA
