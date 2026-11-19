@@ -2,32 +2,40 @@
     "tinect-2fa": {
         "login": {
             "title": "Two Factor Authentication",
-            "description": "Please verify your identity using your 2FA app.",
+            "description": "Please enter the code from your authenticator app.",
             "code-placeholder": "Code",
             "proceed": "Log in",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "email-description": "We have sent a code to %email%. Please enter it below.",
+            "email-resend": "Send new code",
+            "email-resent": "A new code has been sent.",
+            "email-failed": "The code could not be sent. Please try again later.",
+            "email-throttled": "Please wait %seconds% seconds before requesting a new code.",
+            "email-code-expired": "The code has expired or was entered incorrectly too often. Please request a new code.",
+            "trust-device": "Trust this device for %days% days"
         },
         "account": {
             "title": "Two Factor Authentication",
-            "active": "Good! Your account is currently protected with Two Factor Authentication!",
+            "active": "Good! Your account is protected with an authenticator app (TOTP).",
             "not-active": "Your account is currently <strong>not</strong> protected with Two Factor Authentication!",
-            "description": "Make sure your webshop account is protected securily by adding Two Factor Authentication (2FA). With 2FA, your account is secured in multiple layers: your username, your password, and a new 'one time password' layer. This second step is added to reconfirm your identity, and links your account to your mobile phone. Click the button below to get started on setting up 2FA for your account. It's easy and free!",
-            "start-setup": "Set up 2FA for my account",
+            "description": "Protect your account with two-factor authentication (2FA). When logging in, you then enter a one-time code in addition to your password. You can choose how you receive it: an <strong>authenticator app</strong> on your smartphone (TOTP, e.g. Google Authenticator, Microsoft Authenticator, Authy or a password manager) generates the code, which may be the more secure option. Alternatively, we send you the code <strong>by e-mail</strong>, without installing anything.",
+            "start-setup": "Set up authenticator app (TOTP)",
             "disable-2fa": "Disable Two Factor Authentication",
             "disabled-2fa": "Two Factor Authentication was successfully disabled.",
             "setup": {
-                "title": "Two Factor Authentication Setup",
-                "description": "Scan the QR code below with your Google Authenticator app. Enter the generated code in the field below to verify whether your 2FA code was correctly set up.",
+                "title": "Set up authenticator app (TOTP)",
+                "description": "Scan the QR code with your authenticator app (e.g. Google Authenticator, Microsoft Authenticator, Authy or a password manager), or enter the key shown below it manually. Then enter the 6-digit code from the app to finish the setup.",
                 "step-1": "Step 1. Scan code",
                 "step-2": "Step 2. Verify token",
                 "verification-placeholder": "One Time Password Token",
-                "verify": "Verify & activate 2FA"
+                "verify": "Verify & activate app"
             },
             "disable": {
                 "title": "Disable Two Factor Authentication",
                 "description": "Please verify that it is you by confirming your password.",
                 "password": "Password",
-                "submit": "Confirm password & disable Two Factor Authentication"
+                "submit": "Confirm password & disable Two Factor Authentication",
+                "forced": "This shop requires two-factor authentication. After disabling, you will receive codes by e-mail instead."
             },
             "error": {
                 "not-enabled": "2FA is not enabled for this Sales Channel.",
@@ -35,6 +43,14 @@
                 "incorrect-password": "The provided password was wrong. Two Factor Authentication is not disabled.",
                 "empty-input": "Secret or code was empty.",
                 "incorrect-code": "The provided code was not correct."
+            },
+            "app-forced": "This shop requires two-factor authentication. If you disable the app, you will receive codes by e-mail instead.",
+            "email": {
+                "enable": "Use codes by e-mail",
+                "enabled": "From now on you will receive a code by e-mail when logging in.",
+                "active": "Your account is protected with codes sent by e-mail.",
+                "forced": "This shop requires two-factor authentication for all customers.",
+                "app-hint": "An authenticator app could be more secure, because it does not depend on your e-mail inbox."
             }
         }
     }

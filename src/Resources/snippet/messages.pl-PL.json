@@ -2,32 +2,40 @@
     "tinect-2fa": {
         "login": {
             "title": "Uwierzytelnianie dwuskładnikowe",
-            "description": "Zweryfikuj swoją tożsamość za pomocą aplikacji 2FA.",
+            "description": "Wpisz kod z aplikacji uwierzytelniającej.",
             "code-placeholder": "Kod",
             "proceed": "Zaloguj się",
-            "cancel": "Anuluj"
+            "cancel": "Anuluj",
+            "email-description": "Wysłaliśmy kod na adres %email%. Wpisz go poniżej.",
+            "email-resend": "Wyślij nowy kod",
+            "email-resent": "Nowy kod został wysłany.",
+            "email-failed": "Nie udało się wysłać kodu. Spróbuj ponownie później.",
+            "email-throttled": "Odczekaj %seconds% sekund przed wysłaniem prośby o nowy kod.",
+            "email-code-expired": "Kod wygasł lub został zbyt wiele razy wpisany błędnie. Poproś o nowy kod.",
+            "trust-device": "Ufaj temu urządzeniu przez %days% dni"
         },
         "account": {
             "title": "Uwierzytelnianie dwuskładnikowe",
-            "active": "Świetnie! Twoje konto jest obecnie chronione uwierzytelnianiem dwuskładnikowym!",
+            "active": "Świetnie! Twoje konto jest chronione aplikacją uwierzytelniającą (TOTP).",
             "not-active": "Twoje konto <strong>nie</strong> jest obecnie chronione uwierzytelnianiem dwuskładnikowym!",
-            "description": "Upewnij się, że Twoje konto w sklepie internetowym jest bezpiecznie chronione, dodając uwierzytelnianie dwuskładnikowe (2FA). Dzięki 2FA Twoje konto jest zabezpieczone na wielu poziomach: nazwa użytkownika, hasło i nowa warstwa „jednorazowego hasła”. Ten drugi krok jest dodawany w celu ponownego potwierdzenia Twojej tożsamości i łączy Twoje konto z telefonem komórkowym. Kliknij przycisk poniżej, aby rozpocząć konfigurację 2FA dla swojego konta. To łatwe i bezpłatne!",
-            "start-setup": "Skonfiguruj 2FA dla mojego konta",
+            "description": "Chroń swoje konto za pomocą uwierzytelniania dwuskładnikowego (2FA). Podczas logowania oprócz hasła wpisujesz wtedy jednorazowy kod. Sam wybierasz, jak go otrzymasz: <strong>aplikacja uwierzytelniająca</strong> na smartfonie (TOTP, np. Google Authenticator, Microsoft Authenticator, Authy lub menedżer haseł) generuje kod – to potencjalnie bezpieczniejsza opcja. Możesz też otrzymywać kod <strong>e-mailem</strong>, bez instalowania czegokolwiek.",
+            "start-setup": "Skonfiguruj aplikację uwierzytelniającą (TOTP)",
             "disable-2fa": "Wyłącz uwierzytelnianie dwuskładnikowe",
             "disabled-2fa": "Uwierzytelnianie dwuskładnikowe zostało pomyślnie wyłączone.",
             "setup": {
-                "title": "Konfiguracja uwierzytelniania dwuskładnikowego",
-                "description": "Zeskanuj poniższy kod QR za pomocą aplikacji Google Authenticator. Wprowadź wygenerowany kod w polu poniżej, aby sprawdzić, czy kod 2FA został poprawnie skonfigurowany.",
+                "title": "Konfiguracja aplikacji uwierzytelniającej (TOTP)",
+                "description": "Zeskanuj kod QR aplikacją uwierzytelniającą (np. Google Authenticator, Microsoft Authenticator, Authy lub menedżer haseł) albo wpisz ręcznie klucz wyświetlony pod nim. Następnie wpisz 6-cyfrowy kod z aplikacji, aby zakończyć konfigurację.",
                 "step-1": "Krok 1. Zeskanuj kod",
                 "step-2": "Krok 2. Zweryfikuj token",
                 "verification-placeholder": "Token jednorazowego hasła",
-                "verify": "Zweryfikuj i aktywuj 2FA"
+                "verify": "Zweryfikuj i aktywuj aplikację"
             },
             "disable": {
                 "title": "Wyłącz uwierzytelnianie dwuskładnikowe",
                 "description": "Potwierdź swoją tożsamość, wprowadzając hasło.",
                 "password": "Hasło",
-                "submit": "Potwierdź hasło i wyłącz uwierzytelnianie dwuskładnikowe"
+                "submit": "Potwierdź hasło i wyłącz uwierzytelnianie dwuskładnikowe",
+                "forced": "Ten sklep wymaga uwierzytelniania dwuskładnikowego. Po wyłączeniu kody będziesz otrzymywać e-mailem."
             },
             "error": {
                 "not-enabled": "2FA nie jest włączone dla tego kanału sprzedaży.",
@@ -35,6 +43,14 @@
                 "incorrect-password": "Podane hasło było nieprawidłowe. Uwierzytelnianie dwuskładnikowe nie zostało wyłączone.",
                 "empty-input": "Brak danych (Secret lub Code).",
                 "incorrect-code": "Podany kod był nieprawidłowy."
+            },
+            "app-forced": "Ten sklep wymaga uwierzytelniania dwuskładnikowego. Jeśli wyłączysz aplikację, kody będziesz otrzymywać e-mailem.",
+            "email": {
+                "enable": "Używaj kodów wysyłanych e-mailem",
+                "enabled": "Od teraz przy logowaniu otrzymasz kod e-mailem.",
+                "active": "Twoje konto jest chronione kodami wysyłanymi e-mailem.",
+                "forced": "Ten sklep wymaga uwierzytelniania dwuskładnikowego dla wszystkich klientów.",
+                "app-hint": "Aplikacja uwierzytelniająca może być bezpieczniejsza, ponieważ nie zależy od Twojej skrzynki e-mail."
             }
         }
     }

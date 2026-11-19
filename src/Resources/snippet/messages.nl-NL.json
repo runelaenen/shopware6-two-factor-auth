@@ -2,32 +2,40 @@
     "tinect-2fa": {
         "login": {
             "title": "Twee-factorenauthenticatie",
-            "description": "Verifieer uw identiteit met behulp van uw 2FA-app.",
+            "description": "Voer de code uit uw authenticator-app in.",
             "code-placeholder": "Code",
             "proceed": "Inloggen",
-            "cancel": "Annuleren"
+            "cancel": "Annuleren",
+            "email-description": "We hebben een code naar %email% gestuurd. Vul deze hieronder in.",
+            "email-resend": "Nieuwe code versturen",
+            "email-resent": "Er is een nieuwe code verstuurd.",
+            "email-failed": "De code kon niet worden verstuurd. Probeer het later opnieuw.",
+            "email-throttled": "Wacht %seconds% seconden voordat u een nieuwe code aanvraagt.",
+            "email-code-expired": "De code is verlopen of te vaak verkeerd ingevoerd. Vraag een nieuwe code aan.",
+            "trust-device": "Dit apparaat %days% dagen vertrouwen"
         },
         "account": {
             "title": "Twee-factorenauthenticatie",
-            "active": "Goed! Je account is momenteel beschermd met twee-factorenauthenticatie!",
+            "active": "Goed! Uw account is beveiligd met een authenticator-app (TOTP).",
             "not-active": "Je account is momenteel <strong>niet</strong> beschermd met twee-factorenauthenticatie!",
-            "description": "Zorg ervoor dat uw webwinkelaccount beveiligd is door het toevoegen van Two Factor Authentication (2FA). Met 2FA is je account in meerdere lagen beveiligd: je gebruikersnaam, je wachtwoord en een nieuwe 'one time password' laag. Deze tweede stap wordt toegevoegd om je identiteit opnieuw te bevestigen en koppelt je account aan je mobiele telefoon. Klik op de knop hieronder om te beginnen met het instellen van 2FA voor uw account. Het is eenvoudig en gratis!",
-            "start-setup": "Stel 2FA in voor mijn account",
+            "description": "Beveilig uw account met tweestapsverificatie (2FA). Bij het inloggen voert u dan naast uw wachtwoord een eenmalige code in. U kiest hoe u deze ontvangt: een <strong>authenticator-app</strong> op uw smartphone (TOTP, bijv. Google Authenticator, Microsoft Authenticator, Authy of een wachtwoordmanager) genereert de code – dat is mogelijk de veiligere optie. U kunt de code ook <strong>per e-mail</strong> ontvangen, zonder iets te installeren.",
+            "start-setup": "Authenticator-app (TOTP) instellen",
             "disable-2fa": "Schakel twee-factorenauthenticatie uit",
             "disabled-2fa": "Twee-factorenauthenticatie was succesvol uitgeschakeld.",
             "setup": {
-                "title": "Twee-factorenauthenticatie opzetten",
-                "description": "Scan de onderstaande QR-code met uw Google Authenticator-app. Voer de gegenereerde code in het onderstaande veld in om te controleren of uw 2FA correct is ingesteld.",
+                "title": "Authenticator-app (TOTP) instellen",
+                "description": "Scan de QR-code met uw authenticator-app (bijv. Google Authenticator, Microsoft Authenticator, Authy of een wachtwoordmanager) of voer de sleutel eronder handmatig in. Voer daarna de 6-cijferige code uit de app in om het instellen af te ronden.",
                 "step-1": "Stap 1. Scan code",
                 "step-2": "Stap 2. Verifieer token",
                 "verification-placeholder": "One Time Password Token",
-                "verify": "Verifieer & activeer 2FA"
+                "verify": "Verifiëren & app activeren"
             },
             "disable": {
                 "title": "Twee-factorenauthenticatie uitschakelen",
                 "description": "Controleer of u het bent door uw wachtwoord te bevestigen.",
                 "password": "Watchtwoord",
-                "submit": "Bevestig wachtwoord en schakel twee-factorenauthenticatie uit"
+                "submit": "Bevestig wachtwoord en schakel twee-factorenauthenticatie uit",
+                "forced": "Deze shop vereist tweestapsverificatie. Na het uitschakelen ontvangt u de codes per e-mail."
             },
             "error": {
                 "not-enabled": "2FA is niet ingeschakeld voor dit verkoopkanaal.",
@@ -35,6 +43,14 @@
                 "incorrect-password": "Het verstrekte wachtwoord was verkeerd. Twee-factorenauthenticatie is niet uitgeschakeld.",
                 "empty-input": "Geheim of code was leeg.",
                 "incorrect-code": "De verstrekte code was niet correct."
+            },
+            "app-forced": "Deze shop vereist tweestapsverificatie. Als u de app uitschakelt, ontvangt u de codes per e-mail.",
+            "email": {
+                "enable": "Codes per e-mail gebruiken",
+                "enabled": "Vanaf nu ontvangt u bij het inloggen een code per e-mail.",
+                "active": "Uw account is beveiligd met codes per e-mail.",
+                "forced": "Deze shop vereist tweestapsverificatie voor alle klanten.",
+                "app-hint": "Een authenticator-app kan veiliger zijn, omdat deze niet afhankelijk is van uw mailbox."
             }
         }
     }

@@ -16,6 +16,7 @@ readonly class SecretStorage
 {
     public const CUSTOMER_TABLE = 'rl_2fa_customer_secret';
     public const USER_TABLE = 'rl_2fa_user_secret';
+    public const CUSTOMER_EMAIL_TABLE = 'rl_2fa_customer_email';
 
     public function __construct(private Connection $connection)
     {
@@ -34,6 +35,34 @@ readonly class SecretStorage
     public function removeCustomerSecret(string $customerId): void
     {
         $this->connection->delete(self::CUSTOMER_TABLE, ['customer_id' => Uuid::fromHexToBytes($customerId)]);
+    }
+
+    public function hasCustomerEmail(string $customerId): bool
+    {
+        if (!Uuid::isValid($customerId)) {
+            return false;
+        }
+
+        return (bool) $this->connection->fetchOne(
+            \sprintf('SELECT 1 FROM `%s` WHERE `customer_id` = :id', self::CUSTOMER_EMAIL_TABLE),
+            ['id' => Uuid::fromHexToBytes($customerId)]
+        );
+    }
+
+    public function enableCustomerEmail(string $customerId): void
+    {
+        $this->connection->executeStatement(
+            \sprintf('INSERT IGNORE INTO `%s` (`customer_id`, `created_at`) VALUES (:id, :createdAt)', self::CUSTOMER_EMAIL_TABLE),
+            [
+                'id' => Uuid::fromHexToBytes($customerId),
+                'createdAt' => (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+            ]
+        );
+    }
+
+    public function removeCustomerEmail(string $customerId): void
+    {
+        $this->connection->delete(self::CUSTOMER_EMAIL_TABLE, ['customer_id' => Uuid::fromHexToBytes($customerId)]);
     }
 
     public function getUserSecret(string $userId): ?string

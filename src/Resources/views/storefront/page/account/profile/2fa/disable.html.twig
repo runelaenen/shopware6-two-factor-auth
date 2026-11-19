@@ -5,6 +5,10 @@
         {{ "tinect-2fa.account.disable.description"|trans|sw_sanitize }}
     </p>
 
+    {% if config('TinectTwoFactorAuth.config.storefrontForce') %}
+        <p>{{ "tinect-2fa.account.disable.forced"|trans|sw_sanitize }}</p>
+    {% endif %}
+
     <form method="POST"
           action="{{ url('widgets.tinect-2fa.profile.disable.post') }}">
         <p>

@@ -17,6 +17,9 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 
 ## Features
  - 'Google Authenticator' provider
+ - Codes by e-mail for storefront customers
+ - Enforce 2FA for storefront customers (falls back to codes by e-mail)
+ - Trusted devices: customers can skip the second factor on a browser for a configurable number of days
  - Storefront customer 2FA
  - Admin user 2FA
  - Local QR code generation
@@ -28,8 +31,8 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
    - Polish
  
 ## Providers
-At the moment only Google Authenticator (compatible) apps are supported. 
-For example Google Authenticator, Authy, LastPass, Bitwarden, ...
+ - Authenticator apps (TOTP), for example Google Authenticator, Microsoft Authenticator, Authy, Bitwarden, ...
+ - Codes by e-mail (storefront customers only)
 
 ## Installation guide
 
@@ -46,6 +49,22 @@ bin/console plugin:install --activate TinectTwoFactorAuth
 # Build javascript files
 bin/build-js.sh
 ```
+
+## Codes by e-mail
+
+Customers can choose codes by e-mail instead of an authenticator app in their profile. With "Enforce 2FA for customers"
+turned on, every customer without an app gets a code by e-mail on login. The mail uses the template type
+"Two-factor authentication: login code" (`tinect_2fa_email_code`), which can be edited in the administration
+under Settings > Email templates. It gets the variables `customer`, `code`, `expiresInMinutes` and `salesChannel`.
+
+A code is valid for 10 minutes and for 5 attempts. Mails per customer are throttled with Shopware's `reset_password`
+rate limiter. Accounts created through registration are logged in without a code.
+
+Customers can tick "Trust this device" on the verification page to skip the second factor on that browser for the
+number of days set in the plugin configuration (0 turns the option off). Changing the password ends the trust on all
+devices.
+
+Codes by e-mail and enforcing only apply to the storefront. Store API logins only ask for the authenticator app code.
 
 ## Store API
 

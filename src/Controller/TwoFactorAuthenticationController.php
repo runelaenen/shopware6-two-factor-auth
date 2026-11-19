@@ -111,8 +111,39 @@ class TwoFactorAuthenticationController extends StorefrontController
         }
 
         $this->secretStorage->removeCustomerSecret($customer->getId());
+        $this->secretStorage->removeCustomerEmail($customer->getId());
 
         $this->addFlash('info', $this->trans('tinect-2fa.account.disabled-2fa'));
+
+        return $this->redirectToRoute('frontend.account.profile.page');
+    }
+
+    #[Route(
+        path: '/tinect-2fa/profile/email/enable',
+        name: 'widgets.tinect-2fa.profile.email.enable',
+        defaults: ['XmlHttpRequest' => true],
+        methods: ['POST'],
+    )]
+    public function profileEnableEmail(SalesChannelContext $salesChannelContext): Response
+    {
+        if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannelId())) {
+            $this->addFlash('danger', $this->trans('tinect-2fa.account.error.not-enabled'));
+
+            return $this->redirectToRoute('frontend.account.profile.page');
+        }
+
+        $customer = $salesChannelContext->getCustomer();
+        if ($customer === null) {
+            $this->addFlash('danger', $this->trans('tinect-2fa.account.error.no-customer'));
+
+            return $this->redirectToRoute('frontend.account.profile.page');
+        }
+
+        // The app is the stronger factor; switching away from it goes through the password-protected disable.
+        if ($this->secretStorage->getCustomerSecret($customer->getId()) === null) {
+            $this->secretStorage->enableCustomerEmail($customer->getId());
+            $this->addFlash('success', $this->trans('tinect-2fa.account.email.enabled'));
+        }
 
         return $this->redirectToRoute('frontend.account.profile.page');
     }
@@ -150,6 +181,7 @@ class TwoFactorAuthenticationController extends StorefrontController
 
         if ($this->totpService->verifyCode($secret, $code)) {
             $this->secretStorage->setCustomerSecret($salesChannelContext->getCustomer()->getId(), $secret);
+            $this->secretStorage->removeCustomerEmail($salesChannelContext->getCustomer()->getId());
 
             return new JsonResponse(['status' => 'OK']);
         }

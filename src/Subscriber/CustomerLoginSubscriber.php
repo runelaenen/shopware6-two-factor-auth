@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tinect\TwoFactorAuth\Subscriber;
 
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
+use Shopware\Core\Checkout\Customer\Event\CustomerRegisterEvent;
 use Shopware\Core\SalesChannelRequest;
 use Shopware\Storefront\Framework\Routing\RequestTransformer;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -19,7 +20,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
+use Tinect\TwoFactorAuth\Service\CustomerMethodResolver;
+use Tinect\TwoFactorAuth\Service\EmailCodeService;
+use Tinect\TwoFactorAuth\Service\TrustedDeviceService;
 
 #[AutoconfigureTag(name: 'kernel.event_subscriber')]
 readonly class CustomerLoginSubscriber implements EventSubscriberInterface
@@ -28,19 +31,28 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 
     public const SESSION_TARGET_URL = 'TINECT_2FA_TARGET_URL';
 
-    private const VERIFICATION_ROUTES = ['frontend.tinect2fa.verification', 'frontend.tinect2fa.verification.cancel'];
+    private const VERIFICATION_ROUTES = [
+        'frontend.tinect2fa.verification',
+        'frontend.tinect2fa.verification.resend',
+        'frontend.tinect2fa.verification.cancel',
+    ];
+
+    private const REGISTERED_ATTRIBUTE = 'tinect2faRegistered';
 
     public function __construct(
         private RequestStack $requestStack,
         #[Autowire(service: 'router')]
         private RouterInterface $router,
-        private SecretStorage $secretStorage,
+        private CustomerMethodResolver $methodResolver,
+        private TrustedDeviceService $trustedDeviceService,
+        private EmailCodeService $emailCodeService,
     ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
+            CustomerRegisterEvent::class => 'onCustomerRegisterEvent',
             CustomerLoginEvent::class => 'onCustomerLoginEvent',
             KernelEvents::CONTROLLER => 'onController',
             StorefrontTwoFactorAuthEvent::class => 'removeSession',
@@ -99,13 +111,30 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->secretStorage->getCustomerSecret($event->getCustomer()->getId()) === null) {
+        // Registration logs the new customer in right away. They created the account just now, nothing to protect yet.
+        if ($request->attributes->getBoolean(self::REGISTERED_ATTRIBUTE)) {
+            return;
+        }
+
+        $customer = $event->getCustomer();
+        if ($customer->getGuest()) {
+            return;
+        }
+
+        $method = $this->methodResolver->resolve($customer->getId(), $event->getSalesChannelContext()->getSalesChannelId());
+        if ($method === null || $this->trustedDeviceService->isTrusted($request, $customer->getId())) {
             return;
         }
 
         $session = $request->getSession();
         $session->set(self::SESSION_NAME, true);
         $session->remove(self::SESSION_TARGET_URL);
+        $this->emailCodeService->clear($session);
+    }
+
+    public function onCustomerRegisterEvent(): void
+    {
+        $this->requestStack->getMainRequest()?->attributes->set(self::REGISTERED_ATTRIBUTE, true);
     }
 
     public function removeSession(): void
@@ -117,6 +146,7 @@ readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 
         $request->getSession()->remove(self::SESSION_NAME);
         $request->getSession()->remove(self::SESSION_TARGET_URL);
+        $this->emailCodeService->clear($request->getSession());
     }
 
     private static function isNavigationRequest(Request $request): bool

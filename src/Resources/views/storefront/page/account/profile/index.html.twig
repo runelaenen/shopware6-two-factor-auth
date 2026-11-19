@@ -13,20 +13,72 @@
                         {% endblock %}
 
                         {% block page_account_profile_2fa_card_body %}
-                            {% if not page.extensions.tinect2fa.enabled %}
+                            {% set tinect2fa = page.extensions.tinect2fa %}
+
+                            {% if not tinect2fa.enabled %}
                                 {% block page_account_profile_2fa_card_not_active %}
                                     {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
                                         type: "warning",
                                         content: "tinect-2fa.account.not-active"|trans|sw_sanitize
                                     } %}
                                     <p>{{ "tinect-2fa.account.description"|trans|sw_sanitize }}</p>
-                                    <button type="submit"
-                                            class="account-profile-2fa-start-setup btn btn-primary"
-                                            data-ajax-modal="true"
-                                            data-url="{{ path('widgets.tinect-2fa.profile.setup') }}"
-                                            title="{{ "tinect-2fa.account.start-setup"|trans|striptags }}">
-                                        {{ "tinect-2fa.account.start-setup"|trans|sw_sanitize }}
-                                    </button>
+
+                                    {% block page_account_profile_2fa_card_not_active_actions %}
+                                        <div class="account-profile-2fa-actions">
+                                            {% block page_account_profile_2fa_card_not_active_app %}
+                                                <button type="button"
+                                                        class="account-profile-2fa-start-setup btn btn-primary"
+                                                        data-ajax-modal="true"
+                                                        data-url="{{ path('widgets.tinect-2fa.profile.setup') }}"
+                                                        title="{{ "tinect-2fa.account.start-setup"|trans|striptags }}">
+                                                    {{ "tinect-2fa.account.start-setup"|trans|sw_sanitize }}
+                                                </button>
+                                            {% endblock %}
+
+                                            {% block page_account_profile_2fa_card_not_active_email %}
+                                                <form method="POST" action="{{ path('widgets.tinect-2fa.profile.email.enable') }}">
+                                                    <button type="submit" class="account-profile-2fa-enable-email btn btn-secondary">
+                                                        {{ "tinect-2fa.account.email.enable"|trans|sw_sanitize }}
+                                                    </button>
+                                                </form>
+                                            {% endblock %}
+                                        </div>
+                                    {% endblock %}
+                                {% endblock %}
+                            {% elseif tinect2fa.method == 'email' %}
+                                {% block page_account_profile_2fa_card_active_email %}
+                                    {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+                                        type: "success",
+                                        content: "tinect-2fa.account.email.active"|trans|sw_sanitize
+                                    } %}
+
+                                    {% if tinect2fa.forced %}
+                                        <p>{{ "tinect-2fa.account.email.forced"|trans|sw_sanitize }}</p>
+                                    {% endif %}
+
+                                    <p>{{ "tinect-2fa.account.email.app-hint"|trans|sw_sanitize }}</p>
+
+                                    {% block page_account_profile_2fa_card_active_email_actions %}
+                                        <div class="account-profile-2fa-actions">
+                                            <button type="button"
+                                                    class="account-profile-2fa-start-setup btn btn-primary"
+                                                    data-ajax-modal="true"
+                                                    data-url="{{ path('widgets.tinect-2fa.profile.setup') }}"
+                                                    title="{{ "tinect-2fa.account.start-setup"|trans|striptags }}">
+                                                {{ "tinect-2fa.account.start-setup"|trans|sw_sanitize }}
+                                            </button>
+
+                                            {% if not tinect2fa.forced %}
+                                                <button type="button"
+                                                        class="account-profile-2fa-disable btn btn-danger"
+                                                        data-ajax-modal="true"
+                                                        data-url="{{ path('widgets.tinect-2fa.profile.disable') }}"
+                                                        title="{{ "tinect-2fa.account.disable-2fa"|trans|striptags }}">
+                                                    {{ "tinect-2fa.account.disable-2fa"|trans|striptags }}
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    {% endblock %}
                                 {% endblock %}
                             {% else %}
                                 {% block page_account_profile_2fa_card_active %}
@@ -35,7 +87,11 @@
                                         content: "tinect-2fa.account.active"|trans|sw_sanitize
                                     } %}
 
-                                    <button type="submit"
+                                    {% if tinect2fa.forced %}
+                                        <p>{{ "tinect-2fa.account.app-forced"|trans|sw_sanitize }}</p>
+                                    {% endif %}
+
+                                    <button type="button"
                                             class="account-profile-2fa-start-setup btn btn-danger"
                                             data-ajax-modal="true"
                                             data-url="{{ path('widgets.tinect-2fa.profile.disable') }}"
