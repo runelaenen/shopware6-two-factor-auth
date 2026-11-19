@@ -5,6 +5,8 @@ import nlNL from './snippet/nl-NL.json';
 import plPL from './snippet/pl-PL.json';
 
 import './api/index';
+// Widgets for the optional FroshAdminDashboard plugin
+import './dashboard';
 Shopware.Component.register(
     'tinect-user-otp',
     () => import('./component/tinect-user-otp')

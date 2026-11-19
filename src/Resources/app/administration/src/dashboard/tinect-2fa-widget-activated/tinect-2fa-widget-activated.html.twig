@@ -1,0 +1,27 @@
+{% block tinect_2fa_widget_activated %}
+<div class="tinect-2fa-widget-activated">
+    <div class="tinect-2fa-widget-activated__total">
+        {{ formattedTotal }}
+        <span class="tinect-2fa-widget-activated__breakdown">
+            {{ formattedBreakdown }}
+        </span>
+    </div>
+    <sw-chart-card
+        class="tinect-2fa-widget-activated__chart"
+        :available-ranges="availableRanges"
+        :default-range-index="defaultRangeIndex"
+        :series="chartSeries"
+        :options="chartOptions"
+        :is-loading="isLoading"
+        type="bar"
+        fill-empty-values="day"
+        sort
+        position-identifier="tinect-2fa-widget-activated"
+        @sw-chart-card-range-update="onRangeUpdate"
+    >
+        <template #range-option="{ range }">
+            {{ $t(`tinect-2fa.dashboard.range.${range}`) }}
+        </template>
+    </sw-chart-card>
+</div>
+{% endblock %}

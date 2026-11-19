@@ -1,0 +1,45 @@
+.tinect-2fa-widget-summary {
+    position: relative;
+    min-height: 120px;
+
+    &__tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+        margin: 0;
+    }
+
+    &__tile {
+        padding: 12px 16px;
+        border: 1px solid var(--color-border-primary-default, #d1d9e0);
+        border-radius: var(--border-radius-default, 4px);
+
+        &--protected {
+            border-left: 4px solid var(--color-border-brand-selected, #0870ff);
+        }
+    }
+
+    &__label {
+        font-size: var(--font-size-xs, 12px);
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+
+    &__value {
+        margin: 4px 0 0;
+        font-size: 1.5rem;
+        font-weight: var(--font-weight-bold, 700);
+        color: var(--color-text-primary-default, #0a0c11);
+    }
+
+    &__hint {
+        margin: 4px 0 0;
+        font-size: var(--font-size-xs, 12px);
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+
+    &__empty {
+        padding: 24px;
+        text-align: center;
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+}

@@ -28,5 +28,24 @@
             <helpText>Company name for QR code in 2FA app</helpText>
             <defaultValue>Webshop</defaultValue>
         </input-field>
+
+        <input-field type="bool">
+            <name>storefrontForce</name>
+            <label>Enforce 2FA for customers</label>
+            <label lang="de-DE">2FA für Kunden erzwingen</label>
+            <helpText>Customers without an authenticator app or e-mail codes set up get a code by e-mail on every login. Store API logins are not affected.</helpText>
+            <helpText lang="de-DE">Kunden ohne eingerichtete App oder E-Mail-Codes erhalten bei jeder Anmeldung einen Code per E-Mail. Anmeldungen über die Store API sind nicht betroffen.</helpText>
+            <defaultValue>false</defaultValue>
+        </input-field>
+
+        <input-field type="int">
+            <name>storefrontTrustedDeviceDays</name>
+            <label>Trust device for days</label>
+            <label lang="de-DE">Gerät vertrauen für Tage</label>
+            <helpText>Customers can skip the second factor on this device for the given number of days. 0 disables the option. Changing the password ends the trust.</helpText>
+            <helpText lang="de-DE">Kunden können den zweiten Faktor auf diesem Gerät für die angegebene Anzahl Tage überspringen. 0 deaktiviert die Option. Eine Passwortänderung beendet das Vertrauen.</helpText>
+            <min>0</min>
+            <defaultValue>30</defaultValue>
+        </input-field>
     </card>
 </config>

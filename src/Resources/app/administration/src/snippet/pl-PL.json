@@ -21,6 +21,59 @@
                 }
             }
         },
-        "one-time-password": "Hasło jednorazowe"
+        "one-time-password": "Hasło jednorazowe",
+        "customer": {
+            "method": {
+                "totp": "Aktywne – aplikacja (TOTP)",
+                "email": "Aktywne – e-mail",
+                "email-forced": "Aktywne – e-mail (wymuszone)",
+                "none": "Nieaktywne"
+            }
+        },
+        "dashboard": {
+            "group": "Uwierzytelnianie dwuskładnikowe",
+            "salesChannel": "Kanał sprzedaży",
+            "salesChannelHelp": "Uwzględniaj tylko klientów tego kanału sprzedaży. Pozostaw puste dla wszystkich kanałów.",
+            "loadError": "Nie udało się załadować danych.",
+            "range": {
+                "7Days": "Ostatnie 7 dni",
+                "30Days": "Ostatnie 30 dni",
+                "90Days": "Ostatnie 90 dni",
+                "180Days": "Ostatnie 180 dni",
+                "360Days": "Ostatnie 360 dni"
+            },
+            "method": {
+                "totp": "Aplikacja (TOTP)",
+                "email": "E-mail"
+            },
+            "summary": {
+                "label": "Wykorzystanie 2FA",
+                "description": "Klienci chronieni 2FA według metody oraz administratorzy z aplikacją",
+                "protected": "Chronieni klienci",
+                "share": "{rate} z {total} klientów",
+                "totp": "Aplikacja (TOTP)",
+                "email": "E-mail (wybrany)",
+                "enforced": "E-mail (wymuszony)",
+                "enforcedHint": "Bez własnej konfiguracji",
+                "users": "Administratorzy z aplikacją",
+                "usersHint": "z {total} aktywnych użytkowników"
+            },
+            "activated": {
+                "label": "Aktywacje 2FA",
+                "description": "Skonfigurowane aplikacje i wybrane kody e-mail dziennie",
+                "breakdown": "{totp} aplikacja · {email} e-mail",
+                "seriesTotp": "Aplikacja (TOTP)",
+                "seriesEmail": "E-mail"
+            },
+            "recent": {
+                "label": "Ostatnio aktywowane 2FA",
+                "description": "Klienci, którzy ostatnio skonfigurowali aplikację lub wybrali kody e-mail",
+                "limit": "Liczba wpisów",
+                "columnCustomer": "Klient",
+                "columnMethod": "Metoda",
+                "columnCreatedAt": "Aktywowano",
+                "empty": "Żaden klient nie aktywował jeszcze 2FA."
+            }
+        }
     }
 }

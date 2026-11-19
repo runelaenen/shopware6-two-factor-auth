@@ -24,7 +24,11 @@
                         <div class="card-body p-3">
                             {% block page_2fa_verification_card_body_description %}
                                 <p>
-                                    {{ "tinect-2fa.login.description"|trans|sw_sanitize }}
+                                    {% if method == 'email' %}
+                                        {{ "tinect-2fa.login.email-description"|trans({ '%email%': maskedEmail })|sw_sanitize }}
+                                    {% else %}
+                                        {{ "tinect-2fa.login.description"|trans|sw_sanitize }}
+                                    {% endif %}
                                 </p>
                             {% endblock %}
 
@@ -44,16 +48,43 @@
                                         <input type="text"
                                                class="form-control mb-1"
                                                autocomplete="one-time-code"
+                                               inputmode="numeric"
                                                id="otpCode"
                                                placeholder="{{ "tinect-2fa.login.code-placeholder"|trans|striptags }}"
                                                name="otpCode"
                                                required="required">
                                     {% endblock %}
 
+                                    {% block page_2fa_verification_card_body_form_trust %}
+                                        {% if trustedDeviceDays > 0 %}
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox"
+                                                       class="form-check-input"
+                                                       id="trustDevice"
+                                                       name="trustDevice"
+                                                       value="1">
+                                                <label class="form-check-label" for="trustDevice">
+                                                    {{ "tinect-2fa.login.trust-device"|trans({ '%days%': trustedDeviceDays })|sw_sanitize }}
+                                                </label>
+                                            </div>
+                                        {% endif %}
+                                    {% endblock %}
+
                                     {% block page_2fa_verification_card_body_form_button %}
                                         <button type="submit" class="btn btn-primary btn-block">
                                             {{ "tinect-2fa.login.proceed"|trans|sw_sanitize }}
                                         </button>
+                                    {% endblock %}
+
+                                    {% block page_2fa_verification_card_body_form_resend %}
+                                        {% if method == 'email' %}
+                                            <button type="submit"
+                                                    class="btn btn-link btn-block"
+                                                    formaction="{{ url('frontend.tinect2fa.verification.resend', redirect ?? []) }}"
+                                                    formnovalidate>
+                                                {{ "tinect-2fa.login.email-resend"|trans|sw_sanitize }}
+                                            </button>
+                                        {% endif %}
                                     {% endblock %}
 
                                     {% block page_2fa_verification_card_body_form_cancel %}

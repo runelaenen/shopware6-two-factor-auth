@@ -1,0 +1,50 @@
+{% block tinect_2fa_widget_recent %}
+<div class="tinect-2fa-widget-recent">
+    <p
+        v-if="hasError"
+        class="tinect-2fa-widget-recent__empty"
+    >
+        {{ $t('tinect-2fa.dashboard.loadError') }}
+    </p>
+    <p
+        v-else-if="!isLoading && activations.length === 0"
+        class="tinect-2fa-widget-recent__empty"
+    >
+        {{ $t('tinect-2fa.dashboard.recent.empty') }}
+    </p>
+    <sw-data-grid
+        v-else
+        class="tinect-2fa-widget-recent__grid"
+        :data-source="activations"
+        :columns="columns"
+        :is-loading="isLoading"
+        :show-selection="false"
+        :show-actions="false"
+        :plain-appearance="true"
+        :allow-inline-edit="false"
+        :allow-column-edit="false"
+    >
+        <template #column-customer="{ item }">
+            <router-link :to="{ name: 'sw.customer.detail', params: { id: item.customerId } }">
+                {{ item.lastName }}, {{ item.firstName }}
+            </router-link>
+            <div class="tinect-2fa-widget-recent__customer-number">
+                {{ item.customerNumber }}
+            </div>
+        </template>
+
+        <template #column-method="{ item }">
+            <span
+                class="tinect-2fa-widget-recent__method"
+                :class="`tinect-2fa-widget-recent__method--${item.method}`"
+            >
+                {{ methodLabel(item.method) }}
+            </span>
+        </template>
+
+        <template #column-createdAt="{ item }">
+            {{ formatDate(item.createdAt) }}
+        </template>
+    </sw-data-grid>
+</div>
+{% endblock %}

@@ -21,6 +21,59 @@
                 }
             }
         },
-        "one-time-password": "Mot de passe à usage unique"
+        "one-time-password": "Mot de passe à usage unique",
+        "customer": {
+            "method": {
+                "totp": "Active – application (TOTP)",
+                "email": "Active – e-mail",
+                "email-forced": "Active – e-mail (obligatoire)",
+                "none": "Inactive"
+            }
+        },
+        "dashboard": {
+            "group": "Authentification à deux facteurs",
+            "salesChannel": "Canal de vente",
+            "salesChannelHelp": "Ne compter que les clients de ce canal de vente. Laisser vide pour tous les canaux de vente.",
+            "loadError": "Les données n'ont pas pu être chargées.",
+            "range": {
+                "7Days": "7 derniers jours",
+                "30Days": "30 derniers jours",
+                "90Days": "90 derniers jours",
+                "180Days": "180 derniers jours",
+                "360Days": "360 derniers jours"
+            },
+            "method": {
+                "totp": "Application (TOTP)",
+                "email": "E-mail"
+            },
+            "summary": {
+                "label": "Utilisation de la 2FA",
+                "description": "Clients protégés par la 2FA par méthode et utilisateurs de l'administration avec application",
+                "protected": "Clients protégés",
+                "share": "{rate} de {total} clients",
+                "totp": "Application (TOTP)",
+                "email": "E-mail (choisi)",
+                "enforced": "E-mail (obligatoire)",
+                "enforcedHint": "Sans configuration propre",
+                "users": "Administrateurs avec application",
+                "usersHint": "sur {total} utilisateurs actifs"
+            },
+            "activated": {
+                "label": "Activations 2FA",
+                "description": "Applications configurées et codes par e-mail choisis par jour",
+                "breakdown": "{totp} application · {email} e-mail",
+                "seriesTotp": "Application (TOTP)",
+                "seriesEmail": "E-mail"
+            },
+            "recent": {
+                "label": "2FA récemment activée",
+                "description": "Les clients qui ont récemment configuré une application ou choisi les codes par e-mail",
+                "limit": "Nombre d'entrées",
+                "columnCustomer": "Client",
+                "columnMethod": "Méthode",
+                "columnCreatedAt": "Activée le",
+                "empty": "Aucun client n'a encore activé la 2FA."
+            }
+        }
     }
 }

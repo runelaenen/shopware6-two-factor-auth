@@ -17,7 +17,16 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
 
 ## Features
  - 'Google Authenticator' provider
+ - Codes by e-mail for storefront customers
+ - Enforce 2FA for storefront customers (falls back to codes by e-mail)
+ - Trusted devices: customers can skip the second factor on a browser for a configurable number of days
  - Storefront customer 2FA
+ - Dashboard widgets for [Frosh Admin Dashboard](https://github.com/FriendsOfShopware/FroshAdminDashboard) (optional,
+   group "Two-factor authentication", requires the `customer.viewer` privilege), each filterable by sales channel:
+   - 2FA usage: protected customers and their share of all registered customers, split into app, chosen and enforced
+     e-mail codes, plus administration users with an app
+   - 2FA activations: chart of apps set up and e-mail codes chosen per day for the last 7 to 360 days
+   - Recently activated 2FA: the latest activations with their customers and method
  - Admin user 2FA
  - Local QR code generation
  - Fully localized:
@@ -28,8 +37,8 @@ Adds an extra prompt to admin- or customer-accounts in your Shopware 6 website.
    - Polish
  
 ## Providers
-At the moment only Google Authenticator (compatible) apps are supported. 
-For example Google Authenticator, Authy, LastPass, Bitwarden, ...
+ - Authenticator apps (TOTP), for example Google Authenticator, Microsoft Authenticator, Authy, Bitwarden, ...
+ - Codes by e-mail (storefront customers only)
 
 ## Installation guide
 
@@ -46,6 +55,26 @@ bin/console plugin:install --activate TinectTwoFactorAuth
 # Build javascript files
 bin/build-js.sh
 ```
+
+## Codes by e-mail
+
+Customers can choose codes by e-mail instead of an authenticator app in their profile. With "Enforce 2FA for customers"
+turned on, every customer without an app gets a code by e-mail on login. The mail uses the template type
+"Two-factor authentication: login code" (`tinect_2fa_email_code`), which can be edited in the administration
+under Settings > Email templates. It gets the variables `customer`, `code`, `expiresInMinutes` and `salesChannel`.
+
+A code is valid for 10 minutes and for 5 attempts. Mails per customer are throttled with Shopware's `reset_password`
+rate limiter. Accounts created through registration are logged in without a code.
+
+Customers can tick "Trust this device" on the verification page to skip the second factor on that browser for the
+number of days set in the plugin configuration (0 turns the option off). Changing the password ends the trust on all
+devices.
+
+The customer detail page in the administration shows the active method. Admins with `customer:update` can remove the
+app and the e-mail choice there, for example after a customer lost their phone. With enforcing turned on, the customer
+then gets codes by e-mail.
+
+Codes by e-mail and enforcing only apply to the storefront. Store API logins only ask for the authenticator app code.
 
 ## Store API
 

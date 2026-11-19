@@ -24,6 +24,16 @@ readonly class ConfigurationService
         return $this->systemConfig->getBool(self::CONFIGURATION_KEY . 'storefrontEnabled', $salesChannelId);
     }
 
+    public function isStorefrontForced(?string $salesChannelId = null): bool
+    {
+        return $this->systemConfig->getBool(self::CONFIGURATION_KEY . 'storefrontForce', $salesChannelId);
+    }
+
+    public function getStorefrontTrustedDeviceDays(?string $salesChannelId = null): int
+    {
+        return max(0, $this->systemConfig->getInt(self::CONFIGURATION_KEY . 'storefrontTrustedDeviceDays', $salesChannelId));
+    }
+
     public function getStorefrontCompany(?string $salesChannelId = null): string
     {
         return $this->systemConfig->getString(self::CONFIGURATION_KEY . 'storefrontCompany', $salesChannelId);

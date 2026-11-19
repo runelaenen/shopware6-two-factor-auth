@@ -2,32 +2,40 @@
     "tinect-2fa": {
         "login": {
             "title": "Zwei-Faktor-Authentifizierung",
-            "description": "Bitte bestätigen Sie die Identität mit Ihrer 2FA-App.",
+            "description": "Bitte geben Sie den Code aus Ihrer Authenticator-App ein.",
             "code-placeholder": "Code",
             "proceed": "Anmelden",
-            "cancel": "Abbrechen"
+            "cancel": "Abbrechen",
+            "email-description": "Wir haben Ihnen einen Code an %email% gesendet. Bitte geben Sie ihn unten ein.",
+            "email-resend": "Neuen Code senden",
+            "email-resent": "Ein neuer Code wurde gesendet.",
+            "email-failed": "Der Code konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+            "email-throttled": "Bitte warten Sie %seconds% Sekunden, bevor Sie einen neuen Code anfordern.",
+            "email-code-expired": "Der Code ist abgelaufen oder wurde zu oft falsch eingegeben. Bitte fordern Sie einen neuen Code an.",
+            "trust-device": "Diesem Gerät %days% Tage vertrauen"
         },
         "account": {
             "title": "Zwei-Faktor-Authentifizierung",
-            "active": "Sehr gut! Ihr Account ist zur Zeit durch 2FA gesichert!",
+            "active": "Sehr gut! Ihr Account ist durch eine Authenticator-App (TOTP) gesichert.",
             "not-active": "Ihr Account ist zur Zeit <strong>nicht</strong> durch 2FA gesichert!",
-            "description": "Stellen Sie sicher, dass Ihr Webshop-Zugang geschützt wird, indem Sie die Zwei-Faktor-Authentifizierung (2FA) aktivieren. Mit 2FA wird Ihr Account zusätzlich zu dem Benutzernamen und Passwort durch ein neues Einmal-Passwort geschützt. Dieser zweite Schritt dient dazu, Ihre Identität zu bestätigen und verbindet hierfür Ihr Smartphone oder App mit Ihrem Account. Klicken Sie auf den nachfolgenden Button, um 2FA für Ihren Account zu aktivieren. Es ist einfach und kostenlos!",
-            "start-setup": "2FA für Ihren Account einrichten",
+            "description": "Schützen Sie Ihren Account mit der Zwei-Faktor-Authentifizierung (2FA). Bei der Anmeldung geben Sie dann zusätzlich zu Ihrem Passwort einen Einmal-Code ein. Sie wählen, wie Sie ihn erhalten: Eine <strong>Authenticator-App</strong> auf Ihrem Smartphone (TOTP, z. B. Google Authenticator, Microsoft Authenticator, Authy oder ein Passwort-Manager) erzeugt den Code – das ist die unter Umständen sicherere Variante. Alternativ senden wir Ihnen den Code <strong>per E-Mail</strong>, ganz ohne Installation.",
+            "start-setup": "Authenticator-App (TOTP) einrichten",
             "disable-2fa": "Zwei-Faktor-Authentifizierung deaktivieren",
             "disabled-2fa": "Zwei-Faktor-Authentifizierung wurde erfolgreich deaktiviert.",
             "setup": {
-                "title": "Konfiguration Zwei-Faktor-Authentifizierung",
-                "description": "Scannen Sie den Code mit Ihrer 2FA-App. Tragen Sie den generierten Code in das Feld ein, um zu Verifizieren, dass 2FA korrekt konfiguriert wurde.",
+                "title": "Authenticator-App (TOTP) einrichten",
+                "description": "Scannen Sie den QR-Code mit Ihrer Authenticator-App (z. B. Google Authenticator, Microsoft Authenticator, Authy oder ein Passwort-Manager) oder tragen Sie den darunter angezeigten Schlüssel manuell ein. Geben Sie anschließend den 6-stelligen Code aus der App ein, um die Einrichtung abzuschließen.",
                 "step-1": "Schritt 1. Code einscannen",
                 "step-2": "Schritt 2. Token verifizieren",
                 "verification-placeholder": "Einmal-Passwort-Token",
-                "verify": "Verifizieren & 2FA aktivieren"
+                "verify": "Verifizieren & App aktivieren"
             },
             "disable": {
                 "title": "Zwei-Faktor-Authentifizierung deaktivieren",
                 "description": "Bitte bestätigen Sie Ihre Identität durch Eingabe Ihres Passworts.",
                 "password": "Passwort",
-                "submit": "Eingabe bestätigen & 2FA deaktivieren"
+                "submit": "Eingabe bestätigen & 2FA deaktivieren",
+                "forced": "Dieser Shop erfordert die Zwei-Faktor-Authentifizierung. Nach dem Deaktivieren erhalten Sie die Codes per E-Mail."
             },
             "error": {
                 "not-enabled": "2FA ist für diesen Shop nicht aktiviert.",
@@ -35,6 +43,14 @@
                 "incorrect-password": "Das eingegebene Passwort war nicht korrekt. Zwei-Faktor-Authentifizierung wurde nicht deaktiviert.",
                 "empty-input": "Eingabe war leer.",
                 "incorrect-code": "Der eingegebene Code war nicht korrekt."
+            },
+            "app-forced": "Dieser Shop erfordert die Zwei-Faktor-Authentifizierung. Wenn Sie die App deaktivieren, erhalten Sie die Codes stattdessen per E-Mail.",
+            "email": {
+                "enable": "Codes per E-Mail verwenden",
+                "enabled": "Ab sofort erhalten Sie bei der Anmeldung einen Code per E-Mail.",
+                "active": "Ihr Account ist durch Codes per E-Mail gesichert.",
+                "forced": "Dieser Shop erfordert die Zwei-Faktor-Authentifizierung für alle Kunden.",
+                "app-hint": "Eine Authenticator-App könnte sicherer sein, da sie nicht von Ihrem E-Mail-Postfach abhängt."
             }
         }
     }

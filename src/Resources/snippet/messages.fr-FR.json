@@ -2,32 +2,40 @@
     "tinect-2fa": {
         "login": {
             "title": "Authentification à deux facteurs (2FA)",
-            "description": "Veuillez vérifier votre identité à l'aide de votre application 2FA.",
+            "description": "Veuillez saisir le code de votre application d'authentification.",
             "code-placeholder": "Code",
             "proceed": "Se connecter",
-            "cancel": "Annuler"
+            "cancel": "Annuler",
+            "email-description": "Nous avons envoyé un code à %email%. Veuillez le saisir ci-dessous.",
+            "email-resend": "Envoyer un nouveau code",
+            "email-resent": "Un nouveau code a été envoyé.",
+            "email-failed": "Le code n'a pas pu être envoyé. Veuillez réessayer plus tard.",
+            "email-throttled": "Veuillez patienter %seconds% secondes avant de demander un nouveau code.",
+            "email-code-expired": "Le code a expiré ou a été saisi incorrectement trop souvent. Veuillez demander un nouveau code.",
+            "trust-device": "Faire confiance à cet appareil pendant %days% jours"
         },
         "account": {
             "title": "Authentification à deux facteurs (2FA)",
-            "active": "Félicitations! Votre compte est actuellement protégé par l'authentification à deux facteurs!",
+            "active": "Félicitations ! Votre compte est protégé par une application d'authentification (TOTP).",
             "not-active": "Votre compte n'est actuellement <strong>pas</strong> protégé par l'authentification à deux facteurs!",
-            "description": "Assurez-vous que votre compte de boutique en ligne est protégé en toute sécurité en ajoutant l'authentification à deux facteurs (2FA). Avec 2FA, votre compte est sécurisé en plusieurs couches: votre nom d'utilisateur, votre mot de passe et une nouvelle couche de «mot de passe à usage unique». Cette deuxième étape est ajoutée pour reconfirmer votre identité et associe votre compte à votre téléphone mobile. Cliquez sur le bouton ci-dessous pour commencer à configurer 2FA pour votre compte. C'est facile et gratuit!",
-            "start-setup": "Configurer 2FA pour mon compte",
+            "description": "Protégez votre compte avec l'authentification à deux facteurs (2FA). Lors de la connexion, vous saisissez alors un code à usage unique en plus de votre mot de passe. Vous choisissez comment le recevoir : une <strong>application d'authentification</strong> sur votre smartphone (TOTP, p. ex. Google Authenticator, Microsoft Authenticator, Authy ou un gestionnaire de mots de passe) génère le code – c'est peut-être l'option la plus sûre. Vous pouvez aussi recevoir le code <strong>par e-mail</strong>, sans rien installer.",
+            "start-setup": "Configurer une application d'authentification (TOTP)",
             "disable-2fa": "Désactiver l'authentification à deux facteurs",
             "disabled-2fa": "L'authentification à deux facteurs a été désactivée avec succès.",
             "setup": {
-                "title": "Configurer 2FA pour mon compte",
-                "description": "Scannez le code QR ci-dessous avec votre application Google Authenticator. Entrez le code généré dans le champ ci-dessous pour vérifier si votre code 2FA a été correctement configuré.",
+                "title": "Configurer une application d'authentification (TOTP)",
+                "description": "Scannez le code QR avec votre application d'authentification (p. ex. Google Authenticator, Microsoft Authenticator, Authy ou un gestionnaire de mots de passe) ou saisissez manuellement la clé affichée en dessous. Saisissez ensuite le code à 6 chiffres de l'application pour terminer la configuration.",
                 "step-1": "Étape 1. Scannez le code",
                 "step-2": "Étape 2. Vérifier le jeton",
                 "verification-placeholder": "Jeton de mot de passe unique (OTP)",
-                "verify": "Vérifier & activer 2FA"
+                "verify": "Vérifier & activer l'application"
             },
             "disable": {
                 "title": "Désactiver l'authentification à deux facteurs",
                 "description": "Veuillez vérifier qu'il s'agit bien de vous en confirmant votre mot de passe.",
                 "password": "Mot de passe",
-                "submit": "Confirmer le mot de passe et désactiver l'authentification à deux facteurs"
+                "submit": "Confirmer le mot de passe et désactiver l'authentification à deux facteurs",
+                "forced": "Cette boutique exige l'authentification à deux facteurs. Après la désactivation, vous recevrez les codes par e-mail."
             },
             "error": {
                 "not-enabled": "2FA n'est pas activé pour ce canal de vente.",
@@ -35,6 +43,14 @@
                 "incorrect-password": "Le mot de passe fourni était incorrect. L'authentification à deux facteurs n'est pas désactivée.",
                 "empty-input": "Le secret ou le code était vide.",
                 "incorrect-code": "Le code fourni n'était pas correct."
+            },
+            "app-forced": "Cette boutique exige l'authentification à deux facteurs. Si vous désactivez l'application, vous recevrez les codes par e-mail.",
+            "email": {
+                "enable": "Utiliser des codes par e-mail",
+                "enabled": "Désormais, vous recevrez un code par e-mail lors de la connexion.",
+                "active": "Votre compte est protégé par des codes envoyés par e-mail.",
+                "forced": "Cette boutique exige l'authentification à deux facteurs pour tous les clients.",
+                "app-hint": "Une application d'authentification pourrait être plus sûre, car elle ne dépend pas de votre boîte e-mail."
             }
         }
     }

@@ -7,15 +7,47 @@ export default {
 
     data() {
         return {
-            twoFactorAuthenticationActive: false,
+            twoFactorAuthenticationMethod: null,
+            twoFactorAuthenticationForced: false,
         };
+    },
+
+    computed: {
+        twoFactorAuthenticationLabel() {
+            if (this.twoFactorAuthenticationMethod === 'totp') {
+                return this.$tc('tinect-2fa.customer.method.totp');
+            }
+
+            if (this.twoFactorAuthenticationMethod === 'email') {
+                return this.$tc(
+                    this.twoFactorAuthenticationForced
+                        ? 'tinect-2fa.customer.method.email-forced'
+                        : 'tinect-2fa.customer.method.email'
+                );
+            }
+
+            return this.$tc('tinect-2fa.customer.method.none');
+        },
+
+        // Enforced e-mail codes are no choice of the customer, so there is nothing to remove.
+        twoFactorAuthenticationRemovable() {
+            return (
+                this.twoFactorAuthenticationMethod !== null &&
+                !this.twoFactorAuthenticationForced
+            );
+        },
     },
 
     methods: {
         createdComponent() {
             this.$super('createdComponent');
 
-            this.twoFactorAuthenticationActive = false;
+            this.loadTwoFactorAuthenticationStatus();
+        },
+
+        loadTwoFactorAuthenticationStatus() {
+            this.twoFactorAuthenticationMethod = null;
+            this.twoFactorAuthenticationForced = false;
             if (!this.customer?.id) {
                 return;
             }
@@ -23,8 +55,9 @@ export default {
             this.tinect2faService
                 .getCustomerStatus(this.customer.id)
                 .then((response) => {
-                    this.twoFactorAuthenticationActive =
-                        response.enabled === true;
+                    this.twoFactorAuthenticationMethod = response.method ?? null;
+                    this.twoFactorAuthenticationForced =
+                        response.forced === true;
                 })
                 .catch(() => {});
         },
@@ -33,7 +66,7 @@ export default {
             this.tinect2faService
                 .removeCustomerSecret(this.customer.id)
                 .then(() => {
-                    this.twoFactorAuthenticationActive = false;
+                    this.loadTwoFactorAuthenticationStatus();
                 });
         },
     },

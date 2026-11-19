@@ -10,15 +10,16 @@
 
         {% block sw_customer_base_metadata_2fa_content %}
         <dd
-            v-if="!customerEditMode || !twoFactorAuthenticationActive"
+            v-if="!customerEditMode || !twoFactorAuthenticationRemovable"
             class="sw-customer-base__label-is-active"
         >
-            {{ $tc('sw-customer.baseInfo.contentActive', twoFactorAuthenticationActive ? 1 : 2) }}
+            {{ twoFactorAuthenticationLabel }}
         </dd>
         {% endblock %}
 
         {% block sw_customer_base_metadata_2fa_editor %}
         <dd v-else>
+            {{ twoFactorAuthenticationLabel }}
             <mt-button
                 @click="disable2FA"
             >

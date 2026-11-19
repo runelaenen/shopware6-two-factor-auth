@@ -21,6 +21,59 @@
                 }
             }
         },
-        "one-time-password": "One-time password"
+        "one-time-password": "One-time password",
+        "customer": {
+            "method": {
+                "totp": "Active – app (TOTP)",
+                "email": "Active – e-mail",
+                "email-forced": "Active – e-mail (enforced)",
+                "none": "Inactive"
+            }
+        },
+        "dashboard": {
+            "group": "Two-factor authentication",
+            "salesChannel": "Sales channel",
+            "salesChannelHelp": "Only count customers of this sales channel. Leave empty for all sales channels.",
+            "loadError": "The data could not be loaded.",
+            "range": {
+                "7Days": "Last 7 days",
+                "30Days": "Last 30 days",
+                "90Days": "Last 90 days",
+                "180Days": "Last 180 days",
+                "360Days": "Last 360 days"
+            },
+            "method": {
+                "totp": "App (TOTP)",
+                "email": "E-mail"
+            },
+            "summary": {
+                "label": "2FA usage",
+                "description": "Customers protected by 2FA per method and administration users with an app",
+                "protected": "Protected customers",
+                "share": "{rate} of {total} customers",
+                "totp": "App (TOTP)",
+                "email": "E-mail (chosen)",
+                "enforced": "E-mail (enforced)",
+                "enforcedHint": "Without own setup",
+                "users": "Admin users with app",
+                "usersHint": "of {total} active users"
+            },
+            "activated": {
+                "label": "2FA activations",
+                "description": "Apps set up and e-mail codes chosen per day",
+                "breakdown": "{totp} app · {email} e-mail",
+                "seriesTotp": "App (TOTP)",
+                "seriesEmail": "E-mail"
+            },
+            "recent": {
+                "label": "Recently activated 2FA",
+                "description": "The customers who most recently set up an app or chose e-mail codes",
+                "limit": "Number of entries",
+                "columnCustomer": "Customer",
+                "columnMethod": "Method",
+                "columnCreatedAt": "Activated at",
+                "empty": "No customer has activated 2FA yet."
+            }
+        }
     }
 }
