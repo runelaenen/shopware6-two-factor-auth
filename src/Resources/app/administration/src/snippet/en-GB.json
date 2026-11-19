@@ -21,6 +21,14 @@
                 }
             }
         },
-        "one-time-password": "One-time password"
+        "one-time-password": "One-time password",
+        "customer": {
+            "method": {
+                "totp": "Active – app (TOTP)",
+                "email": "Active – e-mail",
+                "email-forced": "Active – e-mail (enforced)",
+                "none": "Inactive"
+            }
+        }
     }
 }

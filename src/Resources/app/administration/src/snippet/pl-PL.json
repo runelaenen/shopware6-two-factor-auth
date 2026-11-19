@@ -21,6 +21,14 @@
                 }
             }
         },
-        "one-time-password": "Hasło jednorazowe"
+        "one-time-password": "Hasło jednorazowe",
+        "customer": {
+            "method": {
+                "totp": "Aktywne – aplikacja (TOTP)",
+                "email": "Aktywne – e-mail",
+                "email-forced": "Aktywne – e-mail (wymuszone)",
+                "none": "Nieaktywne"
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Tinect\TwoFactorAuth\Service\ConfigurationService;
+use Tinect\TwoFactorAuth\Service\CustomerMethodResolver;
 use Tinect\TwoFactorAuth\Service\QrCodeService;
 use Tinect\TwoFactorAuth\Service\SecretStorage;
 use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
@@ -35,6 +36,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
         private readonly UserVerificationTicketService $ticketService,
         private readonly SecretStorage $secretStorage,
         private readonly SsoService $ssoService,
+        private readonly CustomerMethodResolver $customerMethodResolver,
     ) {
     }
 
@@ -115,7 +117,14 @@ class TwoFactorAuthenticationApiController extends AbstractController
     )]
     public function customerStatus(string $customerId): JsonResponse
     {
-        return new JsonResponse(['enabled' => $this->secretStorage->getCustomerSecret($customerId) !== null]);
+        $method = $this->customerMethodResolver->resolveForCustomer($customerId);
+
+        return new JsonResponse([
+            'enabled' => $method !== null,
+            'method' => $method,
+            // Enforced e-mail codes are no choice of the customer, so there is nothing to remove.
+            'forced' => $method === CustomerMethodResolver::METHOD_EMAIL && !$this->secretStorage->hasCustomerEmail($customerId),
+        ]);
     }
 
     #[Route(
@@ -127,6 +136,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
     public function removeCustomerSecret(string $customerId): JsonResponse
     {
         $this->secretStorage->removeCustomerSecret($customerId);
+        $this->secretStorage->removeCustomerEmail($customerId);
 
         return new JsonResponse(['status' => 'OK']);
     }

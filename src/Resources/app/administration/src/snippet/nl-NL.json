@@ -21,6 +21,14 @@
                 }
             }
         },
-        "one-time-password": "Eenmalig wachtwoord"
+        "one-time-password": "Eenmalig wachtwoord",
+        "customer": {
+            "method": {
+                "totp": "Actief – app (TOTP)",
+                "email": "Actief – e-mail",
+                "email-forced": "Actief – e-mail (verplicht)",
+                "none": "Inactief"
+            }
+        }
     }
 }

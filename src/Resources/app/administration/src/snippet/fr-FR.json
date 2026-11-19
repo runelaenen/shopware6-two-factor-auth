@@ -21,6 +21,14 @@
                 }
             }
         },
-        "one-time-password": "Mot de passe à usage unique"
+        "one-time-password": "Mot de passe à usage unique",
+        "customer": {
+            "method": {
+                "totp": "Active – application (TOTP)",
+                "email": "Active – e-mail",
+                "email-forced": "Active – e-mail (obligatoire)",
+                "none": "Inactive"
+            }
+        }
     }
 }

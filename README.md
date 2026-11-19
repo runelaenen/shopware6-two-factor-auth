@@ -64,6 +64,10 @@ Customers can tick "Trust this device" on the verification page to skip the seco
 number of days set in the plugin configuration (0 turns the option off). Changing the password ends the trust on all
 devices.
 
+The customer detail page in the administration shows the active method. Admins with `customer:update` can remove the
+app and the e-mail choice there, for example after a customer lost their phone. With enforcing turned on, the customer
+then gets codes by e-mail.
+
 Codes by e-mail and enforcing only apply to the storefront. Store API logins only ask for the authenticator app code.
 
 ## Store API
