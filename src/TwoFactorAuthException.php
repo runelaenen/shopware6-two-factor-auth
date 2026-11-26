@@ -11,6 +11,8 @@ class TwoFactorAuthException extends HttpException
 {
     public const OTP_REQUIRED = 'TINECT_2FA__OTP_REQUIRED';
     public const OTP_INVALID = 'TINECT_2FA__OTP_INVALID';
+    public const EMAIL_CODE_REQUIRED = 'TINECT_2FA__EMAIL_CODE_REQUIRED';
+    public const EMAIL_CODE_NOT_SENT = 'TINECT_2FA__EMAIL_CODE_NOT_SENT';
 
     public static function otpRequired(): self
     {
@@ -27,6 +29,25 @@ class TwoFactorAuthException extends HttpException
             Response::HTTP_UNAUTHORIZED,
             self::OTP_INVALID,
             'The one-time password is not correct.'
+        );
+    }
+
+    public static function emailCodeRequired(string $challenge, int $expiresInSeconds): self
+    {
+        return new self(
+            Response::HTTP_UNAUTHORIZED,
+            self::EMAIL_CODE_REQUIRED,
+            'A login code was sent by e-mail. Send the login again with the code as "tinect2faOtp" and the challenge as "tinect2faChallenge".',
+            ['challenge' => $challenge, 'expiresIn' => $expiresInSeconds]
+        );
+    }
+
+    public static function emailCodeNotSent(): self
+    {
+        return new self(
+            Response::HTTP_SERVICE_UNAVAILABLE,
+            self::EMAIL_CODE_NOT_SENT,
+            'The login code could not be sent by e-mail. Try again later.'
         );
     }
 }

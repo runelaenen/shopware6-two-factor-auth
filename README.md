@@ -74,7 +74,10 @@ The customer detail page in the administration shows the active method. Admins w
 app and the e-mail choice there, for example after a customer lost their phone. With enforcing turned on, the customer
 then gets codes by e-mail.
 
-Codes by e-mail and enforcing only apply to the storefront. Store API logins only ask for the authenticator app code.
+Enforcing only applies to the storefront. Store API logins ask for the authenticator app code, or for an e-mail code
+if the customer chose codes by e-mail.
+
+Every app code is accepted only once, also within its 30 second window.
 
 ## Store API
 
@@ -87,6 +90,19 @@ POST /store-api/account/login
 
 Without it the request fails with a `401` and the error code `TINECT_2FA__OTP_REQUIRED`, so the frontend knows to ask for
 the code and send the login again. A wrong code returns `TINECT_2FA__OTP_INVALID`.
+
+Customers who chose codes by e-mail log in in two steps. The first login, without a code, sends the code by e-mail and
+fails with a `401`, the error code `TINECT_2FA__EMAIL_CODE_REQUIRED` and a challenge in `meta.parameters.challenge`.
+Send the login again with the code and that challenge:
+
+```
+POST /store-api/account/login
+{"email": "customer@example.com", "password": "...", "tinect2faOtp": "123456", "tinect2faChallenge": "..."}
+```
+
+A challenge is valid for 10 minutes and for 5 attempts. A login without code or challenge sends a new code and
+replaces the old challenge; sending too many codes returns core's `CHECKOUT__CUSTOMER_AUTH_THROTTLED`. If the mail
+can't be sent, the login fails with `503` and `TINECT_2FA__EMAIL_CODE_NOT_SENT`.
 
 ## Updating from 8.0 or older
 

@@ -23,8 +23,7 @@ use Tinect\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use Tinect\TwoFactorAuth\Service\ConfigurationService;
 use Tinect\TwoFactorAuth\Service\CustomerMethodResolver;
 use Tinect\TwoFactorAuth\Service\EmailCodeService;
-use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\TotpVerifier;
 use Tinect\TwoFactorAuth\Service\TrustedDeviceService;
 use Tinect\TwoFactorAuth\Subscriber\CustomerLoginSubscriber;
 
@@ -33,14 +32,12 @@ use Tinect\TwoFactorAuth\Subscriber\CustomerLoginSubscriber;
 class StorefrontTwoFactorAuthController extends StorefrontController
 {
     public function __construct(
-        #[Autowire(service: 'Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService')]
-        private readonly TimebasedOneTimePasswordServiceInterface $totpService,
         #[Autowire(service: 'event_dispatcher')]
         private readonly EventDispatcherInterface $dispatcher,
         #[Autowire(service: 'Shopware\Core\Checkout\Customer\SalesChannel\LogoutRoute')]
         private readonly AbstractLogoutRoute $logoutRoute,
         private readonly RateLimiter $rateLimiter,
-        private readonly SecretStorage $secretStorage,
+        private readonly TotpVerifier $totpVerifier,
         private readonly CustomerMethodResolver $methodResolver,
         private readonly EmailCodeService $emailCodeService,
         private readonly TrustedDeviceService $trustedDeviceService,
@@ -144,13 +141,7 @@ class StorefrontTwoFactorAuthController extends StorefrontController
             return $this->emailCodeService->verify($request->getSession(), $customer->getId(), $code);
         }
 
-        $secret = $this->secretStorage->getCustomerSecret($customer->getId());
-
-        try {
-            return $secret !== null && $this->totpService->verifyCode($secret, $code);
-        } catch (\Exception) {
-            return false;
-        }
+        return $this->totpVerifier->verifyCustomer($customer->getId(), $code);
     }
 
     private function finishVerification(Request $request, SalesChannelContext $context, bool $trustDevice): Response

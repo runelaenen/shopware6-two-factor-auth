@@ -42,7 +42,9 @@
                 "no-customer": "Klant niet gevonden in sessie.",
                 "incorrect-password": "Het verstrekte wachtwoord was verkeerd. Twee-factorenauthenticatie is niet uitgeschakeld.",
                 "empty-input": "Geheim of code was leeg.",
-                "incorrect-code": "De verstrekte code was niet correct."
+                "incorrect-code": "De verstrekte code was niet correct.",
+                "already-enabled": "Tweestapsverificatie met een app is al actief. Schakel deze eerst uit om een nieuwe app in te stellen.",
+                "incorrect-password-setup": "Het opgegeven wachtwoord is onjuist. De app is niet ingesteld."
             },
             "app-forced": "Deze shop vereist tweestapsverificatie. Als u de app uitschakelt, ontvangt u de codes per e-mail.",
             "email": {

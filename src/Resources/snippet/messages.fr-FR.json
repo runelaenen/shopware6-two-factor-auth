@@ -42,7 +42,9 @@
                 "no-customer": "Client introuvable dans la session.",
                 "incorrect-password": "Le mot de passe fourni était incorrect. L'authentification à deux facteurs n'est pas désactivée.",
                 "empty-input": "Le secret ou le code était vide.",
-                "incorrect-code": "Le code fourni n'était pas correct."
+                "incorrect-code": "Le code fourni n'était pas correct.",
+                "already-enabled": "L'authentification à deux facteurs par application est déjà active. Désactivez-la d'abord pour configurer une nouvelle application.",
+                "incorrect-password-setup": "Le mot de passe saisi est incorrect. L'application n'a pas été configurée."
             },
             "app-forced": "Cette boutique exige l'authentification à deux facteurs. Si vous désactivez l'application, vous recevrez les codes par e-mail.",
             "email": {

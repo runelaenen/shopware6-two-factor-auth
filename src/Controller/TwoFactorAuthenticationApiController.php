@@ -22,6 +22,7 @@ use Tinect\TwoFactorAuth\Service\CustomerMethodResolver;
 use Tinect\TwoFactorAuth\Service\QrCodeService;
 use Tinect\TwoFactorAuth\Service\SecretStorage;
 use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\TotpVerifier;
 use Tinect\TwoFactorAuth\Service\UserVerificationTicketService;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
@@ -37,6 +38,7 @@ class TwoFactorAuthenticationApiController extends AbstractController
         private readonly SecretStorage $secretStorage,
         private readonly SsoService $ssoService,
         private readonly CustomerMethodResolver $customerMethodResolver,
+        private readonly TotpVerifier $totpVerifier,
     ) {
     }
 
@@ -80,20 +82,16 @@ class TwoFactorAuthenticationApiController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-            $verified = $this->totpService->verifyCode($secret, $code);
-        } catch (\Exception) {
-            $verified = false;
-        }
+        $timestep = $this->totpVerifier->getTimestep($secret, $code);
 
-        if (!$verified) {
+        if ($timestep === null) {
             return new JsonResponse([
                 'status' => 'error',
                 'error' => 'Secret and code not correct',
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $this->secretStorage->setUserSecret($userId, $secret);
+        $this->secretStorage->setUserSecret($userId, $secret, $timestep);
 
         return new JsonResponse(['status' => 'OK']);
     }

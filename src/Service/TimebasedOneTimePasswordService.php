@@ -38,4 +38,15 @@ readonly class TimebasedOneTimePasswordService implements TimebasedOneTimePasswo
     {
         return $this->google2fa->verifyKey($secret, $code);
     }
+
+    /**
+     * @throws IncompatibleWithGoogleAuthenticatorException|InvalidCharactersException|SecretKeyTooShortException
+     */
+    public function getTimestep(string $secret, string $code): ?int
+    {
+        // With an old timestamp given, google2fa returns the matching time step instead of true.
+        $timestep = $this->google2fa->verifyKeyNewer($secret, $code, 0);
+
+        return \is_int($timestep) ? $timestep : null;
+    }
 }

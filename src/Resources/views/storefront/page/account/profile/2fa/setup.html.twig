@@ -48,7 +48,19 @@
                     {% endblock %}
                 </p>
 
-                <input type="hidden" name="otpSecret" value="{{ secret }}">
+                {% block page_account_profile_2fa_setup_step2_password %}
+                    {% if passwordRequired %}
+                        <p>
+                            <input type="password"
+                                   class="form-control"
+                                   autocomplete="current-password"
+                                   id="otpSetupPassword"
+                                   placeholder="{{ "tinect-2fa.account.disable.password"|trans|striptags }}"
+                                   name="otpSetupPassword"
+                                   required="required">
+                        </p>
+                    {% endif %}
+                {% endblock %}
 
                 {% block page_account_profile_2fa_setup_step2_button %}
                     <button class="account-profile-2fa-setup-verify btn btn-primary btn-block">

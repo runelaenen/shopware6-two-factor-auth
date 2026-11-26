@@ -33,6 +33,7 @@ class TinectTwoFactorAuth extends Plugin
         $connection->executeStatement(\sprintf('DROP TABLE IF EXISTS `%s`', SecretStorage::CUSTOMER_TABLE));
         $connection->executeStatement(\sprintf('DROP TABLE IF EXISTS `%s`', SecretStorage::USER_TABLE));
         $connection->executeStatement(\sprintf('DROP TABLE IF EXISTS `%s`', SecretStorage::CUSTOMER_EMAIL_TABLE));
+        $connection->executeStatement(\sprintf('DROP TABLE IF EXISTS `%s`', EmailCodeService::CHALLENGE_TABLE));
 
         $connection->executeStatement(
             'DELETE `mail_template` FROM `mail_template`

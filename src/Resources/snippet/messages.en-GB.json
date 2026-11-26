@@ -42,7 +42,9 @@
                 "no-customer": "Customer not found in session.",
                 "incorrect-password": "The provided password was wrong. Two Factor Authentication is not disabled.",
                 "empty-input": "Secret or code was empty.",
-                "incorrect-code": "The provided code was not correct."
+                "incorrect-code": "The provided code was not correct.",
+                "already-enabled": "Two Factor Authentication with an app is already active. Disable it first to set up a new app.",
+                "incorrect-password-setup": "The provided password was wrong. The app was not set up."
             },
             "app-forced": "This shop requires two-factor authentication. If you disable the app, you will receive codes by e-mail instead.",
             "email": {

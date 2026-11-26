@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tinect\TwoFactorAuth\StoreApi;
 
+use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\CustomerException;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLoginRoute;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
@@ -17,22 +18,26 @@ use Shopware\Core\System\SalesChannel\ContextTokenResponse;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Framework\Routing\StorefrontRouteScope;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Tinect\TwoFactorAuth\Service\CustomerMethodResolver;
+use Tinect\TwoFactorAuth\Service\EmailCodeService;
 use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\TotpVerifier;
 use Tinect\TwoFactorAuth\TwoFactorAuthException;
 
 /**
  * Store API clients get no storefront session to park a pending verification in, so the code has to come with
- * the login itself. The storefront keeps its own verification page, see CustomerLoginSubscriber.
+ * the login itself. App codes are sent right away. Customers who chose e-mail codes first get a code mailed and a
+ * challenge back, then send the login again with both. The storefront keeps its own verification page, see
+ * CustomerLoginSubscriber.
  */
 #[AsDecorator(decorates: LoginRoute::class)]
 class TwoFactorLoginRoute extends AbstractLoginRoute
 {
     public const OTP_PARAMETER = 'tinect2faOtp';
+
+    public const CHALLENGE_PARAMETER = 'tinect2faChallenge';
 
     public function __construct(
         #[AutowireDecorated]
@@ -41,8 +46,9 @@ class TwoFactorLoginRoute extends AbstractLoginRoute
         private readonly RequestStack $requestStack,
         private readonly RateLimiter $rateLimiter,
         private readonly SecretStorage $secretStorage,
-        #[Autowire(service: TimebasedOneTimePasswordService::class)]
-        private readonly TimebasedOneTimePasswordServiceInterface $totpService,
+        private readonly CustomerMethodResolver $methodResolver,
+        private readonly TotpVerifier $totpVerifier,
+        private readonly EmailCodeService $emailCodeService,
     ) {
     }
 
@@ -74,13 +80,25 @@ class TwoFactorLoginRoute extends AbstractLoginRoute
 
         $customer = $this->accountService->getCustomerByLogin($email, (string) $data->get('password'), $context);
 
-        $secret = $this->secretStorage->getCustomerSecret($customer->getId());
-        if ($secret === null) {
+        $method = $this->methodResolver->resolve($customer->getId(), $context->getSalesChannelId());
+
+        // Enforced e-mail codes stay a storefront feature: existing Store API clients don't know the extra step.
+        if ($method === CustomerMethodResolver::METHOD_EMAIL && !$this->secretStorage->hasCustomerEmail($customer->getId())) {
+            $method = null;
+        }
+
+        if ($method === null) {
             return $this->decorated->login($data, $context);
         }
 
         $otp = (string) $data->get(self::OTP_PARAMETER);
-        if ($otp === '') {
+        $challenge = (string) $data->get(self::CHALLENGE_PARAMETER);
+
+        if ($method === CustomerMethodResolver::METHOD_EMAIL) {
+            if ($otp === '' || $challenge === '') {
+                $this->sendEmailChallenge($customer, $context);
+            }
+        } elseif ($otp === '') {
             throw TwoFactorAuthException::otpRequired();
         }
 
@@ -92,11 +110,9 @@ class TwoFactorLoginRoute extends AbstractLoginRoute
             throw CustomerException::customerAuthThrottledException($exception->getWaitTime(), $exception);
         }
 
-        try {
-            $verified = $this->totpService->verifyCode($secret, $otp);
-        } catch (\Exception) {
-            $verified = false;
-        }
+        $verified = $method === CustomerMethodResolver::METHOD_EMAIL
+            ? $this->emailCodeService->verifyChallenge($challenge, $customer->getId(), $otp)
+            : $this->totpVerifier->verifyCustomer($customer->getId(), $otp);
 
         if (!$verified) {
             throw TwoFactorAuthException::otpInvalid();
@@ -105,5 +121,20 @@ class TwoFactorLoginRoute extends AbstractLoginRoute
         $this->rateLimiter->reset(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
 
         return $this->decorated->login($data, $context);
+    }
+
+    private function sendEmailChallenge(CustomerEntity $customer, SalesChannelContext $context): never
+    {
+        try {
+            $challenge = $this->emailCodeService->sendChallenge($customer, $context);
+        } catch (RateLimitExceededException $exception) {
+            throw CustomerException::customerAuthThrottledException($exception->getWaitTime(), $exception);
+        }
+
+        if ($challenge === null) {
+            throw TwoFactorAuthException::emailCodeNotSent();
+        }
+
+        throw TwoFactorAuthException::emailCodeRequired($challenge, EmailCodeService::TTL_SECONDS);
     }
 }

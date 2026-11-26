@@ -42,7 +42,9 @@
                 "no-customer": "Kunde wurde nicht gefunden.",
                 "incorrect-password": "Das eingegebene Passwort war nicht korrekt. Zwei-Faktor-Authentifizierung wurde nicht deaktiviert.",
                 "empty-input": "Eingabe war leer.",
-                "incorrect-code": "Der eingegebene Code war nicht korrekt."
+                "incorrect-code": "Der eingegebene Code war nicht korrekt.",
+                "already-enabled": "Die Zwei-Faktor-Authentifizierung per App ist bereits aktiv. Deaktivieren Sie sie zuerst, um eine neue App einzurichten.",
+                "incorrect-password-setup": "Das eingegebene Passwort war nicht korrekt. Die App wurde nicht eingerichtet."
             },
             "app-forced": "Dieser Shop erfordert die Zwei-Faktor-Authentifizierung. Wenn Sie die App deaktivieren, erhalten Sie die Codes stattdessen per E-Mail.",
             "email": {

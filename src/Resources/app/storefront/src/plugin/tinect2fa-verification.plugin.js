@@ -8,8 +8,8 @@ export default class Tinect2faVerificationPlugin
         /** Selector for the code input field of the verification step */
         codeInputSelector: '[name=otpVerification]',
 
-        /** Selector for the secret input field of the verification step */
-        secretInputSelector: '[name=otpSecret]',
+        /** Selector for the password input field, only there when another factor is active */
+        passwordInputSelector: '[name=otpSetupPassword]',
 
         /** Selector for the error message wrapper of the verification step */
         errorMessageWrapperSelector: '.tinect2fa-setup-verification-message',
@@ -29,8 +29,8 @@ export default class Tinect2faVerificationPlugin
         this._submitButton = this.el.querySelector(this.options.buttonSelector);
 
         this._codeInput = this.el.querySelector(this.options.codeInputSelector);
-        this._secretInput = this.el.querySelector(
-            this.options.secretInputSelector
+        this._passwordInput = this.el.querySelector(
+            this.options.passwordInputSelector
         );
 
         this._errorMessageWrapper = this.el.querySelector(
@@ -62,7 +62,7 @@ export default class Tinect2faVerificationPlugin
             },
             body: JSON.stringify({
                 code: this._codeInput.value,
-                secret: this._secretInput.value,
+                password: this._passwordInput ? this._passwordInput.value : '',
             }),
         })
             .then((response) => response.json())

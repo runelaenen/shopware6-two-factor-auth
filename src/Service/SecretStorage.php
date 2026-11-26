@@ -27,9 +27,17 @@ readonly class SecretStorage
         return $this->get(self::CUSTOMER_TABLE, 'customer_id', $customerId);
     }
 
-    public function setCustomerSecret(string $customerId, string $secret): void
+    public function setCustomerSecret(string $customerId, string $secret, ?int $usedTimestep = null): void
     {
-        $this->set(self::CUSTOMER_TABLE, 'customer_id', $customerId, $secret);
+        $this->set(self::CUSTOMER_TABLE, 'customer_id', $customerId, $secret, $usedTimestep);
+    }
+
+    /**
+     * Marks the time step of a customer's code as used. False if it, or a newer one, was used before.
+     */
+    public function useCustomerTimestep(string $customerId, int $timestep): bool
+    {
+        return $this->useTimestep(self::CUSTOMER_TABLE, 'customer_id', $customerId, $timestep);
     }
 
     public function removeCustomerSecret(string $customerId): void
@@ -70,9 +78,17 @@ readonly class SecretStorage
         return $this->get(self::USER_TABLE, 'user_id', $userId);
     }
 
-    public function setUserSecret(string $userId, string $secret): void
+    public function setUserSecret(string $userId, string $secret, ?int $usedTimestep = null): void
     {
-        $this->set(self::USER_TABLE, 'user_id', $userId, $secret);
+        $this->set(self::USER_TABLE, 'user_id', $userId, $secret, $usedTimestep);
+    }
+
+    /**
+     * Marks the time step of a user's code as used. False if it, or a newer one, was used before.
+     */
+    public function useUserTimestep(string $userId, int $timestep): bool
+    {
+        return $this->useTimestep(self::USER_TABLE, 'user_id', $userId, $timestep);
     }
 
     public function removeUserSecret(string $userId): void
@@ -94,20 +110,41 @@ readonly class SecretStorage
         return \is_string($secret) && $secret !== '' ? $secret : null;
     }
 
-    private function set(string $table, string $column, string $id, string $secret): void
+    private function set(string $table, string $column, string $id, string $secret, ?int $usedTimestep): void
     {
         $this->connection->executeStatement(
             \sprintf(
-                'INSERT INTO `%s` (`%s`, `secret`, `created_at`) VALUES (:id, :secret, :createdAt)
-                ON DUPLICATE KEY UPDATE `secret` = :secret, `created_at` = :createdAt',
+                'INSERT INTO `%s` (`%s`, `secret`, `last_timestep`, `created_at`) VALUES (:id, :secret, :lastTimestep, :createdAt)
+                ON DUPLICATE KEY UPDATE `secret` = :secret, `last_timestep` = :lastTimestep, `created_at` = :createdAt',
                 $table,
                 $column
             ),
             [
                 'id' => Uuid::fromHexToBytes($id),
                 'secret' => $secret,
+                'lastTimestep' => $usedTimestep,
                 'createdAt' => (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
             ]
         );
+    }
+
+    /**
+     * A single conditional UPDATE, so two requests with the same code can't both pass.
+     */
+    private function useTimestep(string $table, string $column, string $id, int $timestep): bool
+    {
+        if (!Uuid::isValid($id)) {
+            return false;
+        }
+
+        return $this->connection->executeStatement(
+            \sprintf(
+                'UPDATE `%s` SET `last_timestep` = :timestep
+                WHERE `%s` = :id AND (`last_timestep` IS NULL OR `last_timestep` < :timestep)',
+                $table,
+                $column
+            ),
+            ['id' => Uuid::fromHexToBytes($id), 'timestep' => $timestep]
+        ) === 1;
     }
 }

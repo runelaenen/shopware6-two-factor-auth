@@ -20,8 +20,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Tinect\TwoFactorAuth\Service\SecretStorage;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
-use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\TotpVerifier;
 use Tinect\TwoFactorAuth\Service\UserVerificationTicketService;
 
 #[AutoconfigureTag(name: 'kernel.event_subscriber')]
@@ -33,8 +32,7 @@ readonly class ApiOauthTokenSubscriber implements EventSubscriberInterface
     public function __construct(
         #[Autowire(service: 'user.repository')]
         private EntityRepository $userRepository,
-        #[Autowire(service: TimebasedOneTimePasswordService::class)]
-        private TimebasedOneTimePasswordServiceInterface $oneTimePasswordService,
+        private TotpVerifier $totpVerifier,
         private UserVerificationTicketService $ticketService,
         private RateLimiter $rateLimiter,
         private SecretStorage $secretStorage,
@@ -95,13 +93,7 @@ readonly class ApiOauthTokenSubscriber implements EventSubscriberInterface
             throw ApiException::notificationThrottled($exception->getWaitTime(), $exception);
         }
 
-        try {
-            $verified = $this->oneTimePasswordService->verifyCode($secret, $otp);
-        } catch (\Exception) {
-            $verified = false;
-        }
-
-        if (!$verified) {
+        if (!$this->totpVerifier->verifyUser($user->getId(), $otp)) {
             throw new OAuthServerException('Wrong OTP', 1011, 'wrong-otp', 401);
         }
 

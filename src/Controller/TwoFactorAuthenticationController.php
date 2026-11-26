@@ -15,15 +15,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Tinect\TwoFactorAuth\Service\ConfigurationService;
+use Tinect\TwoFactorAuth\Service\CustomerMethodResolver;
 use Tinect\TwoFactorAuth\Service\QrCodeService;
 use Tinect\TwoFactorAuth\Service\SecretStorage;
 use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordService;
 use Tinect\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Tinect\TwoFactorAuth\Service\TotpVerifier;
 
 #[AutoconfigureTag(name: 'controller.service_arguments')]
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class TwoFactorAuthenticationController extends StorefrontController
 {
+    /**
+     * The secret of a running setup stays on the server, so nobody can bring their own.
+     */
+    private const SESSION_SETUP_SECRET = 'TINECT_2FA_SETUP_SECRET';
+
     public function __construct(
         private readonly ConfigurationService $configurationService,
         #[Autowire(service: TimebasedOneTimePasswordService::class)]
@@ -31,6 +38,8 @@ class TwoFactorAuthenticationController extends StorefrontController
         private readonly QrCodeService $qrCodeService,
         private readonly SecretStorage $secretStorage,
         private readonly AccountService $accountService,
+        private readonly CustomerMethodResolver $methodResolver,
+        private readonly TotpVerifier $totpVerifier,
     ) {
     }
 
@@ -40,12 +49,15 @@ class TwoFactorAuthenticationController extends StorefrontController
         defaults: ['XmlHttpRequest' => true],
         methods: ['GET'],
     )]
-    public function profileSetup(SalesChannelContext $salesChannelContext): Response
+    public function profileSetup(Request $request, SalesChannelContext $salesChannelContext): Response
     {
         $customer = $salesChannelContext->getCustomer();
         $salesChannelId = $salesChannelContext->getSalesChannelId();
 
-        if ($customer === null || !$this->configurationService->isStorefrontEnabled($salesChannelId)) {
+        if ($customer === null
+            || !$this->configurationService->isStorefrontEnabled($salesChannelId)
+            || $this->secretStorage->getCustomerSecret($customer->getId()) !== null
+        ) {
             return new Response(status: Response::HTTP_NO_CONTENT);
         }
 
@@ -57,9 +69,12 @@ class TwoFactorAuthenticationController extends StorefrontController
             $secret
         );
 
+        $request->getSession()->set(self::SESSION_SETUP_SECRET, $secret);
+
         return $this->renderStorefront('@Storefront/storefront/page/account/profile/2fa/setup.html.twig', [
             'secret' => $secret,
             'qrUrl' => $this->qrCodeService->createDataUri($qrUrl),
+            'passwordRequired' => $this->isPasswordRequired($customer->getId(), $salesChannelId),
         ]);
     }
 
@@ -156,39 +171,63 @@ class TwoFactorAuthenticationController extends StorefrontController
     )]
     public function validateSecret(Request $request, SalesChannelContext $salesChannelContext): Response
     {
-        if (!$this->configurationService->isStorefrontEnabled($salesChannelContext->getSalesChannel()->getId())) {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => $this->trans('tinect-2fa.account.error.not-enabled'),
-            ], 400);
+        $salesChannelId = $salesChannelContext->getSalesChannelId();
+        if (!$this->configurationService->isStorefrontEnabled($salesChannelId)) {
+            return $this->validationError('tinect-2fa.account.error.not-enabled', Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$salesChannelContext->getCustomer()) {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => $this->trans('tinect-2fa.account.error.no-customer'),
-            ], 400);
+        $customer = $salesChannelContext->getCustomer();
+        if ($customer === null) {
+            return $this->validationError('tinect-2fa.account.error.no-customer', Response::HTTP_BAD_REQUEST);
         }
 
-        $secret = $request->request->getString('secret');
+        // Replacing the app would hand the account to whoever holds the session, so it goes through the
+        // password-protected disable first.
+        if ($this->secretStorage->getCustomerSecret($customer->getId()) !== null) {
+            return $this->validationError('tinect-2fa.account.error.already-enabled', Response::HTTP_BAD_REQUEST);
+        }
+
+        $session = $request->getSession();
+        $secret = $session->get(self::SESSION_SETUP_SECRET);
         $code = $request->request->getString('code');
-        if ($secret === '' || $code === '') {
-            return new JsonResponse([
-                'status' => 'error',
-                'error' => $this->trans('tinect-2fa.account.error.empty-input'),
-            ], 400);
+        if (!\is_string($secret) || $secret === '' || $code === '') {
+            return $this->validationError('tinect-2fa.account.error.empty-input', Response::HTTP_BAD_REQUEST);
         }
 
-        if ($this->totpService->verifyCode($secret, $code)) {
-            $this->secretStorage->setCustomerSecret($salesChannelContext->getCustomer()->getId(), $secret);
-            $this->secretStorage->removeCustomerEmail($salesChannelContext->getCustomer()->getId());
-
-            return new JsonResponse(['status' => 'OK']);
+        if ($this->isPasswordRequired($customer->getId(), $salesChannelId)) {
+            try {
+                $this->accountService->getCustomerByLogin(
+                    $customer->getEmail(),
+                    $request->request->getString('password'),
+                    $salesChannelContext
+                );
+            } catch (CustomerException) {
+                return $this->validationError('tinect-2fa.account.error.incorrect-password-setup');
+            }
         }
 
-        return new JsonResponse([
-            'status' => 'error',
-            'error' => $this->trans('tinect-2fa.account.error.incorrect-code'),
-        ]);
+        $timestep = $this->totpVerifier->getTimestep($secret, $code);
+        if ($timestep === null) {
+            return $this->validationError('tinect-2fa.account.error.incorrect-code');
+        }
+
+        $this->secretStorage->setCustomerSecret($customer->getId(), $secret, $timestep);
+        $this->secretStorage->removeCustomerEmail($customer->getId());
+        $session->remove(self::SESSION_SETUP_SECRET);
+
+        return new JsonResponse(['status' => 'OK']);
+    }
+
+    /**
+     * Switching from e-mail codes to the app replaces a factor, so it needs the password like disabling does.
+     */
+    private function isPasswordRequired(string $customerId, string $salesChannelId): bool
+    {
+        return $this->methodResolver->resolve($customerId, $salesChannelId) !== null;
+    }
+
+    private function validationError(string $snippet, int $status = Response::HTTP_OK): JsonResponse
+    {
+        return new JsonResponse(['status' => 'error', 'error' => $this->trans($snippet)], $status);
     }
 }

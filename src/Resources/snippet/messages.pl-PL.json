@@ -42,7 +42,9 @@
                 "no-customer": "Klient nie znaleziony w sesji.",
                 "incorrect-password": "Podane hasło było nieprawidłowe. Uwierzytelnianie dwuskładnikowe nie zostało wyłączone.",
                 "empty-input": "Brak danych (Secret lub Code).",
-                "incorrect-code": "Podany kod był nieprawidłowy."
+                "incorrect-code": "Podany kod był nieprawidłowy.",
+                "already-enabled": "Uwierzytelnianie dwuskładnikowe za pomocą aplikacji jest już aktywne. Najpierw je wyłącz, aby skonfigurować nową aplikację.",
+                "incorrect-password-setup": "Podane hasło jest nieprawidłowe. Aplikacja nie została skonfigurowana."
             },
             "app-forced": "Ten sklep wymaga uwierzytelniania dwuskładnikowego. Jeśli wyłączysz aplikację, kody będziesz otrzymywać e-mailem.",
             "email": {
